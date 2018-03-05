@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.business.mapper.BusinChecklistItemsMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.business.entity.BusinChecklistItems" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NUMBER_ID" property="numberId" jdbcType="INTEGER" />
+    <result column="ACCESSION_NUM" property="accessionNum" jdbcType="VARCHAR" />
+    <result column="EXAM_ITEM_CODE" property="examItemCode" jdbcType="VARCHAR" />
+    <result column="EXAM_ITEM" property="examItem" jdbcType="VARCHAR" />
+    <result column="EXAM_ITEM_EN" property="examItemEn" jdbcType="VARCHAR" />
+    <result column="PARTS_CODE" property="partsCode" jdbcType="VARCHAR" />
+    <result column="PARTS" property="parts" jdbcType="VARCHAR" />
+    <result column="PARTS_EN" property="partsEn" jdbcType="VARCHAR" />
+    <result column="SUMMARY_CODE" property="summaryCode" jdbcType="VARCHAR" />
+    <result column="SUMMARY" property="summary" jdbcType="VARCHAR" />
+    <result column="SUMMARY_EN" property="summaryEn" jdbcType="VARCHAR" />
+    <result column="COSTS" property="costs" jdbcType="DECIMAL" />
+    <result column="PARTSGROUP_CODE" property="partsgroupCode" jdbcType="VARCHAR" />
+    <result column="PARTSGROUP" property="partsgroup" jdbcType="VARCHAR" />
+    <result column="ISDELETE" property="isdelete" jdbcType="BIT" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

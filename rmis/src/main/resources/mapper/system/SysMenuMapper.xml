@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.system.mapper.SysMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.system.entity.SysMenu" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="MNAME" property="mname" jdbcType="VARCHAR" />
+    <result column="UPPDER_ID" property="uppderId" jdbcType="VARCHAR" />
+    <result column="NLEVEL" property="nlevel" jdbcType="INTEGER" />
+    <result column="SYSTEM_ID" property="systemId" jdbcType="VARCHAR" />
+    <result column="NINDEX" property="nindex" jdbcType="INTEGER" />
+    <result column="BC_FLAG" property="bcFlag" jdbcType="INTEGER" />
+    <result column="PAGE" property="page" jdbcType="VARCHAR" />
+    <result column="PIC" property="pic" jdbcType="VARCHAR" />
+    <result column="NAMEPY" property="namepy" jdbcType="VARCHAR" />
+    <result column="NAMEWB" property="namewb" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="FatherMnameResultMap" type="Map">
+    <result column="FATHER_MNAME" property="fatherMname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID,MNAME, UPPDER_ID, NLEVEL, SYSTEM_ID, NINDEX, BC_FLAG, PAGE, PIC, 
+    NAMEPY, NAMEWB, REMARK, UPD_USER, UPD_TIME, CRT_USER, CRT_TIME
+  </sql>
+  
+  <select id="querySysMenuBycondition"  resultMap="FatherMnameResultMap">
+      select a.ID,a.MNAME, a.UPPDER_ID, a.NLEVEL, a.SYSTEM_ID, a.NINDEX, a.BC_FLAG, a.PAGE, a.PIC, 
+      a.NAMEPY, a.NAMEWB, a.REMARK, a.UPD_USER, a.UPD_TIME, a.CRT_USER, a.CRT_TIME, ifnull(b.MNAME,'父级') FATHER_MNAME 
+      from sys_menu a 
+      LEFT JOIN sys_menu b on a.UPPDER_ID=b.ID 
+      <where>
+	      <if test="namepy !=null and namepy !=''">
+	         and (namepy like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%') or namewb like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%'))
+	     </if>
+	      <if test="uppderId !=null and uppderId !=''">
+	         and a.UPPDER_ID=#{uppderId,jdbcType=VARCHAR}
+	     </if>
+     </where>      
+     order by CAST(a.NINDEX AS DECIMAL) asc;
+  </select>
+  
+  <select id="querySysMenuByconditionForLogin"  resultMap="FatherMnameResultMap">
+      select a.ID,a.MNAME, a.UPPDER_ID, a.NLEVEL, a.SYSTEM_ID, a.NINDEX, a.BC_FLAG, a.PAGE, a.PIC, 
+      a.NAMEPY, a.NAMEWB, a.REMARK, a.UPD_USER, a.UPD_TIME, a.CRT_USER, a.CRT_TIME, ifnull(b.MNAME,'父级') FATHER_MNAME 
+      from sys_menu a 
+      LEFT JOIN sys_menu b on a.UPPDER_ID=b.ID 
+      LEFT JOIN sys_right_module c on a.id=c.MENU_ID
+      <where>
+	      <if test="namepy !=null and namepy !=''">
+	         and (namepy like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%') or namewb like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%'))
+	     </if>
+	      <if test="uppderId !=null and uppderId !=''">
+	         and a.UPPDER_ID=#{uppderId,jdbcType=VARCHAR}
+	     </if>
+	     <if test="logincode !=null and logincode !=''">
+	         and c.LOGINCODE=#{logincode,jdbcType=VARCHAR}
+	     </if>
+     </where>      
+     order by CAST(a.NINDEX AS DECIMAL) asc;
+  </select>
+  
+   <select id="querySysMenuMaxNindex"  resultType="Integer">
+     select ifnull(MAX(NINDEX),0)+1 maxNindex from sys_menu where UPPDER_ID = #{faMenuId,jdbcType=VARCHAR};
+   </select>
+  
+  <select id="querySysMenuForFatherId"  resultMap="FatherMnameResultMap">
+      select a.ID,a.MNAME, a.UPPDER_ID, a.NLEVEL, a.SYSTEM_ID, a.NINDEX, a.BC_FLAG, a.PAGE, a.PIC, 
+      a.NAMEPY, a.NAMEWB, a.REMARK, a.UPD_USER, a.UPD_TIME, a.CRT_USER, a.CRT_TIME, ifnull(b.MNAME,'父级') FATHER_MNAME 
+      from sys_menu a 
+      LEFT JOIN sys_menu b on a.UPPDER_ID=b.ID 
+      where  a.id in (
+       select distinct a.UPPDER_ID from sys_menu a,sys_right_module b where a.ID=b.MENU_ID and b.LOGINCODE=#{logincode,jdbcType=VARCHAR} and a.UPPDER_ID!='0'
+      ) 
+      order by CAST(a.NINDEX AS DECIMAL) asc;
+   </select>
+</mapper>

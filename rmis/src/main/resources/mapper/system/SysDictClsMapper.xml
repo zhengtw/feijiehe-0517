@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.system.mapper.SysDictClsMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.system.entity.SysDictCls" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CLS_NAME" property="clsName" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

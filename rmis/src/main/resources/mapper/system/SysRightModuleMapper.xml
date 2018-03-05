@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.system.mapper.SysRightModuleMapper">
+	<resultMap id="BaseResultMap"
+		type="com.jfhealthcare.modules.system.entity.SysRightModule">
+		<!-- WARNING - @mbg.generated -->
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="MENU_ID" property="menuId" jdbcType="VARCHAR" />
+		<result column="LOGINCODE" property="logincode" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+
+	<select id="querySysMenuForRestart" resultMap="BaseResultMap">
+		select a.MENU_ID from sys_right_modset
+		a,sys_oper_role b
+		<where>
+			a.LOGINCODE=b.ROLE_ID and a.OBJFLAG='2'
+			<if test="logincode !=null and logincode !=''">
+				and b.LOGINCODE=#{logincode,jdbcType=VARCHAR}
+			</if>
+		</where>
+		UNION
+		select a.MENU_ID from
+		sys_right_modset a
+		<where>
+			a.OBJFLAG='1'
+			<if test="logincode !=null and logincode !=''">
+				and a.LOGINCODE=#{logincode,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+
+
+</mapper>

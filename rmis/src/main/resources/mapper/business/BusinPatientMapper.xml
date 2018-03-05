@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.business.mapper.BusinPatientMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.business.entity.BusinPatient" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="PAT_ID" property="patId" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="NAME_PY" property="namePy" jdbcType="VARCHAR" />
+    <result column="SEX_CODE" property="sexCode" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="BITTH" property="bitth" jdbcType="TIMESTAMP" />
+    <result column="ID_SH" property="idSh" jdbcType="VARCHAR" />
+    <result column="SOCIALSECURITY" property="socialsecurity" jdbcType="VARCHAR" />
+    <result column="NATION_CODE" property="nationCode" jdbcType="VARCHAR" />
+    <result column="NATION" property="nation" jdbcType="VARCHAR" />
+    <result column="BLOODTYPE_CODE" property="bloodtypeCode" jdbcType="VARCHAR" />
+    <result column="BLOODTYPE" property="bloodtype" jdbcType="VARCHAR" />
+    <result column="PHON" property="phon" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="Email" property="email" jdbcType="VARCHAR" />
+    <result column="IDENTITY_CODE" property="identityCode" jdbcType="VARCHAR" />
+    <result column="IDENTITY" property="identity" jdbcType="VARCHAR" />
+    <result column="ISDELETE" property="isdelete" jdbcType="BIT" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

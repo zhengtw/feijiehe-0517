@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.apply.mapper.ApplyPatientMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.apply.entity.ApplyPatient" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ptn_id" property="ptnId" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ptn_name" property="ptnName" jdbcType="VARCHAR" />
+    <result column="study_uid" property="studyUid" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="birth_date" property="birthDate" jdbcType="VARCHAR" />
+    <result column="ptn_size" property="ptnSize" jdbcType="VARCHAR" />
+    <result column="ptn_weight" property="ptnWeight" jdbcType="VARCHAR" />
+    <result column="ptn_age" property="ptnAge" jdbcType="VARCHAR" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

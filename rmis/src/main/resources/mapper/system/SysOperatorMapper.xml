@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.system.mapper.SysOperatorMapper">
+	<resultMap id="BaseResultMap"
+		type="com.jfhealthcare.modules.system.entity.SysOperator">
+		<!-- WARNING - @mbg.generated -->
+		<id column="LOGINCODE" property="logincode" jdbcType="VARCHAR" />
+		<result column="OID" property="id" jdbcType="VARCHAR" />
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="ADMIN_CODE" property="adminCode" jdbcType="VARCHAR" />
+		<result column="ADMIN" property="admin" jdbcType="VARCHAR" />
+		<result column="HOME_PAGE" property="homePage" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="BIT" />
+		<result column="ISDELETE" property="isdelete" jdbcType="BIT" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+		<result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+		<result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+		<result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+		<result column="SIGNATURE" property="signature" jdbcType="LONGVARCHAR" />
+	</resultMap>
+
+	<resultMap id="OperatorResultMap" type="com.jfhealthcare.modules.system.response.OperatorResponse">
+		<id column="LOGINCODE" property="logincode" jdbcType="VARCHAR" />
+		<result column="OID" property="oid" jdbcType="VARCHAR" />
+		<result column="DID" property="did" jdbcType="VARCHAR" />
+		<result column="ADMIN_CODE" property="adminCode" jdbcType="VARCHAR" />
+		<result column="ADMIN" property="admin" jdbcType="VARCHAR" />
+		<result column="DEP_ID" property="depId" jdbcType="VARCHAR" />
+		<result column="DEP_NAME" property="depName" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="MANAGE_CODE" property="manageCode" jdbcType="VARCHAR" />
+		<result column="MANAGE" property="manage" jdbcType="VARCHAR" />
+		<result column="ADMIN" property="admin" jdbcType="VARCHAR" />
+		<result column="NAMEPY" property="namepy" jdbcType="VARCHAR" />
+		<result column="NAMEWB" property="namewb" jdbcType="VARCHAR" />
+		<result column="EFLAG_CODE" property="eflagCode" jdbcType="VARCHAR" />
+		<result column="EFLAG" property="eflag" jdbcType="VARCHAR" />
+		<result column="EDUCATION" property="education" jdbcType="VARCHAR" />
+		<result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+		<result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+		<result column="SIGNATURE" property="signature" jdbcType="VARCHAR" />
+		<result column="HOME_PAGE" property="homePage" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="ARCHIVES_NUM" property="archivesNum" jdbcType="VARCHAR" />
+		<result column="BEFORE_NAME" property="beforeName" jdbcType="VARCHAR" />
+		<result column="ID_NUM" property="idNum" jdbcType="VARCHAR" />
+		<result column="BIRTHDAY" property="birthday" jdbcType="TIMESTAMP" />
+		<result column="BIRTHPLACE" property="birthplace" jdbcType="VARCHAR" />
+		<result column="FAMILY_NAME" property="familyName" jdbcType="VARCHAR" />
+		<result column="NATIVE_PLACE" property="nativePlace" jdbcType="VARCHAR" />
+		<result column="HEALTH" property="health" jdbcType="VARCHAR" />
+		<result column="POLITICAL_OUTLOOK" property="politicalOutlook" jdbcType="VARCHAR" />
+		<result column="MARTIAL_STATUS" property="martialStatus" jdbcType="VARCHAR" />
+		<result column="ACADEMIC_DEGREE" property="academicDegree" jdbcType="VARCHAR" />
+		<result column="BLOOD_TYPE" property="bloodType" jdbcType="VARCHAR" />
+		<result column="HEIGHT" property="height" jdbcType="VARCHAR" />
+		<result column="LEFT_VERSION" property="leftVersion" jdbcType="VARCHAR" />
+		<result column="RIGHT_VERSION" property="rightVersion" jdbcType="VARCHAR" />
+		<result column="MAJOR" property="major" jdbcType="VARCHAR" />
+		<result column="LANGUAGE" property="language" jdbcType="VARCHAR" />
+		<result column="LANGUAGE_LEVEL" property="languageLevel" jdbcType="VARCHAR" />
+		<result column="POST_CODE" property="postCode" jdbcType="VARCHAR" />
+		<result column="HOME_TEL" property="homeTel" jdbcType="VARCHAR" />
+		<result column="HOME_MAIL" property="homeMail" jdbcType="VARCHAR" />
+    	<result column="OFFICE_TEL" property="officeTel" jdbcType="VARCHAR" />
+    	<result column="RESIDENCE_ADDRESS" property="residenceAddress" jdbcType="VARCHAR" />
+    	<result column="HOME_ADDRESS" property="homeAddress" jdbcType="VARCHAR" />
+    	<result column="RESIDENCE_DIFFERENCE" property="residenceDifference" jdbcType="VARCHAR" />
+    	<result column="PROFESSIONAL_LEVEL" property="professionalLevel" jdbcType="VARCHAR" />
+    	<result column="PROFESSIONAL" property="professional" jdbcType="VARCHAR" />
+    	<result column="TECHNICAL_LEVEL" property="technicalLevel" jdbcType="VARCHAR" />
+    	<result column="TECHNICAL" property="technical" jdbcType="VARCHAR" />
+    	<result column="SEX" property="sex" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID,LOGINCODE, ID, ADMIN_CODE, ADMIN, DEP_ID, NAME,
+		MANAGE_CODE, MANAGE,EFLAG
+		NAMEPY, NAMEWB, EFLAG,ORG_NAME,ORG_ID,EDUCATION,EFLAG_CODE,SEX
+	</sql>
+
+	<select id="queryOperatorList" resultMap="OperatorResultMap">
+		SELECT so.ID OID,sod.ID DID,so.LOGINCODE,sod.NAME,sod.DEP_ID,
+		(SELECT DEP_NAME FROM sys_department WHERE ID = sod.DEP_ID) DEP_NAME,
+		sod.MANAGE MANAGE,sod.MANAGE_CODE MANAGE_CODE,so.ADMIN ADMIN,so.ADMIN_CODE ADMIN_CODE,
+		sod.NAMEPY NAMEPY,sod.NAMEWB NAMEWB,sod.EFLAG_CODE EFLAG_CODE,sod.EFLAG EFLAG,
+		sod.EDUCATION EDUCATION,sod.ORG_ID ORG_ID,
+		(SELECT NAME FROM sys_organization WHERE ID = sod.ORG_ID) ORG_NAME,
+		(SELECT OTHERVALUE FROM sys_dict_dtl WHERE ID = sod.SEX) SEX
+		FROM sys_operator so,sys_operator_dtl sod
+		WHERE so.LOGINCODE = sod.LOGINCODE and so.isdelete=0
+	</select>
+	
+	<select id="queryOperatorListByParameter" resultMap="OperatorResultMap" parameterType="com.jfhealthcare.modules.system.request.SysOperatorQueryRequest">
+		SELECT so.ID OID,sod.ID DID,so.LOGINCODE,sod.NAME,sod.DEP_ID,
+		( SELECT DEP_NAME FROM sys_department WHERE ID = sod.DEP_ID ) DEP_NAME,
+		sod.MANAGE manage,sod.MANAGE_CODE,so.ADMIN,so.ADMIN_CODE,sod.NAMEPY,sod.NAMEWB,
+		sod.EFLAG_CODE,sod.EFLAG,sod.EDUCATION,sod.ORG_ID,
+		(SELECT NAME FROM sys_organization WHERE ID = sod.ORG_ID ) ORG_NAME,
+		(SELECT OTHERVALUE FROM sys_dict_dtl WHERE ID = sod.SEX) SEX
+		FROM sys_operator so,sys_operator_dtl sod
+		<where>
+			so.LOGINCODE = sod.LOGINCODE and so.isdelete = 0
+			<if test="namepy !=null and namepy !=''">
+				and (sod.NAMEPY like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%') or
+				sod.NAMEWB like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%'))
+			</if>
+			<if test="logincode !=null and logincode !=''">
+				and so.LOGINCODE=#{logincode,jdbcType=VARCHAR}
+			</if>
+			<if test="eflag !=null and eflag !=''">
+				and sod.EFLAG=#{eflag,jdbcType=VARCHAR}
+			</if>
+			<if test="orgId !=null and orgId !=''">
+				and sod.ORG_ID=#{orgId,jdbcType=VARCHAR}
+			</if>
+			<if test="depId !=null and depId !=''">
+				and sod.DEP_ID=#{depId,jdbcType=VARCHAR}
+			</if>
+		</where>
+		order by so.CRT_TIME desc
+	</select>
+	
+	
+	<select id="queryOperatorAllInfoByLogincode" resultMap="OperatorResultMap" parameterType="MAP">
+		SELECT
+		so.ID OID,sod.ID DID,so.LOGINCODE ,sod.NAME ,sod.DEP_ID ,
+		(SELECT DEP_NAME FROM sys_department WHERE ID = sod.DEP_ID ) DEP_NAME,
+		sod.MANAGE ,sod.MANAGE_CODE ,so.ADMIN ,so.ADMIN_CODE ,
+		sod.NAMEPY ,sod.NAMEWB ,sod.EFLAG_CODE ,sod.EFLAG ,
+		sod.EDUCATION ,sod.ORG_ID ,
+		( SELECT NAME FROM sys_organization WHERE ID = sod.ORG_ID ) ORG_NAME,
+		so.SIGNATURE ,so.HOME_PAGE ,so.REMARK ,
+		sod.ARCHIVES_NUM ,sod.BEFORE_NAME ,sod.ID_NUM ,
+		sod.BIRTHDAY ,sod.BIRTHPLACE ,sod.FAMILY_NAME ,
+		sod.NATIVE_PLACE ,sod.HEALTH ,sod.POLITICAL_OUTLOOK ,
+		sod.MARTIAL_STATUS ,sod.ACADEMIC_DEGREE ,
+		sod.BLOOD_TYPE ,sod.HEIGHT ,sod.LEFT_VERSION ,
+		sod.RIGHT_VERSION ,sod.MAJOR ,sod.LANGUAGE ,
+		sod.LANGUAGE_LEVEL ,sod.POST_CODE ,sod.HOME_TEL ,
+		sod.HOME_MAIL ,sod.OFFICE_TEL ,sod.RESIDENCE_ADDRESS ,
+		sod.HOME_ADDRESS ,sod.RESIDENCE_DIFFERENCE ,sod.PROFESSIONAL_LEVEL ,
+		sod.PROFESSIONAL ,sod.TECHNICAL_LEVEL ,sod.TECHNICAL ,
+		IFNULL((SELECT OTHERVALUE FROM sys_dict_dtl WHERE ID = sod.SEX ),'其它') SEX 
+		FROM
+		sys_operator so,
+		sys_operator_dtl sod
+		<where>
+			so.LOGINCODE = sod.LOGINCODE and so.isdelete=0
+			<if test="logincode !=null and logincode !=''">
+				and so.LOGINCODE=#{logincode,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+
+</mapper>

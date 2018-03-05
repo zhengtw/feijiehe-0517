@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.apply.mapper.ApplySeriesMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.apply.entity.ApplySeries" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="series_uid" property="seriesUid" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="series_number" property="seriesNumber" jdbcType="VARCHAR" />
+    <result column="study_uid" property="studyUid" jdbcType="VARCHAR" />
+    <result column="modality" property="modality" jdbcType="VARCHAR" />
+    <result column="body_part" property="bodyPart" jdbcType="VARCHAR" />
+    <result column="series_date" property="seriesDate" jdbcType="VARCHAR" />
+    <result column="series_time" property="seriesTime" jdbcType="VARCHAR" />
+    <result column="series_desc" property="seriesDesc" jdbcType="VARCHAR" />
+    <result column="req_proc_id" property="reqProcId" jdbcType="VARCHAR" />
+    <result column="sched_proc_id" property="schedProcId" jdbcType="VARCHAR" />
+    <result column="operator_name" property="operatorName" jdbcType="VARCHAR" />
+    <result column="model_name" property="modelName" jdbcType="VARCHAR" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

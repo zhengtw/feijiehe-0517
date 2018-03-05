@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.business.mapper.ViewWorklistMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.business.entity.ViewWorklist" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="PAT_ONLY_ID" property="patOnlyId" jdbcType="VARCHAR" />
+    <result column="PAT_ID" property="patId" jdbcType="VARCHAR" />
+    <result column="PAT_NAME" property="patName" jdbcType="VARCHAR" />
+    <result column="PAT_NAME_PY" property="patNamePy" jdbcType="VARCHAR" />
+    <result column="PAT_SEX_CODE" property="patSexCode" jdbcType="VARCHAR" />
+    <result column="PAT_SEX" property="patSex" jdbcType="VARCHAR" />
+    <result column="PAT_BITTH" property="patBitth" jdbcType="TIMESTAMP" />
+    <result column="PAT_ID_SH" property="patIdSh" jdbcType="VARCHAR" />
+    <result column="PAT_SOCIALSECURITY" property="patSocialsecurity" jdbcType="VARCHAR" />
+    <result column="PAT_NATION_CODE" property="patNationCode" jdbcType="VARCHAR" />
+    <result column="PAT_NATION" property="patNation" jdbcType="VARCHAR" />
+    <result column="PAT_BLOODTYPE_CODE" property="patBloodtypeCode" jdbcType="VARCHAR" />
+    <result column="PAT_BLOODTYPE" property="patBloodtype" jdbcType="VARCHAR" />
+    <result column="PAT_PHON" property="patPhon" jdbcType="VARCHAR" />
+    <result column="PAT_ADDRESS" property="patAddress" jdbcType="VARCHAR" />
+    <result column="PAT_Email" property="patEmail" jdbcType="VARCHAR" />
+    <result column="PAT_IDENTITY_CODE" property="patIdentityCode" jdbcType="VARCHAR" />
+    <result column="PAT_IDENTITY" property="patIdentity" jdbcType="VARCHAR" />
+    <result column="PATINFO_ID" property="patinfoId" jdbcType="VARCHAR" />
+    <result column="PATINFO_ONLY_ID" property="patinfoOnlyId" jdbcType="VARCHAR" />
+    <result column="PATINFO_CHECKLIST_ID" property="patinfoChecklistId" jdbcType="VARCHAR" />
+    <result column="PATINFO_CARD_NO" property="patinfoCardNo" jdbcType="VARCHAR" />
+    <result column="PATINFO_IHP_NO" property="patinfoIhpNo" jdbcType="VARCHAR" />
+    <result column="PATINFO_VISID" property="patinfoVisid" jdbcType="INTEGER" />
+    <result column="CHECK_ID" property="checkId" jdbcType="VARCHAR" />
+    <result column="CHECK_NUM" property="checkNum" jdbcType="VARCHAR" />
+    <result column="CHECK_ACCESSION_NUM" property="checkAccessionNum" jdbcType="VARCHAR" />
+    <result column="CHECK_PARTS_CODE" property="checkPartsCode" jdbcType="VARCHAR" />
+    <result column="CHECK_PARTS" property="checkParts" jdbcType="VARCHAR" />
+    <result column="CHECK_SUMMARY_CODE" property="checkSummaryCode" jdbcType="VARCHAR" />
+    <result column="CHECK_SUMMARY" property="checkSummary" jdbcType="VARCHAR" />
+    <result column="CHECK_EXAM_CODE" property="checkExamCode" jdbcType="VARCHAR" />
+    <result column="CHECK_EXAM" property="checkExam" jdbcType="VARCHAR" />
+    <result column="CHECK_COSTS" property="checkCosts" jdbcType="DECIMAL" />
+    <result column="CHECK_STATUS_CODE" property="checkStatusCode" jdbcType="VARCHAR" />
+    <result column="CHECK_STATUS" property="checkStatus" jdbcType="VARCHAR" />
+    <result column="CHECK_STATUS_AI_CODE" property="checkStatusAiCode" jdbcType="VARCHAR" />
+    <result column="CHECK_STATUS_AI" property="checkStatusAi" jdbcType="VARCHAR" />
+    <result column="CHECK_TYPE_CODE" property="checkTypeCode" jdbcType="VARCHAR" />
+    <result column="CHECK_TYPE" property="checkType" jdbcType="VARCHAR" />
+    <result column="CHECK_PARTS_GROUP_CODE" property="checkPartsGroupCode" jdbcType="VARCHAR" />
+    <result column="CHECK_PARTS_GROUP" property="checkPartsGroup" jdbcType="VARCHAR" />
+    <result column="CHECK_ISDELETE" property="checkIsdelete" jdbcType="BIT" />
+    <result column="CHECK_UPD_USER" property="checkUpdUser" jdbcType="VARCHAR" />
+    <result column="CHECK_UPD_TIME" property="checkUpdTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_CRT_USER" property="checkCrtUser" jdbcType="VARCHAR" />
+    <result column="CHECK_CRT_TIME" property="checkCrtTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_REMARK" property="checkRemark" jdbcType="VARCHAR" />
+    <result column="CHECK_APPLY_TIME" property="checkApplyTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_IMG_NUM" property="checkImgNum" jdbcType="INTEGER" />
+    <result column="CHECK_IMG_RECEIVE_TIME" property="checkImgReceiveTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_APPLY_DOC_CODE" property="checkApplyDocCode" jdbcType="VARCHAR" />
+    <result column="CHECK_APPLY_DOC" property="checkApplyDoc" jdbcType="VARCHAR" />
+    <result column="CHECK_APPLY_HOSP_CODE" property="checkApplyHospCode" jdbcType="VARCHAR" />
+    <result column="CHECK_APPLY_HOSP" property="checkApplyHosp" jdbcType="VARCHAR" />
+    <result column="CHECK_REP_GROUP_ID" property="checkRepGroupId" jdbcType="VARCHAR" />
+    <result column="CHECK_JZ_FLAG" property="checkJzFlag" jdbcType="BIT" />
+    <result column="CHECK_VJ_FLAG" property="checkVjFlag" jdbcType="BIT" />
+    <result column="CHECK_REPORT_DR" property="checkReportDr" jdbcType="VARCHAR" />
+    <result column="CHECK_REPORT_TIME" property="checkReportTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_AUDIT_DR" property="checkAuditDr" jdbcType="VARCHAR" />
+    <result column="CHECK_AUDIT_TIME" property="checkAuditTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_PRINT_DR" property="checkPrintDr" jdbcType="VARCHAR" />
+    <result column="CHECK_PRINT_TIME" property="checkPrintTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_REFUSE_CODE" property="checkRefuseCode" jdbcType="VARCHAR" />
+    <result column="CHECK_REFUSE_NAME" property="checkRefuseName" jdbcType="VARCHAR" />
+    <result column="REPRCD_ID" property="reprcdId" jdbcType="VARCHAR" />
+    <result column="REPRCD_ACCESSION_NUM" property="reprcdAccessionNum" jdbcType="VARCHAR" />
+    <result column="REPRCD_PAT_ONLY_ID" property="reprcdPatOnlyId" jdbcType="VARCHAR" />
+    <result column="REPRCD_REP_UID" property="reprcdRepUid" jdbcType="VARCHAR" />
+    <result column="REPRCD_PAT_AGE" property="reprcdPatAge" jdbcType="VARCHAR" />
+    <result column="REPRCD_AGE_UNIT_CODE" property="reprcdAgeUnitCode" jdbcType="VARCHAR" />
+    <result column="REPRCD_AGE_UNIT" property="reprcdAgeUnit" jdbcType="VARCHAR" />
+    <result column="CHECK_DESCRIBE_BQ" property="checkDescribeBq" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_FINDING1" property="reprcdFinding1" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_FINDING2" property="reprcdFinding2" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_FINDING3" property="reprcdFinding3" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_IMPRESSION1" property="reprcdImpression1" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_IMPRESSION2" property="reprcdImpression2" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_IMPRESSION3" property="reprcdImpression3" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_HP" property="reprcdHp" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="ResponseMap" type="com.jfhealthcare.modules.business.response.ViewWorklistResponse" >
+    <result column="PAT_ONLY_ID" property="patOnlyId" jdbcType="VARCHAR" />
+    <result column="CHECK_JZ_FLAG" property="checkJzFlag" jdbcType="BIT" />
+    <result column="CHECK_VJ_FLAG" property="checkVjFlag" jdbcType="BIT" />
+    <result column="IS_HAVE_IMAGE" property="isHaveImage" jdbcType="BIT" />
+    <result column="CHECK_ACCESSION_NUM" property="checkAccessionNum" jdbcType="VARCHAR" />
+    <result column="CHECK_STATUS_CODE" property="checkStatusCode" jdbcType="VARCHAR" />
+    <result column="CHECK_STATUS" property="checkStatus" jdbcType="VARCHAR" />
+    <result column="CHECK_STATUS_AI_CODE" property="checkStatusAiCode" jdbcType="VARCHAR" />
+    <result column="CHECK_STATUS_AI" property="checkStatusAi" jdbcType="VARCHAR" />
+    <result column="PAT_NAME" property="patName" jdbcType="VARCHAR" />
+    <result column="PAT_SEX_CODE" property="patSexCode" jdbcType="VARCHAR" />
+    <result column="PAT_SEX" property="patSex" jdbcType="VARCHAR" />
+    <result column="PAT_BITTH" property="patBitth" jdbcType="TIMESTAMP" />
+    <result column="REPRCD_PAT_AGE" property="reprcdPatAge" jdbcType="VARCHAR" />
+    <result column="REPRCD_AGE_UNIT_CODE" property="reprcdAgeUnitCode" jdbcType="VARCHAR" />
+    <result column="REPRCD_AGE_UNIT" property="reprcdAgeUnit" jdbcType="VARCHAR" />
+    <result column="CHECK_NUM" property="checkNum" jdbcType="VARCHAR" />
+    <result column="CHECK_APPLY_TIME" property="checkApplyTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_IMG_RECEIVE_TIME" property="checkImgReceiveTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_APPLY_DOC_CODE" property="checkApplyDocCode" jdbcType="VARCHAR" />
+    <result column="CHECK_APPLY_DOC" property="checkApplyDoc" jdbcType="VARCHAR" />
+    <result column="CHECK_APPLY_HOSP_CODE" property="checkApplyHospCode" jdbcType="VARCHAR" />
+    <result column="CHECK_APPLY_HOSP" property="checkApplyHosp" jdbcType="VARCHAR" />
+    <result column="CHECK_REP_GROUP_ID" property="checkRepGroupId" jdbcType="VARCHAR" />
+    <result column="CHECK_PARTS_CODE" property="checkPartsCode" jdbcType="VARCHAR" />
+    <result column="CHECK_PARTS" property="checkParts" jdbcType="VARCHAR" />
+    <result column="CHECK_EXAM_CODE" property="checkExamCode" jdbcType="VARCHAR" />
+    <result column="CHECK_EXAM" property="checkExam" jdbcType="VARCHAR" />
+    <result column="CHECK_SUMMARY_CODE" property="checkSummaryCode" jdbcType="VARCHAR" />
+    <result column="CHECK_SUMMARY" property="checkSummary" jdbcType="VARCHAR" />
+    <result column="CHECK_TYPE_CODE" property="checkTypeCode" jdbcType="VARCHAR" />
+    <result column="CHECK_TYPE" property="checkType" jdbcType="VARCHAR" />
+    <result column="CHECK_DESCRIBE_BQ" property="checkDescribeBq" jdbcType="LONGVARCHAR" />
+    <result column="CHECK_REPORT_DR" property="checkReportDr" jdbcType="VARCHAR" />
+    <result column="CHECK_REPORT_DR_NAME" property="checkReportDrName" jdbcType="VARCHAR" />
+    <result column="CHECK_REPORT_DR_SIGNA" property="checkReportDrSigna" jdbcType="VARCHAR" />
+    <result column="CHECK_REPORT_TIME" property="checkReportTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_AUDIT_DR" property="checkAuditDr" jdbcType="VARCHAR" />
+    <result column="CHECK_AUDIT_DR_NAME" property="checkAuditDrName" jdbcType="VARCHAR" />
+    <result column="CHECK_AUDIT_DR_SIGNA" property="checkAuditDrSigna" jdbcType="VARCHAR" />
+    <result column="CHECK_AUDIT_TIME" property="checkAuditTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_PRINT_DR" property="checkPrintDr" jdbcType="VARCHAR" />
+    <result column="CHECK_PRINT_DR_SIGNA" property="checkPrintDrSigna" jdbcType="VARCHAR" />
+    <result column="CHECK_PRINT_TIME" property="checkPrintTime" jdbcType="TIMESTAMP" />
+    <result column="REPRCD_REP_UID" property="reprcdRepUid" jdbcType="VARCHAR" />
+    <result column="REPRCD_FINDING1" property="reprcdFinding1" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_FINDING2" property="reprcdFinding2" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_FINDING3" property="reprcdFinding3" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_IMPRESSION1" property="reprcdImpression1" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_IMPRESSION2" property="reprcdImpression2" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_IMPRESSION3" property="reprcdImpression3" jdbcType="LONGVARCHAR" />
+    <result column="REPRCD_HP" property="reprcdHp" jdbcType="VARCHAR" />
+    <result column="CHECK_REFUSE_NAME" property="checkRefuseName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <resultMap id="ResponsePrintMap" type="com.jfhealthcare.modules.apply.response.PrintWorklistResponse" >
+    <result column="CHECK_ACCESSION_NUM" property="accessionNum" jdbcType="VARCHAR" />
+    <result column="CHECK_STATUS_CODE" property="printStatusCode" jdbcType="VARCHAR" />
+    <result column="printStatus" property="printStatus" jdbcType="VARCHAR" />
+    <result column="PAT_NAME" property="patName" jdbcType="VARCHAR" />
+    <result column="PAT_SEX_CODE" property="sexCode" jdbcType="VARCHAR" />
+    <result column="PAT_SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="REPRCD_PAT_AGE" property="patAge" jdbcType="VARCHAR" />
+    <result column="REPRCD_AGE_UNIT_CODE" property="ptnAgeUnitCode" jdbcType="VARCHAR" />
+    <result column="REPRCD_AGE_UNIT" property="ptnAgeUnit" jdbcType="VARCHAR" />
+    <result column="CHECK_APPLY_TIME" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_IMG_RECEIVE_TIME" property="studyTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_APPLY_HOSP_CODE" property="applyOrg" jdbcType="VARCHAR" />
+    <result column="applyOrgName" property="applyOrgName" jdbcType="VARCHAR" />
+    <result column="CHECK_PARTS_CODE" property="bodyPartCode" jdbcType="VARCHAR" />
+    <result column="CHECK_PARTS" property="bodyPart" jdbcType="VARCHAR" />
+    <result column="CHECK_EXAM_CODE" property="examCode" jdbcType="VARCHAR" />
+    <result column="CHECK_EXAM" property="exam" jdbcType="VARCHAR" />
+    <result column="CHECK_SUMMARY_CODE" property="summaryCode" jdbcType="VARCHAR" />
+    <result column="CHECK_SUMMARY" property="summary" jdbcType="VARCHAR" />
+    <result column="CHECK_TYPE_CODE" property="checkTypeCode" jdbcType="VARCHAR" />
+    <result column="CHECK_TYPE" property="checkType" jdbcType="VARCHAR" />
+    <result column="CHECK_REFUSE_CODE" property="checkRefuseCode" jdbcType="VARCHAR" />
+    <result column="CHECK_REFUSE_NAME" property="checkRefuseName" jdbcType="VARCHAR" />
+    <result column="imageNum" property="imageNum" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <sql id="Base_Column_List" >
+    PAT_ONLY_ID,CHECK_JZ_FLAG,CHECK_VJ_FLAG,CHECK_ACCESSION_NUM,CHECK_STATUS_CODE,CHECK_STATUS,CHECK_STATUS_AI_CODE,CHECK_STATUS_AI,
+    PAT_NAME,PAT_SEX_CODE,PAT_SEX,PAT_BITTH,REPRCD_PAT_AGE,REPRCD_AGE_UNIT_CODE,REPRCD_AGE_UNIT,CHECK_APPLY_TIME,CHECK_IMG_RECEIVE_TIME,
+    CHECK_APPLY_DOC_CODE,CHECK_APPLY_DOC,CHECK_APPLY_HOSP_CODE,CHECK_APPLY_HOSP,CHECK_REP_GROUP_ID,CHECK_PARTS_CODE,CHECK_PARTS,CHECK_NUM,
+    CHECK_EXAM_CODE,CHECK_EXAM,CHECK_SUMMARY_CODE,CHECK_SUMMARY,CHECK_TYPE_CODE,CHECK_TYPE,CHECK_DESCRIBE_BQ,CHECK_REPORT_DR,CHECK_REPORT_DR_NAME,CHECK_REPORT_DR_SIGNA,
+    CHECK_REPORT_TIME,CHECK_AUDIT_DR,CHECK_AUDIT_DR_NAME,CHECK_AUDIT_DR_SIGNA,CHECK_AUDIT_TIME,CHECK_PRINT_DR_SIGNA,
+    CHECK_PRINT_DR,CHECK_PRINT_TIME,REPRCD_REP_UID,REPRCD_FINDING1,REPRCD_FINDING2,REPRCD_FINDING3,REPRCD_IMPRESSION1,REPRCD_IMPRESSION2,REPRCD_IMPRESSION3,REPRCD_HP,CHECK_REFUSE_NAME
+   </sql>
+  
+   <select id="queryViewWorklist"  parameterType="com.jfhealthcare.modules.business.request.ViewWorklistRequest" resultMap="ResponseMap">
+     select <include refid="Base_Column_List"/>,
+		case when z.imageNum>0 then 1
+		else 0 end IS_HAVE_IMAGE 
+		 from (
+		       select * from (
+				    select *,
+				    (select name from sys_operator_dtl where logincode=a.CHECK_REPORT_DR) CHECK_REPORT_DR_NAME,
+			        (select signature from sys_operator where logincode=a.CHECK_REPORT_DR) CHECK_REPORT_DR_SIGNA,
+			        (select name from sys_operator_dtl where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_NAME,
+			        (select signature from sys_operator where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_SIGNA,
+			        (select signature from sys_operator where logincode=a.CHECK_PRINT_DR) CHECK_PRINT_DR_SIGNA,
+					(select count(c.ID) from rep_record b,rep_image c where b.ACCESSION_NUM=a.CHECK_ACCESSION_NUM and c.REP_UID=b.REP_UID) imageNum
+					from view_worklist a
+					<where>
+					    <if test="checkJzFlag !=null">
+						   and a.CHECK_JZ_FLAG=#{checkJzFlag,jdbcType=BIT}
+						</if>
+						<if test="checkVjFlag !=null">
+						   and a.CHECK_VJ_FLAG=#{checkVjFlag,jdbcType=BIT}
+						</if>
+						<if test="checkAccessionNum !=null and checkAccessionNum !=''">
+						   and a.CHECK_ACCESSION_NUM=#{checkAccessionNum,jdbcType=VARCHAR}
+						</if>
+						<if test="checkNum !=null and checkNum !=''">
+						   and a.CHECK_NUM=#{checkNum,jdbcType=VARCHAR}
+						</if>
+						<if test="checkStatusCodes !=null and checkStatusCodes.size>0">
+						   and a.CHECK_STATUS_CODE in
+						   <foreach item="item" collection="checkStatusCodes" index="index" open="(" separator="," close=")">  
+				                #{item}  
+				           </foreach>
+						</if>
+						<if test="checkStatusAiCode !=null and checkStatusAiCode !=''">
+						   and  a.CHECK_STATUS_AI_CODE=#{checkStatusAiCode,jdbcType=VARCHAR}
+						</if>
+						<if test="checkTypeCodes !=null and checkTypeCodes.size>0">
+						   and  a.CHECK_TYPE_CODE in
+						   <foreach item="item" collection="checkTypeCodes" index="index" open="(" separator="," close=")">  
+				                #{item}  
+				           </foreach>
+						</if>
+						<if test="checkSummaryCode !=null and checkSummaryCode !=''">
+						   and  a.CHECK_SUMMARY_CODE=#{checkSummaryCode,jdbcType=VARCHAR}
+						</if>
+						<if test="patName !=null and patName !=''">
+					       and a.PAT_NAME like concat(concat('%',#{patName,jdbcType=VARCHAR}),'%')
+					    </if>
+						<if test="patSexCode !=null and patSexCode !=''">
+						   and a.PAT_SEX_CODE=#{patSexCode,jdbcType=VARCHAR}
+						</if>
+						<if test="checkApplyStartTime !=null and checkApplyEndTime !=null">
+					     	and  a.CHECK_APPLY_TIME &gt;= #{checkApplyStartTime,jdbcType=TIMESTAMP}
+					     	and a.CHECK_APPLY_TIME &lt;= #{checkApplyEndTime,jdbcType=TIMESTAMP}
+						</if>
+						<if test="checkApplyDoc !=null and checkApplyDoc !=''">
+					        and  a.CHECK_APPLY_DOC like concat(concat('%',#{checkApplyDoc,jdbcType=VARCHAR}),'%')
+					    </if>
+					    <if test="checkReportDr !=null and checkReportDr !=''">
+					        and  a.CHECK_REPORT_DR like concat(concat('%',#{checkReportDr,jdbcType=VARCHAR}),'%')
+					    </if>
+					    <if test="checkAuditDr !=null and checkAuditDr !=''">
+					        and  a.CHECK_AUDIT_DR like concat(concat('%',#{checkAuditDr,jdbcType=VARCHAR}),'%')
+					    </if>
+						<if test="checkApplyHospCode !=null and checkApplyHospCode !=''">
+						    and  a.CHECK_APPLY_HOSP_CODE=#{checkApplyHospCode,jdbcType=VARCHAR}
+						</if>
+						<if test="checkRepGroupId !=null and checkRepGroupId !=''">
+						    and  a.CHECK_REP_GROUP_ID=#{checkRepGroupId,jdbcType=VARCHAR}
+						</if>
+						<if test="checkParts !=null and checkParts !=''">
+						    and  a.CHECK_PARTS like concat(concat('%',#{checkParts,jdbcType=VARCHAR}),'%')
+						</if>
+						<if test="reprcdImpression1 !=null and reprcdImpression1 !=''">
+						    and a.REPRCD_IMPRESSION1 like concat(concat('%',#{reprcdImpression1,jdbcType=VARCHAR}),'%')
+						</if>
+						<if test="reprcdHp !=null and reprcdHp !=''">
+						    and  a.REPRCD_HP=#{reprcdHp,jdbcType=VARCHAR}
+						</if>
+					</where>
+				) y 
+				<where>
+				     <if test="checkReportDrName !=null and checkReportDrName !=''">
+						    and y.CHECK_REPORT_DR_NAME like concat(concat('%',#{checkReportDrName,jdbcType=VARCHAR}),'%')
+					 </if>
+				     <if test="checkAuditDrName !=null and checkAuditDrName !=''">
+						    and y.CHECK_AUDIT_DR_NAME like concat(concat('%',#{checkAuditDrName,jdbcType=VARCHAR}),'%')
+					 </if>
+					 <if test="checkApplyDocCode !=null and checkApplyDocCode !=''">
+						    and y.check_apply_doc_code like concat(concat('%',#{checkApplyDocCode,jdbcType=VARCHAR}),'%')
+					 </if>
+				</where>
+		) z ORDER BY CHECK_APPLY_TIME desc
+  </select>
+  
+     <select id="queryCountViewWorklist"  parameterType="com.jfhealthcare.modules.business.request.ViewWorklistRequest" resultType="com.jfhealthcare.modules.business.response.ViewWorklistResponse">
+		    select 
+			count(case when a.CHECK_STATUS_CODE='3434' then 1 end) pendingreportNum,
+			count(case when a.CHECK_STATUS_CODE='3445' then 1 end ) pendingonereviewNum,
+			count(case when a.CHECK_STATUS_CODE='3449' then 1 end ) pendingtworeviewNum,
+			count(case when a.CHECK_STATUS_CODE='3550' then 1 end ) pendingthreereviewNum,
+			count(case when a.CHECK_STATUS_CODE='3552' then 1 end ) reportingNum,
+			count(case when a.CHECK_STATUS_CODE='3553' then 1 end ) reviewingNum,
+			count(case when a.CHECK_STATUS_CODE='3554' then 1 end ) zancuningNum,
+			count(case when a.CHECK_STATUS_CODE='3555' then 1 end ) completerefuseNum,
+			count(case when a.CHECK_STATUS_CODE='3556' then 1 end ) completereviewNum,
+			count(case when a.CHECK_STATUS_CODE='3557' then 1 end ) completeprintNum,
+			count(case when a.CHECK_STATUS_CODE='3558' then 1 end ) pendinghuizhenReportNum,
+			count(case when a.CHECK_STATUS_CODE='3559' then 1 end ) pendinghuizhenReviewNum,
+			count(case when a.CHECK_STATUS_CODE='3560' then 1 end ) completeAbandonedNum
+			from view_worklist a
+			<where>
+<!-- 			    <if test="checkJzFlag !=null"> -->
+<!-- 				   and a.CHECK_JZ_FLAG=#{checkJzFlag,jdbcType=BIT} -->
+<!-- 				</if> -->
+<!-- 				<if test="checkVjFlag !=null"> -->
+<!-- 				   and a.CHECK_VJ_FLAG=#{checkVjFlag,jdbcType=BIT} -->
+<!-- 				</if> -->
+<!-- 				<if test="checkAccessionNum !=null and checkAccessionNum !=''"> -->
+<!-- 				   and a.CHECK_ACCESSION_NUM=#{checkAccessionNum,jdbcType=VARCHAR} -->
+<!-- 				</if> -->
+<!-- 				<if test="checkNum !=null and checkNum !=''"> -->
+<!-- 				   and a.CHECK_NUM=#{checkNum,jdbcType=VARCHAR} -->
+<!-- 				</if> -->
+<!-- 				<if test="checkStatusCodes !=null and checkStatusCodes.size>0"> -->
+<!-- 				   and a.CHECK_STATUS_CODE in -->
+<!-- 				   <foreach item="item" collection="checkStatusCodes" index="index" open="(" separator="," close=")">   -->
+<!-- 		                #{item}   -->
+<!-- 		           </foreach> -->
+<!-- 				</if> -->
+<!-- 				<if test="checkStatusAiCode !=null and checkStatusAiCode !=''"> -->
+<!-- 				   and  a.CHECK_STATUS_AI_CODE=#{checkStatusAiCode,jdbcType=VARCHAR} -->
+<!-- 				</if> -->
+				<if test="checkTypeCodes !=null and checkTypeCodes.size>0">
+				   and  a.CHECK_TYPE_CODE in
+				   <foreach item="item" collection="checkTypeCodes" index="index" open="(" separator="," close=")">  
+		                #{item}  
+		           </foreach>
+				</if>
+<!-- 				<if test="checkSummaryCode !=null and checkSummaryCode !=''"> -->
+<!-- 				   and  a.CHECK_SUMMARY_CODE=#{checkSummaryCode,jdbcType=VARCHAR} -->
+<!-- 				</if> -->
+<!-- 				<if test="patName !=null and patName !=''"> -->
+<!-- 			       and a.PAT_NAME like concat(concat('%',#{patName,jdbcType=VARCHAR}),'%') -->
+<!-- 			    </if> -->
+<!-- 				<if test="patSexCode !=null and patSexCode !=''"> -->
+<!-- 				   and a.PAT_SEX_CODE=#{patSexCode,jdbcType=VARCHAR} -->
+<!-- 				</if> -->
+				<if test="checkApplyStartTime !=null and checkApplyEndTime !=null">
+			     	and  a.CHECK_APPLY_TIME &gt;= #{checkApplyStartTime,jdbcType=TIMESTAMP}
+			     	and a.CHECK_APPLY_TIME &lt;= #{checkApplyEndTime,jdbcType=TIMESTAMP}
+				</if>
+<!-- 				<if test="checkApplyDoc !=null and checkApplyDoc !=''"> -->
+<!-- 			        and  a.CHECK_APPLY_DOC like concat(concat('%',#{checkApplyDoc,jdbcType=VARCHAR}),'%') -->
+<!-- 			    </if> -->
+<!-- 			    <if test="checkReportDr !=null and checkReportDr !=''"> -->
+<!-- 			        and  a.CHECK_REPORT_DR like concat(concat('%',#{checkReportDr,jdbcType=VARCHAR}),'%') -->
+<!-- 			    </if> -->
+<!-- 			    <if test="checkAuditDr !=null and checkAuditDr !=''"> -->
+<!-- 			        and  a.CHECK_AUDIT_DR like concat(concat('%',#{checkAuditDr,jdbcType=VARCHAR}),'%') -->
+<!-- 			    </if> -->
+				<if test="checkApplyHospCode !=null and checkApplyHospCode !=''">
+				    and  a.CHECK_APPLY_HOSP_CODE=#{checkApplyHospCode,jdbcType=VARCHAR}
+				</if>
+				<if test="checkRepGroupId !=null and checkRepGroupId !=''">
+				    and  a.CHECK_REP_GROUP_ID=#{checkRepGroupId,jdbcType=VARCHAR}
+				</if>
+<!-- 				<if test="checkParts !=null and checkParts !=''"> -->
+<!-- 				    and  a.CHECK_PARTS like concat(concat('%',#{checkParts,jdbcType=VARCHAR}),'%') -->
+<!-- 				</if> -->
+<!-- 				<if test="reprcdImpression1 !=null and reprcdImpression1 !=''"> -->
+<!-- 				    and a.REPRCD_IMPRESSION1 like concat(concat('%',#{reprcdImpression1,jdbcType=VARCHAR}),'%') -->
+<!-- 				</if> -->
+<!-- 				<if test="reprcdHp !=null and reprcdHp !=''"> -->
+<!-- 				    and  a.REPRCD_HP=#{reprcdHp,jdbcType=VARCHAR} -->
+<!-- 				</if> -->
+			</where>
+     </select>
+     
+     <select id="queryPrintWorklist"  parameterType="com.jfhealthcare.modules.apply.request.PrintWorklistRequest" resultMap="ResponsePrintMap">
+     select d.*,
+          (select othervalue from sys_dict_dtl e where e.id=d.CHECK_STATUS_CODE) printStatus
+     from (
+	      select 
+	      CHECK_ACCESSION_NUM,PAT_NAME,PAT_SEX_CODE,PAT_SEX,REPRCD_PAT_AGE,REPRCD_AGE_UNIT_CODE,REPRCD_AGE_UNIT,CHECK_APPLY_TIME,CHECK_PARTS,CHECK_PARTS_CODE,CHECK_SUMMARY_CODE,CHECK_SUMMARY,
+	      CHECK_EXAM_CODE,CHECK_EXAM,CHECK_TYPE_CODE,CHECK_TYPE,CHECK_IMG_RECEIVE_TIME,CHECK_APPLY_HOSP_CODE,CHECK_REFUSE_CODE,CHECK_REFUSE_NAME,
+	      (select othervalue from sys_dict_dtl c where c.CODE='contrastCP' and c.name=a.CHECK_STATUS_CODE) CHECK_STATUS_CODE,
+	      (select name from sys_organization b where b.id=a.CHECK_APPLY_HOSP_CODE) applyOrgName,
+	      a.CHECK_IMG_NUM imageNum
+	      from view_worklist a
+	       <where>
+		       <if test="ptnName !=null and ptnName !=''">
+			        and  a.PAT_NAME like concat(concat('%',#{ptnName,jdbcType=VARCHAR}),'%')
+			   </if>
+			   <if test="sexCode !=null and sexCode !=''">
+			        and  a.PAT_SEX_CODE=#{sexCode,jdbcType=VARCHAR}
+			   </if>
+			   <if test="bodyPart !=null and bodyPart !=''">
+			        and  a.CHECK_PARTS like concat(concat('%',#{bodyPart,jdbcType=VARCHAR}),'%')
+			   </if>
+			   <if test="applyStartTime !=null and applyEndTime !=null">
+						and  a.CHECK_APPLY_TIME &gt;= #{applyStartTime,jdbcType=TIMESTAMP}
+						and a.CHECK_APPLY_TIME &lt;= #{applyEndTime,jdbcType=TIMESTAMP}
+			   </if>
+			   <if test="applyOrg !=null and applyOrg !=''">
+				    and  a.CHECK_APPLY_HOSP_CODE=#{applyOrg,jdbcType=VARCHAR}
+			   </if>
+			   <if test="printStatusCodes !=null and printStatusCodes.size>0">
+				   and  a.CHECK_STATUS_CODE in
+				   <foreach item="item" collection="printStatusCodes" index="index" open="(" separator="," close=")">  
+		                #{item}  
+		           </foreach>
+				</if>
+		   </where>
+	      ) d
+	      order by d.CHECK_APPLY_TIME desc
+    </select>
+    
+    <select id="queryPrintCountWorklist"  parameterType="com.jfhealthcare.modules.apply.request.PrintWorklistRequest" resultType="Map">
+		select sum(num) num ,d.id code,(select othervalue from sys_dict_dtl where id=d.id) name from (
+			select a.id,
+			case when isnull(c.CHECK_STATUS_CODE) = 1 then 0 else 1 end num
+			from 
+			sys_dict_dtl a inner join sys_dict_dtl b  on  a.DICT_ID='36' and a.id=b.othervalue and b.DICT_ID='37'  
+			LEFT JOIN (
+			     select * from view_worklist z
+			     <where>
+					  <if test="ptnName !=null and ptnName !=''">
+					        and  z.PAT_NAME like concat(concat('%',#{ptnName,jdbcType=VARCHAR}),'%')
+					   </if>
+					   <if test="sexCode !=null and sexCode !=''">
+					        and  z.PAT_SEX_CODE=#{sexCode,jdbcType=VARCHAR}
+					   </if>
+					   <if test="bodyPart !=null and bodyPart !=''">
+					        and  z.CHECK_PARTS like concat(concat('%',#{bodyPart,jdbcType=VARCHAR}),'%')
+					   </if>
+					   <if test="applyStartTime !=null and applyEndTime !=null">
+								and  z.CHECK_APPLY_TIME &gt;= #{applyStartTime,jdbcType=TIMESTAMP}
+								and z.CHECK_APPLY_TIME &lt;= #{applyEndTime,jdbcType=TIMESTAMP}
+					   </if>
+					   <if test="applyOrg !=null and applyOrg !=''">
+						    and  z.CHECK_APPLY_HOSP_CODE=#{applyOrg,jdbcType=VARCHAR}
+					   </if>
+<!-- 					   <if test="printStatusCodes !=null and printStatusCodes.size>0"> -->
+<!-- 						   and  z.CHECK_STATUS_CODE in -->
+<!-- 						   <foreach item="item" collection="printStatusCodes" index="index" open="(" separator="," close=")">   -->
+<!-- 				                #{item}   -->
+<!-- 				           </foreach> -->
+<!-- 						</if> -->
+					</where>
+			    ) c 
+			    on c.CHECK_STATUS_CODE=b.name
+			) d
+		group by d.id
+    </select>
+    
+    <select id="queryApplyWorkListToRemind"  resultType="String">
+    select ifnull(count(a.CHECK_STATUS_CODE),'0') num from view_worklist a,sys_dict_dtl b
+	<where> 
+		a.CHECK_STATUS_CODE=b.name and b.CODE='contrastCP' and b.OTHERVALUE='6002'
+		and a.CHECK_NUM=#{checkNum,jdbcType=VARCHAR};
+	</where>
+   </select>
+    
+</mapper>

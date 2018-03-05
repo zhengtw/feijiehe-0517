@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.business.mapper.RepRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.business.entity.RepRecord" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="REP_UID" property="repUid" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ACCESSION_NUM" property="accessionNum" jdbcType="VARCHAR" />
+    <result column="PAT_ID" property="patId" jdbcType="VARCHAR" />
+    <result column="PAT_AGE" property="patAge" jdbcType="VARCHAR" />
+    <result column="AGE_UNIT_CODE" property="ageUnitCode" jdbcType="VARCHAR" />
+    <result column="AGE_UNIT" property="ageUnit" jdbcType="VARCHAR" />
+    <result column="FINDING1" property="finding1" jdbcType="LONGVARCHAR" />
+    <result column="FINDING2" property="finding2" jdbcType="LONGVARCHAR" />
+    <result column="FINDING3" property="finding3" jdbcType="LONGVARCHAR" />
+    <result column="IMPRESSION1" property="impression1" jdbcType="LONGVARCHAR" />
+    <result column="IMPRESSION2" property="impression2" jdbcType="LONGVARCHAR" />
+    <result column="IMPRESSION3" property="impression3" jdbcType="LONGVARCHAR" />
+    <result column="HP" property="hp" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <select id="selectCountByreportUid"  resultType="Integer">
+     select count(0) from busin_checklist_index a,rep_record b where a.ACCESSION_NUM=b.ACCESSION_NUM and b.ID=#{repUid,jdbcType=VARCHAR} and a.STATUS_CODE not in ('3555','3560');
+  </select>
+  
+  <select id="selectListByreportUid"  resultType="String">
+     select a.ACCESSION_NUM from busin_checklist_index a,rep_record b where a.ACCESSION_NUM=b.ACCESSION_NUM and b.ID=#{repUid,jdbcType=VARCHAR} and a.STATUS_CODE not in ('3555','3560');
+  </select>
+  
+</mapper>

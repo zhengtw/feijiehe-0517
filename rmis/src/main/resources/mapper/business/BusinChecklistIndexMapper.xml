@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.business.mapper.BusinChecklistIndexMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.business.entity.BusinChecklistIndex" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ACCESSION_NUM" property="accessionNum" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PARTS_CODE" property="partsCode" jdbcType="VARCHAR" />
+    <result column="PARTS" property="parts" jdbcType="VARCHAR" />
+    <result column="SUMMARY_CODE" property="summaryCode" jdbcType="VARCHAR" />
+    <result column="SUMMARY" property="summary" jdbcType="VARCHAR" />
+    <result column="EXAM_CODE" property="examCode" jdbcType="VARCHAR" />
+    <result column="EXAM" property="exam" jdbcType="VARCHAR" />
+    <result column="COSTS" property="costs" jdbcType="DECIMAL" />
+    <result column="STATUS_CODE" property="statusCode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="STATUS_AI_CODE" property="statusAiCode" jdbcType="VARCHAR" />
+    <result column="STATUS_AI" property="statusAi" jdbcType="VARCHAR" />
+    <result column="PARTS_GROUP_CODE" property="partsGroupCode" jdbcType="VARCHAR" />
+    <result column="PARTS_GROUP" property="partsGroup" jdbcType="VARCHAR" />
+    <result column="ISDELETE" property="isdelete" jdbcType="BIT" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="APPLY_TIME" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="IMG_NUM" property="imgNum" jdbcType="INTEGER" />
+    <result column="IMG_RECEIVE_TIME" property="imgReceiveTime" jdbcType="TIMESTAMP" />
+    <result column="APPLY_DOC_CODE" property="applyDocCode" jdbcType="VARCHAR" />
+    <result column="APPLY_DOC" property="applyDoc" jdbcType="VARCHAR" />
+    <result column="APPLY_HOSP_CODE" property="applyHospCode" jdbcType="VARCHAR" />
+    <result column="APPLY_HOSP" property="applyHosp" jdbcType="VARCHAR" />
+    <result column="REP_GROUP_ID" property="repGroupId" jdbcType="VARCHAR" />
+    <result column="DESCRIBE_BQ" property="describeBq" jdbcType="LONGVARCHAR" />
+    <result column="JZ_FLAG" property="jzFlag" jdbcType="BIT" />
+    <result column="VJ_FLAG" property="vjFlag" jdbcType="BIT" />
+    <result column="REPORT_DR" property="reportDr" jdbcType="VARCHAR" />
+    <result column="REPORT_TIME" property="reportTime" jdbcType="TIMESTAMP" />
+    <result column="AUDIT_DR" property="auditDr" jdbcType="VARCHAR" />
+    <result column="AUDIT_TIME" property="auditTime" jdbcType="TIMESTAMP" />
+    <result column="PRINT_DR" property="printDr" jdbcType="VARCHAR" />
+    <result column="PRINT_TIME" property="printTime" jdbcType="TIMESTAMP" />
+    <result column="REFUSE_CODE" property="refuseCode" jdbcType="VARCHAR" />
+    <result column="REFUSE_NAME" property="refuseName" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.BI.mapper.RepCountMapper" >
+
+<resultMap id="responseAI"  type="com.jfhealthcare.modules.BI.response.RepCountResponse" >
+
+<result column="dateAI" property="dateAI" jdbcType="VARCHAR" />
+<result column="countAI" property="countAI" jdbcType="VARCHAR" />
+
+</resultMap>
+
+
+<select id="queryRepCount" parameterType="com.jfhealthcare.modules.BI.response.RepCountResponse" resultMap="responseAI">
+
+SELECT AI.dateAI,AI.countAI,PEO.datePeople,PEO.countPeople,SUMr.dateSum,SUMr.countSum FROM
+(SELECT DATE_FORMAT(REPORT_TIME,'%Y-%m-%d') AS dateAI,COUNT(0)AS countAI FROM busin_checklist_index
+WHERE ISDELETE=0 and  REPORT_TIME IS NOT NULL 
+AND STATUS_CODE!='3555' AND STATUS_CODE!='3560'
+AND (STATUS_AI_CODE='5000' OR STATUS_AI_CODE='5001')
+GROUP BY DATE_FORMAT(REPORT_TIME,'%Y-%m-%d')) AI,
+
+
+(SELECT DATE_FORMAT(REPORT_TIME,'%Y-%m-%d') AS datePeople,COUNT(0) countPeople FROM busin_checklist_index
+WHERE ISDELETE=0 and  REPORT_TIME IS NOT NULL 
+AND (STATUS_CODE!='3555' AND STATUS_CODE!='3560')
+AND (STATUS_AI_CODE!='5000' AND STATUS_AI_CODE!='5001')
+GROUP BY DATE_FORMAT(REPORT_TIME,'%Y-%m-%d')) PEO,
+
+(SELECT DATE_FORMAT(REPORT_TIME,'%Y-%m-%d') AS dateSum,COUNT(0) countSum FROM busin_checklist_index
+WHERE ISDELETE=0 and  REPORT_TIME IS NOT NULL 
+AND (STATUS_CODE!='3555' AND STATUS_CODE!='3560')
+GROUP BY DATE_FORMAT(REPORT_TIME,'%Y-%m-%d'))SUMr
+
+<where> and 
+AI.dateAI=PEO.datePeople AND PEO.datePeople=SUMr.dateSum
+</where>
+ 
+GROUP BY dateAI,datePeople,dateSum
+</select>
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.apply.mapper.ApplyWorklistMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.apply.entity.ApplyWorklist" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="check_num" property="checkNum" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ptn_id" property="ptnId" jdbcType="VARCHAR" />
+    <result column="ptn_name" property="ptnName" jdbcType="VARCHAR" />
+    <result column="birth_date" property="birthDate" jdbcType="DATE" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="sex_code" property="sexCode" jdbcType="VARCHAR" />
+    <result column="hight" property="hight" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="VARCHAR" />
+    <result column="announcements" property="announcements" jdbcType="VARCHAR" />
+    <result column="allergy" property="allergy" jdbcType="VARCHAR" />
+    <result column="occupation" property="occupation" jdbcType="VARCHAR" />
+    <result column="pgy_status" property="pgyStatus" jdbcType="VARCHAR" />
+    <result column="modality" property="modality" jdbcType="VARCHAR" />
+    <result column="ae_title" property="aeTitle" jdbcType="VARCHAR" />
+    <result column="study_time" property="studyTime" jdbcType="TIMESTAMP" />
+    <result column="physician_name" property="physicianName" jdbcType="VARCHAR" />
+    <result column="exam" property="exam" jdbcType="VARCHAR" />
+    <result column="body_part" property="bodyPart" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="costs" property="costs" jdbcType="DECIMAL" />
+    <result column="apply_doc" property="applyDoc" jdbcType="VARCHAR" />
+    <result column="apply_org" property="applyOrg" jdbcType="VARCHAR" />
+    <result column="apply_status" property="applyStatus" jdbcType="VARCHAR" />
+    <result column="study_uid" property="studyUid" jdbcType="VARCHAR" />
+    <result column="apply_status_code" property="applyStatusCode" jdbcType="VARCHAR" />
+    <result column="ptn_age" property="ptnAge" jdbcType="VARCHAR" />
+    <result column="ptn_age_unit_code" property="ptnAgeUnitCode" jdbcType="VARCHAR" />
+    <result column="ptn_age_unit" property="ptnAgeUnit" jdbcType="VARCHAR" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="IS_NORMAL_IMAGE" property="isNormalImage" jdbcType="BIT" />
+  </resultMap>
+  
+  <resultMap id="ResponseMap" type="com.jfhealthcare.modules.apply.response.ApplyWorklistResponse" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="ptn_id" property="ptnId" jdbcType="VARCHAR" />
+	    <result column="check_num" property="checkNum" jdbcType="VARCHAR" />
+	    <result column="ptn_name" property="ptnName" jdbcType="VARCHAR" />
+	    <result column="birth_date" property="birthDate" jdbcType="DATE" />
+	    <result column="sex" property="sex" jdbcType="VARCHAR" />
+	    <result column="sex_code" property="sexCode" jdbcType="VARCHAR" />
+	    <result column="hight" property="hight" jdbcType="VARCHAR" />
+	    <result column="weight" property="weight" jdbcType="VARCHAR" />
+	    <result column="announcements" property="announcements" jdbcType="VARCHAR" />
+	    <result column="allergy" property="allergy" jdbcType="VARCHAR" />
+	    <result column="occupation" property="occupation" jdbcType="VARCHAR" />
+	    <result column="pgy_status" property="pgyStatus" jdbcType="VARCHAR" />
+	    <result column="modality" property="modality" jdbcType="VARCHAR" />
+	    <result column="ae_title" property="aeTitle" jdbcType="VARCHAR" />
+	    <result column="study_time" property="studyTime" jdbcType="TIMESTAMP" />
+	    <result column="physician_name" property="physicianName" jdbcType="VARCHAR" />
+	    <result column="exam" property="exam" jdbcType="VARCHAR" />
+	    <result column="body_part" property="bodyPart" jdbcType="VARCHAR" />
+	    <result column="summary" property="summary" jdbcType="VARCHAR" />
+	    <result column="costs" property="costs" jdbcType="DECIMAL" />
+	    <result column="apply_doc" property="applyDoc" jdbcType="VARCHAR" />
+	    <result column="apply_org" property="applyOrg" jdbcType="VARCHAR" />
+	    <result column="applyOrgName" property="applyOrgName" jdbcType="VARCHAR" />
+	    <result column="apply_status" property="applyStatus" jdbcType="VARCHAR" />
+	    <result column="apply_status_code" property="applyStatusCode" jdbcType="VARCHAR" />
+	    <result column="study_uid" property="studyUid" jdbcType="VARCHAR" />
+	    <result column="ptn_age" property="ptnAge" jdbcType="VARCHAR" />
+	    <result column="ptn_age_unit_code" property="ptnAgeUnitCode" jdbcType="VARCHAR" />
+	    <result column="ptn_age_unit" property="ptnAgeUnit" jdbcType="VARCHAR" />
+	    <result column="imageNum" property="imageNum" jdbcType="INTEGER" />
+	    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+	    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+	    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+	    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+	    <result column="IS_NORMAL_IMAGE" property="isNormalImage" jdbcType="BIT" />
+   </resultMap>
+   
+   <select id="queryApplyWorkList"  parameterType="com.jfhealthcare.modules.apply.request.ApplyWorklistRequest" resultMap="ResponseMap">
+     select * ,
+       (select name from sys_organization d where d.id=a.apply_org) applyOrgName,
+       (select count(c.instance_uid) from apply_series b,apply_image c,apply_study d where b.series_uid=c.series_uid and b.study_uid=d.study_uid and d.study_uid=a.study_uid) imageNum
+     from 
+       apply_worklist a
+     <where>
+       <if test="ptnName !=null and ptnName !=''">
+	        and  a.ptn_name like concat(concat('%',#{ptnName,jdbcType=VARCHAR}),'%')
+	   </if>
+	   <if test="sexCode !=null and sexCode !=''">
+	        and  a.sex_code=#{sexCode,jdbcType=VARCHAR}
+	   </if>
+	   <if test="bodyPart !=null and bodyPart !=''">
+	        and  a.body_part like concat(concat('%',#{bodyPart,jdbcType=VARCHAR}),'%')
+	   </if>
+		<if test="studyStartTime !=null and studyEndTime !=null">
+				and  a.study_time &gt;= #{studyStartTime,jdbcType=TIMESTAMP}
+				and a.study_time &lt;= #{studyEndTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="applyOrg !=null and applyOrg !=''">
+	        and  a.apply_org=#{applyOrg,jdbcType=VARCHAR}
+	   </if>
+     </where>
+     ORDER BY a.study_time desc
+    </select>
+    
+    <select id="queryInstanceByStudyUid"  parameterType="String" resultType="Map">
+	    select imageUrl,instanceUid,isErrorImage,
+		case when  isnull(z.seDate) || LENGTH(trim(z.seDate))&lt;1 then 'xxxxxxx' else z.seDate end seriesDate,
+		case when  isnull(z.inDate) || LENGTH(trim(z.inDate))&lt;1 then 'xxxxxxx' else z.inDate end instanceDate
+		 from (
+			select CONCAT("&amp;studyUID=",a.study_uid,"&amp;seriesUID=",a.series_uid,"&amp;objectUID=",b.instance_uid) imageUrl,
+						CONCAT(a.series_date,a.series_time) seDate,
+						CONCAT(b.rcvd_date,b.rcvd_time) inDate,
+						IFNULL(b.imgae_deleted,'1')  isErrorImage,
+						b.instance_uid instanceUid
+						from apply_series a,apply_image b
+						where a.series_uid=b.series_uid and a.study_uid=#{studyUid,jdbcType=VARCHAR}
+		) z
+    </select>
+    
+     <select id="queryInstanceByInstanceUid"  parameterType="java.util.List" resultType="Map">
+	    select CONCAT("&amp;studyUID=",a.study_uid,"&amp;seriesUID=",a.series_uid,"&amp;objectUID=",b.instance_uid) imageUrl,
+	    a.study_uid studyUid,a.series_uid seriesUid,b.instance_uid instanceUid
+	    from apply_image b,apply_series a
+	    where a.series_uid=b.series_uid 
+	    and  b.instance_uid in
+	   <foreach item="item" collection="list" index="index" open="(" separator="," close=")">  
+               #{item}  
+       </foreach>
+    </select>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.system.mapper.SysOrganizationMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.system.entity.SysOrganization" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="SHORTNAME" property="shortname" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="ORG_HEADER" property="orgHeader" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="NOTATION" property="notation" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="BIT" />
+    <result column="ISDELETE" property="isdelete" jdbcType="BIT" />
+    <result column="CLS_ID" property="clsId" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="NAMEPY" property="namepy" jdbcType="VARCHAR" />
+    <result column="NAMEWB" property="namewb" jdbcType="VARCHAR" />
+    <result column="CITY_NO" property="cityNo" jdbcType="INTEGER" />
+    <result column="PROVINCE_NO" property="provinceNo" jdbcType="INTEGER" />
+    <result column="ORG_LEVEL" property="orgLevel" jdbcType="VARCHAR" />
+    <result column="COUNTY_NO" property="countyNo" jdbcType="INTEGER" />
+  </resultMap>
+  
+  
+   <resultMap id="QueryOrganizationResultMap" type="com.jfhealthcare.modules.system.response.OrganizationResponse" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="SHORTNAME" property="shortname" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="ORG_HEADER" property="orgHeader" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="NOTATION" property="notation" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="BIT" />
+    <result column="ISDELETE" property="isdelete" jdbcType="BIT" />
+    <result column="CLS_ID" property="clsId" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="NAMEPY" property="namepy" jdbcType="VARCHAR" />
+    <result column="NAMEWB" property="namewb" jdbcType="VARCHAR" />
+    <result column="CITY_NO" property="cityNo" jdbcType="INTEGER" />
+    <result column="PROVINCE_NO" property="provinceNo" jdbcType="INTEGER" />
+    <result column="ORG_LEVEL" property="orgLevel" jdbcType="VARCHAR" />
+    <result column="COUNTY_NO" property="countyNo" jdbcType="INTEGER" />
+    <result column="CITY_NAME" property="cityName" jdbcType="VARCHAR" />
+    <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" />
+    <result column="ORG_LEVEL_NAME" property="orgLevelName" jdbcType="VARCHAR" />
+    <result column="COUNTY_NAME" property="countyName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="queryOrganizationList" resultMap="QueryOrganizationResultMap">
+		SELECT ID,CODE,NAME,SHORTNAME,PHONE,ORG_HEADER,ADDRESS,EMAIL,NOTATION,STATUS,ISDELETE,CLS_ID,REMARK,UPD_USER,UPD_TIME,CRT_USER,CRT_TIME,
+		NAMEPY,NAMEWB,CITY_NO,PROVINCE_NO,ORG_LEVEL,(SELECT OTHERVALUE FROM sys_dict_dtl WHERE ID = so.ORG_LEVEL) ORG_LEVEL_NAME,
+	    COUNTY_NO,(SELECT AREANAME FROM sys_dict_city WHERE ID = so.PROVINCE_NO) PROVINCE_NAME,(SELECT AREANAME FROM sys_dict_city WHERE ID = so.CITY_NO) CITY_NAME,(SELECT AREANAME FROM sys_dict_city WHERE ID = so.COUNTY_NO) COUNTY_NAME
+		FROM sys_organization so
+		where so.ISDELETE= 0
+		order by CRT_TIME
+	</select>
+	
+	<select id="queryOrganizationListByParameter" resultMap="QueryOrganizationResultMap" parameterType="com.jfhealthcare.modules.system.request.SysOrganizationRequest">
+		SELECT ID,CODE,NAME,SHORTNAME,PHONE,ORG_HEADER,ADDRESS,EMAIL,NOTATION,STATUS,ISDELETE,CLS_ID,REMARK,UPD_USER,UPD_TIME,CRT_USER,CRT_TIME,
+		NAMEPY,NAMEWB,CITY_NO,PROVINCE_NO,ORG_LEVEL,(SELECT OTHERVALUE FROM sys_dict_dtl WHERE ID = so.ORG_LEVEL) ORG_LEVEL_NAME,
+	    COUNTY_NO,(SELECT AREANAME FROM sys_dict_city WHERE ID = so.PROVINCE_NO) PROVINCE_NAME,(SELECT AREANAME FROM sys_dict_city WHERE ID = so.CITY_NO) CITY_NAME,(SELECT AREANAME FROM sys_dict_city WHERE ID = so.COUNTY_NO) COUNTY_NAME
+	    FROM sys_organization so
+		<where>
+			ISDELETE = 0
+			<if test="namepy !=null and namepy !=''">
+				and (NAMEPY like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%') or
+				NAMEWB like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%'))
+			</if>
+			<if test="name !=null and name !=''">
+				and NAME like concat(concat('%',#{name,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="shortname !=null and shortname !=''">
+				and SHORTNAME like concat(concat('%',#{shortname,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="address !=null and address !=''">
+				and ADDRESS like concat(concat('%',#{address,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="clsId !=null and clsId !=''">
+				and CLS_ID=#{clsId,jdbcType=VARCHAR}
+			</if>
+			<if test="phone !=null and phone !=''">
+				and PHONE=#{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="code !=null and code !=''">
+				and CODE=#{code,jdbcType=VARCHAR}
+			</if>
+			<if test="provinceNo !=null and provinceNo !=''">
+				and PROVINCE_NO=#{provinceNo,jdbcType=INTEGER}
+			</if>
+			<if test="cityNo !=null and cityNo !=''">
+				and CITY_NO=#{cityNo,jdbcType=INTEGER}
+			</if>
+			<if test="id !=null and id !=''">
+				and ID=#{id,jdbcType=VARCHAR}
+			</if>
+		</where>
+		order by CRT_TIME desc
+	</select>
+</mapper>

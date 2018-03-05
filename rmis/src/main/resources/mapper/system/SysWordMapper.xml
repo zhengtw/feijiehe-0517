@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.system.mapper.SysWordMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.system.entity.SysWord" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="CWORD" property="cword" jdbcType="VARCHAR" />
+    <result column="PYCODE" property="pycode" jdbcType="VARCHAR" />
+    <result column="WBCODE" property="wbcode" jdbcType="VARCHAR" />
+    <result column="SJCODE" property="sjcode" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

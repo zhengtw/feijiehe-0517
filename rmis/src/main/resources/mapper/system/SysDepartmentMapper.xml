@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.system.mapper.SysDepartmentMapper">
+	<resultMap id="BaseResultMap"
+		type="com.jfhealthcare.modules.system.entity.SysDepartment">
+		<!-- WARNING - @mbg.generated -->
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="DEP_NAME" property="depName" jdbcType="VARCHAR" />
+		<result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+		<result column="UPPERID" property="upperid" jdbcType="VARCHAR" />
+		<result column="NLEVEL" property="nlevel" jdbcType="INTEGER" />
+		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
+		<result column="FAX" property="fax" jdbcType="VARCHAR" />
+		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="DEP_TYPE_CODE" property="depTypeCode" jdbcType="VARCHAR" />
+		<result column="DEP_TYPE" property="depType" jdbcType="VARCHAR" />
+		<result column="NINDEX" property="nindex" jdbcType="VARCHAR" />
+		<result column="CHARGE_PERSON" property="chargePerson"
+			jdbcType="VARCHAR" />
+		<result column="NAMEWB" property="namewb" jdbcType="VARCHAR" />
+		<result column="NAMEPY" property="namepy" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="BIT" />
+		<result column="ISDELETE" property="isdelete" jdbcType="BIT" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+		<result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+		<result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+		<result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap extends="BaseResultMap" id="AllResultMap" type="Map">
+		<result column="UPPER_NAME" property="upperName" jdbcType="VARCHAR" />
+		<result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="queryDepartmentBycondition" resultMap="AllResultMap">
+		select * from (
+		select a.*,
+		case when a.UPPERID='0' then '初始部门'
+		     when a.UPPERID !='0' and a.UPPERID is not null then b.DEP_NAME
+		else null end UPPER_NAME,
+		c.`NAME` ORG_NAME from sys_department a
+		left join sys_department b on a.UPPERID=b.ID
+		left join sys_organization c on a.ORG_ID=c.ID
+		<where>
+			a.ISDELETE='0'
+			<if test="orgId !=null and orgId !=''">
+				and a.ORG_ID=#{orgId,jdbcType=VARCHAR}
+			</if>
+			<if test="depName !=null and depName !=''">
+				and a.DEP_NAME like
+				concat(concat('%',#{depName,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="namepy !=null and namepy !=''">
+				and (a.NAMEPY like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%')
+				or
+				a.NAMEWB like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%'))
+			</if>
+		</where>
+		order by a.CRT_TIME desc
+		) aa
+	</select>
+</mapper>

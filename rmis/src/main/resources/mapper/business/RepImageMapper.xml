@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.business.mapper.RepImageMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.business.entity.RepImage" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="REP_UID" property="repUid" jdbcType="VARCHAR" />
+    <result column="NUMBER" property="number" jdbcType="INTEGER" />
+    <result column="IMG_LABEL_CODE" property="imgLabelCode" jdbcType="VARCHAR" />
+    <result column="IMG_LABEL" property="imgLabel" jdbcType="VARCHAR" />
+    <result column="IMG_PAGE" property="imgPage" jdbcType="LONGVARCHAR" />
+  </resultMap>
+</mapper>

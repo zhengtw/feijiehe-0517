@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.business.mapper.SetReportDbMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.business.entity.SetReportDb" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="UPPER" property="upper" jdbcType="VARCHAR" />
+    <result column="NINDEX" property="nindex" jdbcType="VARCHAR" />
+    <result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="NAMEPY" property="namepy" jdbcType="VARCHAR" />
+    <result column="NAMEWB" property="namewb" jdbcType="VARCHAR" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="ISDELETE" property="isdelete" jdbcType="BIT" />
+    <result column="FINDING" property="finding" jdbcType="LONGVARCHAR" />
+    <result column="IMPRESSION" property="impression" jdbcType="LONGVARCHAR" />
+    <result column="FILEFLAG" property="fileflag" jdbcType="BIT" />
+  </resultMap>
+</mapper>

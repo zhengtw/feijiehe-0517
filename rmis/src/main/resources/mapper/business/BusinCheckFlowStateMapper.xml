@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.business.mapper.BusinCheckFlowStateMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.business.entity.BusinCheckFlowState" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ACCESSION_NUM" property="accessionNum" jdbcType="VARCHAR" />
+    <result column="NUMBER" property="number" jdbcType="INTEGER" />
+    <result column="STATUS_CODE" property="statusCode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="OPERATION_USER" property="operationUser" jdbcType="VARCHAR" />
+    <result column="OPERATION_TIME" property="operationTime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>
