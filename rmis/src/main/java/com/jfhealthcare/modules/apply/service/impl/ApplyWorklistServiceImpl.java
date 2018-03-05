@@ -510,7 +510,6 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		List<ApplyImage> applyImages = applyImageMapper.selectByExample(example);
 		return CollectionUtils.isEmpty(applyImages)?"0":"1";
 	}
-
-
+	
 	
 }
