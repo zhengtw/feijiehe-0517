@@ -127,6 +127,7 @@ public class ApplyMqInitServiceImpl implements ApplyMqInitService {
 			String patientID=getDcmInfoValue(dcmInfo.get(DCMEnum.PatientID.getDcmKey()),"");
 			String patientBirthDate=getDcmInfoValue(dcmInfo.get(DCMEnum.PatientBirthDate.getDcmKey()),"");
 			String patientSex=getDcmInfoValue(dcmInfo.get(DCMEnum.PatientSex.getDcmKey()),"O");
+			patientSex=StringUtils.equalsAnyIgnoreCase(patientSex, "O","M","F")?patientSex:"O";//去除不规范的性别
 			String patientAge=getDcmInfoValue(dcmInfo.get(DCMEnum.PatientAge.getDcmKey()),"");
 			String patientSize=getDcmInfoValue(dcmInfo.get(DCMEnum.PatientSize.getDcmKey()),"");
 			String patientWeight=getDcmInfoValue(dcmInfo.get(DCMEnum.PatientWeight.getDcmKey()),"");
