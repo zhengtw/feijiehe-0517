@@ -149,18 +149,18 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 					String uid = keyAndUid[1];
 					if("studyUID".equals(keyAndUid[0])) {
 						uidmap.put("StudyUid", uid);
-					}else if("SeriesUid".equals(keyAndUid[0])) {
-						uidmap.put("StudyUid", uid);
+					}else if("seriesUID".equals(keyAndUid[0])) {
+						uidmap.put("seriesUid", uid);
 					}else if("objectUID".equals(keyAndUid[0])) {
 						uidmap.put("ObjectUid", uid);
 					}
-					uidmaps.add(uidmap);
 				}
+				uidmaps.add(uidmap);
 			}
 			try {
-				String encode = URLEncoder.encode(JSON.toJSONString(repImages),"UTF-8");
+				String encode = URLEncoder.encode(JSON.toJSONString(uidmaps),"UTF-8");
 				viewWorklistResponse.setSopUrl(webViewUrl+encode);
-				log.info("web view url:{}", encode);
+				log.info("web view url:{}", uidmaps);
 			} catch (Exception e) {
 				throw new RmisException("web view encode exception!");
 			}
