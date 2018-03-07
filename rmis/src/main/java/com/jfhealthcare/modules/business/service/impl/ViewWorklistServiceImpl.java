@@ -150,7 +150,7 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 					if("studyUID".equals(keyAndUid[0])) {
 						uidmap.put("StudyUid", uid);
 					}else if("seriesUID".equals(keyAndUid[0])) {
-						uidmap.put("seriesUid", uid);
+						uidmap.put("SeriesUid", uid);
 					}else if("objectUID".equals(keyAndUid[0])) {
 						uidmap.put("ObjectUid", uid);
 					}
