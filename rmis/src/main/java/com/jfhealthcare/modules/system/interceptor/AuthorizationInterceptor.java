@@ -10,10 +10,14 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.alibaba.fastjson.JSON;
 import com.jfhealthcare.common.exception.RmisException;
 import com.jfhealthcare.modules.system.annotation.AuthIgnore;
+import com.jfhealthcare.modules.system.entity.SysDictDtl;
 import com.jfhealthcare.modules.system.entity.SysToken;
+import com.jfhealthcare.modules.system.service.SysDictDtlService;
 import com.jfhealthcare.modules.system.service.SysTokenService;
 
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,23 +31,40 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private SysTokenService sysTokenService;
+    
+    @Autowired
+    private SysDictDtlService sysDictDtlService;
 
     public static final String LOGIN_USER_KEY = "LOGIN_USER_KEY";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        AuthIgnore annotation;
+        AuthIgnore authIgnore;
         if(handler instanceof HandlerMethod) {
-            annotation = ((HandlerMethod) handler).getMethodAnnotation(AuthIgnore.class);
+        	authIgnore = ((HandlerMethod) handler).getMethodAnnotation(AuthIgnore.class);
         }else{
             return true;
         }
 
         //如果有@IgnoreAuth注解，则不验证token
-        if(annotation != null){
+        if(authIgnore != null){
             return true;
         }
-
+        
+        //从头信息中获取版本号
+        String version = request.getHeader("version");
+        if(StringUtils.isBlank(version)){
+        	version = request.getParameter("version");
+        }
+        
+        if(StringUtils.isBlank(version)){
+            throw new RmisException("version不能为空");
+        }
+        List<SysDictDtl> versions = sysDictDtlService.queryDictDtlByCode("version");
+        if(!StringUtils.equalsIgnoreCase(version, versions.get(0).getOthervalue())) {
+        	throw new RmisException("版本更新，需要升级",556);
+        }
+        
         //从header中获取token
         String token = request.getHeader("token");
         //如果header中不存在token，则从参数中获取token
