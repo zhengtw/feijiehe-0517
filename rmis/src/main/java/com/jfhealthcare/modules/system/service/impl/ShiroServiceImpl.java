@@ -12,6 +12,7 @@ import com.jfhealthcare.modules.system.entity.SysRightModule;
 import com.jfhealthcare.modules.system.entity.SysToken;
 import com.jfhealthcare.modules.system.mapper.SysTokenMapper;
 import com.jfhealthcare.modules.system.mapper.SysArmariumOperMapper;
+import com.jfhealthcare.modules.system.mapper.SysMenuMapper;
 import com.jfhealthcare.modules.system.mapper.SysOperatorDtlMapper;
 import com.jfhealthcare.modules.system.mapper.SysOperatorMapper;
 import com.jfhealthcare.modules.system.mapper.SysRightModuleMapper;
@@ -29,8 +30,11 @@ public class ShiroServiceImpl implements ShiroService {
 	@Autowired
 	private SysOperatorMapper sysOperatorMapper;
 	
+	/*@Autowired
+	private SysRightModuleMapper sysRightModuleMapper;*/
+	
 	@Autowired
-	private SysRightModuleMapper sysRightModuleMapper;
+	private SysMenuMapper sysMenuMapper;
 	
 	@Autowired
 	private SysTokenService sysTokenService;
@@ -47,14 +51,13 @@ public class ShiroServiceImpl implements ShiroService {
 	@Override
 	public Set<String> getUserPermissions(String logincode) {
 		Set<String> permsSet = new HashSet<>();
-		
-		SysRightModule sysRightModule=new SysRightModule();
+		List<SysRightModule> sysRightModules = sysMenuMapper.querySysMenuForClick(logincode);
+		/*SysRightModule sysRightModule=new SysRightModule();
 		sysRightModule.setLogincode(logincode);
-		List<SysRightModule> sysRightModules = sysRightModuleMapper.select(sysRightModule);
+		List<SysRightModule> sysRightModules = sysRightModuleMapper.select(sysRightModule);*/
 		if(!sysRightModules.isEmpty()){
 			sysRightModules.forEach(srm->permsSet.add(srm.getMenuId()));
 		}
-		
 		return permsSet;
 	}
 

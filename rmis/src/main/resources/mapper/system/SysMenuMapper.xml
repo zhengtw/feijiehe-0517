@@ -25,6 +25,14 @@
   <resultMap extends="BaseResultMap" id="FatherMnameResultMap" type="Map">
     <result column="FATHER_MNAME" property="fatherMname" jdbcType="VARCHAR" />
   </resultMap>
+  
+  <resultMap id="ClickResultMap"
+		type="com.jfhealthcare.modules.system.entity.SysRightModule">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="MENU_ID" property="menuId" jdbcType="VARCHAR" />
+		<result column="LOGINCODE" property="logincode" jdbcType="VARCHAR" />
+	</resultMap>
+  
   <sql id="Base_Column_List" >
     ID,MNAME, UPPDER_ID, NLEVEL, SYSTEM_ID, NINDEX, BC_FLAG, PAGE, PIC, 
     NAMEPY, NAMEWB, REMARK, UPD_USER, UPD_TIME, CRT_USER, CRT_TIME
@@ -51,18 +59,27 @@
       a.NAMEPY, a.NAMEWB, a.REMARK, a.UPD_USER, a.UPD_TIME, a.CRT_USER, a.CRT_TIME, ifnull(b.MNAME,'父级') FATHER_MNAME 
       from sys_menu a 
       LEFT JOIN sys_menu b on a.UPPDER_ID=b.ID 
-      LEFT JOIN sys_right_module c on a.id=c.MENU_ID
-      <where>
+      WHERE  a.UPPDER_ID !='0' 
+       <where>
 	      <if test="namepy !=null and namepy !=''">
-	         and (namepy like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%') or namewb like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%'))
+	         and (a.namepy like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%') or a.namewb like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%'))
 	     </if>
 	      <if test="uppderId !=null and uppderId !=''">
 	         and a.UPPDER_ID=#{uppderId,jdbcType=VARCHAR}
 	     </if>
-	     <if test="logincode !=null and logincode !=''">
-	         and c.LOGINCODE=#{logincode,jdbcType=VARCHAR}
-	     </if>
-     </where>      
+     </where>  
+	   AND a.ID IN (
+              SELECT DISTINCT srm.MENU_ID MENU_ID 
+              FROM( SELECT sor.ROLE_ID FROM sys_oper_role sor WHERE sor.LOGINCODE = #{logincode,jdbcType=VARCHAR}) rli
+		      LEFT JOIN (
+			           SELECT srmm.MENU_ID,srmm.LOGINCODE
+			           FROM sys_right_modset srmm
+			           WHERE srmm.OBJFLAG = 2
+		                ) srm 
+		      ON rli.ROLE_ID = srm.LOGINCODE
+		      WHERE MENU_ID IS NOT NULL
+	    )
+         
      order by CAST(a.NINDEX AS DECIMAL) asc;
   </select>
   
@@ -71,13 +88,41 @@
    </select>
   
   <select id="querySysMenuForFatherId"  resultMap="FatherMnameResultMap">
-      select a.ID,a.MNAME, a.UPPDER_ID, a.NLEVEL, a.SYSTEM_ID, a.NINDEX, a.BC_FLAG, a.PAGE, a.PIC, 
+      SELECT a.ID,a.MNAME, a.UPPDER_ID, a.NLEVEL, a.SYSTEM_ID, a.NINDEX, a.BC_FLAG, a.PAGE, a.PIC, 
       a.NAMEPY, a.NAMEWB, a.REMARK, a.UPD_USER, a.UPD_TIME, a.CRT_USER, a.CRT_TIME, ifnull(b.MNAME,'父级') FATHER_MNAME 
-      from sys_menu a 
+      FROM sys_menu a 
       LEFT JOIN sys_menu b on a.UPPDER_ID=b.ID 
-      where  a.id in (
-       select distinct a.UPPDER_ID from sys_menu a,sys_right_module b where a.ID=b.MENU_ID and b.LOGINCODE=#{logincode,jdbcType=VARCHAR} and a.UPPDER_ID!='0'
-      ) 
-      order by CAST(a.NINDEX AS DECIMAL) asc;
+      WHERE  a.UPPDER_ID ='0' AND
+	    a.ID IN (
+              SELECT DISTINCT srm.MENU_ID MENU_ID 
+              FROM( SELECT sor.ROLE_ID FROM sys_oper_role sor WHERE sor.LOGINCODE = #{logincode,jdbcType=VARCHAR}) rli
+		      LEFT JOIN (
+			           SELECT srmm.MENU_ID,srmm.LOGINCODE
+			           FROM sys_right_modset srmm
+			           WHERE srmm.OBJFLAG = 2
+		                ) srm 
+		      ON rli.ROLE_ID = srm.LOGINCODE
+		      WHERE MENU_ID IS NOT NULL
+	    )
+      ORDER BY CAST(a.NINDEX AS DECIMAL) ASC;
+   </select>
+   
+   <select id="querySysMenuForClick"  resultMap="ClickResultMap">
+      SELECT a.ID MENU_ID
+      FROM sys_menu a 
+      LEFT JOIN sys_menu b on a.UPPDER_ID=b.ID 
+      WHERE 
+	    a.ID IN (
+              SELECT DISTINCT srm.MENU_ID MENU_ID 
+              FROM( SELECT sor.ROLE_ID FROM sys_oper_role sor WHERE sor.LOGINCODE = #{logincode,jdbcType=VARCHAR}) rli
+		      LEFT JOIN (
+			           SELECT srmm.MENU_ID,srmm.LOGINCODE
+			           FROM sys_right_modset srmm
+			           WHERE srmm.OBJFLAG = 2
+		                ) srm 
+		      ON rli.ROLE_ID = srm.LOGINCODE
+		      WHERE MENU_ID IS NOT NULL
+	    )
+      ORDER BY CAST(a.NINDEX AS DECIMAL) ASC;
    </select>
 </mapper>

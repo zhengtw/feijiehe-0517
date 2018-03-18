@@ -264,7 +264,7 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		bizindex.setSummary(applyWorklistRequest.getSummary());//检查方法
 		bizindex.setExam(applyWorklistRequest.getExam());
 //		bizindex.setSummaryCode(applyWorklistRequest.getSummaryCode());//检查方法code
-		bizindex.setApplyDoc(loginUserEntity.getSysOperatorDtl().getName());//申请医生
+		bizindex.setApplyDoc(loginUserEntity.getSysOperator().getName());//申请医生
 		bizindex.setApplyDocCode(logincode);//申请医生账号
 		bizindex.setApplyHosp(org.getName());
 		bizindex.setApplyHospCode(loginUserEntity.getSysOperatorDtl().getOrgId());

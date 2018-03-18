@@ -72,8 +72,8 @@ public class SysOperatorServiceImpl implements SysOperatorService {
 	private SysArmariumOperMapper sysArmariumOperMapper;
 	@Autowired
 	SysRightModsetService sysRightModsetService;
-	@Autowired
-	SysRightModuleService sysRightModuleService;
+	/*@Autowired
+	SysRightModuleService sysRightModuleService;*/
 	@Autowired
 	SysRepGroupMapper sysRepGroupMapper;
 	@Autowired
@@ -176,8 +176,8 @@ public class SysOperatorServiceImpl implements SysOperatorService {
 			
 			
 			//物理删除 角色用户权限表中的记录
-			sysRightModsetService.updateSysRightModset(sysOper.getLogincode(),null,1);
-			sysRightModuleService.restartSysRightModule(sysOper.getLogincode());
+			//sysRightModsetService.updateSysRightModset(sysOper.getLogincode(),null,1);
+			//sysRightModuleService.restartSysRightModule(sysOper.getLogincode());
 			// 物理删除 用户和机器操作权限表
 			Example example2 = new Example(SysArmariumOper.class);
 			example2.createCriteria().andEqualTo("logincode", sysOper.getLogincode());
@@ -502,7 +502,7 @@ public class SysOperatorServiceImpl implements SysOperatorService {
 			sysOperRoleMapper.insertSelective(sysOperRole);
 		}
 		//通过角色给用户绑定权限
-		sysRightModuleService.restartSysRightModule(sysOperatorNew.getLogincode());
+		//sysRightModuleService.restartSysRightModule(sysOperatorNew.getLogincode());
 	}
 
 	private SysOperator queryOperatorIsOnlyOne(String id) {

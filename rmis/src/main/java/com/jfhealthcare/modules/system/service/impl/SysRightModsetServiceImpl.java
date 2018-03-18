@@ -27,14 +27,14 @@ public class SysRightModsetServiceImpl implements SysRightModsetService {
 	@Autowired
 	private SysRightModsetMapper sysRightModsetMapper;
 	
-	@Autowired
-	private SysRightModuleMapper sysRightModuleMapper;
+	/*@Autowired
+	private SysRightModuleMapper sysRightModuleMapper;*/
 
 	@Autowired
 	private SysMenuMapper sysMenuMapper;
 	
-	@Autowired
-	private SysRightModuleService sysRightModuleService;
+	/*@Autowired
+	private SysRightModuleService sysRightModuleService;*/
 	
 	@Autowired
 	private SysOperRoleMapper sysOperRoleMapper;
@@ -72,21 +72,21 @@ public class SysRightModsetServiceImpl implements SysRightModsetService {
 	@Transactional
 	public void updateSysRightModsetForRole(String logincodeOrRoleId, List<String> menuIds, int i) {
 		this.updateSysRightModset(logincodeOrRoleId, menuIds, i);
-		Example example = new Example(SysOperRole.class);
+		/*Example example = new Example(SysOperRole.class);
 		example.createCriteria().andEqualTo("roleId", logincodeOrRoleId);
 		List<SysOperRole> sysOperRoles = sysOperRoleMapper.selectByExample(example);
 		if(!sysOperRoles.isEmpty()){
 			for (SysOperRole sysOperRole : sysOperRoles) {
 				sysRightModuleService.restartSysRightModule(sysOperRole.getLogincode());
 			}
-		}
+		}*/
 	}
 
-	@Override
+	/*@Override
 	@Transactional
 	public void updateSysRightModsetForOper(String logincodeOrRoleId, List<String> menuIds, int i) {
 		this.updateSysRightModset(logincodeOrRoleId, menuIds, i);
 		sysRightModuleService.restartSysRightModule(logincodeOrRoleId);
-	}
+	}*/
 	
 }
