@@ -23,7 +23,7 @@ public class ViewWorklistRequest extends BasicPageEntity{
      * 检查流水号
      */
     @Column(name = "CHECK_ACCESSION_NUM")
-    @NotBlank(message="报告流水号不能为空",groups={Edit.class})
+    @NotBlank(message="报告流水号不能为空",groups={Edit.class,Query.class})
     private String checkAccessionNum;
     
     /**
@@ -166,6 +166,7 @@ public class ViewWorklistRequest extends BasicPageEntity{
     /**
      * 患者姓名
      */
+    @NotBlank(message="病人姓名不能为空",groups={Query.class})
     @Column(name = "PAT_NAME")
     private String patName;
 
@@ -213,6 +214,7 @@ public class ViewWorklistRequest extends BasicPageEntity{
     /**
      * 申请医院Code
      */
+    @NotBlank(message="申请医院code不能为空",groups={Query.class})
     @Column(name = "CHECK_APPLY_HOSP_CODE")
     private String checkApplyHospCode;
 
