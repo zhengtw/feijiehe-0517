@@ -20,12 +20,14 @@ import com.jfhealthcare.common.base.ValueResponse;
 import com.jfhealthcare.common.entity.LoginUserEntity;
 import com.jfhealthcare.common.exception.RmisException;
 import com.jfhealthcare.common.utils.HttpClientUtils;
+import com.jfhealthcare.common.validator.Assert;
 import com.jfhealthcare.common.validator.ValidatorUtils;
 import com.jfhealthcare.common.validator.group.Edit;
 import com.jfhealthcare.common.validator.group.Query;
 import com.jfhealthcare.modules.business.entity.AiCheckEntity;
 import com.jfhealthcare.modules.business.entity.RepImage;
 import com.jfhealthcare.modules.business.entity.ViewWorklist;
+import com.jfhealthcare.modules.business.mapper.ViewWorklistMapper;
 import com.jfhealthcare.modules.business.request.CheckApiRequest;
 import com.jfhealthcare.modules.business.request.ViewWorklistRequest;
 import com.jfhealthcare.modules.business.response.CheckApiResponse;
@@ -58,6 +60,9 @@ public class ViewWorklistController {
 	@Autowired
 	private ViewWorklistService viewWorklistService;
 	
+	@Autowired
+	private ViewWorklistMapper viewWorklistMapper;
+	
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "worklist查询", notes = "worklist查询详情")
@@ -83,11 +88,24 @@ public class ViewWorklistController {
 		}
 	}
 	
+	
+//	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
+//	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
+//	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum) {
+//		try {
+//			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum);
+//			return BaseResponse.getSuccessResponse(viewWorklistResponse);
+//		}catch (Exception e) {
+//			log.error("worklist单个查询!", e);
+//			return BaseResponse.getFailResponse("worklist单个查询失败!");
+//		}
+//	}
+	//TODO
 	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
 	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
-	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum) {
+	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum,@LoginUser LoginUserEntity loginUserEntity) {
 		try {
-			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum);
+			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum,loginUserEntity);
 			return BaseResponse.getSuccessResponse(viewWorklistResponse);
 		}catch (Exception e) {
 			log.error("worklist单个查询!", e);
@@ -146,6 +164,8 @@ public class ViewWorklistController {
 		}
 	}
 	
+	
+	
 	@SysLogAop("更新报告")
 	@ApiOperation(value = "更新报告", notes = "更新报告详情")
 	@RequestMapping(method = RequestMethod.POST,path="/report")
@@ -155,6 +175,14 @@ public class ViewWorklistController {
 			log.info(loginUserEntity.getSysOperator().getLogincode()+"：处理报告开始..........");
 			ValidatorUtils.validateEntity(viewWorklistRequest, Edit.class);
 			viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
+			if(StringUtils.equals("isOpen", viewWorklistRequest.getCheckBut())) {
+				//第一次打开   返回老数据给前端 让保存
+				ViewWorklist viewWorklist=new ViewWorklist();
+				viewWorklist.setCheckAccessionNum(viewWorklistRequest.getCheckAccessionNum());
+				List<ViewWorklist> viewWorklists = viewWorklistMapper.select(viewWorklist);
+				Assert.isListOnlyOne(viewWorklists, "流水号查询信息异常！");
+				return BaseResponse.getSuccessResponse(viewWorklists.get(0));
+			}
 			log.info(loginUserEntity.getSysOperator().getLogincode()+"：处理报告结束.........");
 			return BaseResponse.getSuccessResponse();
 		} catch (RmisException e) {

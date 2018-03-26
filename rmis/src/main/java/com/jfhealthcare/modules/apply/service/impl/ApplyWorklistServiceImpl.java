@@ -3,6 +3,7 @@ package com.jfhealthcare.modules.apply.service.impl;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -235,6 +236,7 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		applyWorklist.setApplyStatusCode(ApplyStatusEnum.COMPLETE_APPLY.getStatusCode());
 		applyWorklistMapper.updateByPrimaryKey(applyWorklist);
 	}
+	
 
 	@Override
 	@Transactional
@@ -511,6 +513,8 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		return CollectionUtils.isEmpty(applyImages)?"0":"1";
 	}
 
+
+	
 
 	
 }

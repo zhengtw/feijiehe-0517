@@ -28,4 +28,6 @@ public interface SysDictDtlService {
 
 	public List<SysDictDtl> queryDictDtlByCode(String code);
 
+	public SysDictDtl quertDictDtlByCodeAndName(String code, String name);
+
 }
