@@ -20,12 +20,14 @@ import com.jfhealthcare.common.base.ValueResponse;
 import com.jfhealthcare.common.entity.LoginUserEntity;
 import com.jfhealthcare.common.exception.RmisException;
 import com.jfhealthcare.common.utils.HttpClientUtils;
+import com.jfhealthcare.common.validator.Assert;
 import com.jfhealthcare.common.validator.ValidatorUtils;
 import com.jfhealthcare.common.validator.group.Edit;
 import com.jfhealthcare.common.validator.group.Query;
 import com.jfhealthcare.modules.business.entity.AiCheckEntity;
 import com.jfhealthcare.modules.business.entity.RepImage;
 import com.jfhealthcare.modules.business.entity.ViewWorklist;
+import com.jfhealthcare.modules.business.mapper.ViewWorklistMapper;
 import com.jfhealthcare.modules.business.request.CheckApiRequest;
 import com.jfhealthcare.modules.business.request.ViewWorklistRequest;
 import com.jfhealthcare.modules.business.response.CheckApiResponse;
@@ -57,6 +59,9 @@ public class ViewWorklistController {
 	
 	@Autowired
 	private ViewWorklistService viewWorklistService;
+	
+	@Autowired
+	private ViewWorklistMapper viewWorklistMapper;
 	
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -107,25 +112,6 @@ public class ViewWorklistController {
 			return BaseResponse.getFailResponse("worklist单个查询失败!");
 		}
 	}
-//	/**
-//	 * 申请弹出框按钮查询
-//	 * @param id
-//	 * @return
-//	 */
-//	@RequestMapping(method=RequestMethod.GET,path="/{checkStatus}")
-//	@ApiOperation(value = "申请弹出框按钮查询", notes = "申请弹出框按钮查询详情")
-//	public BaseResponse queryBtnsByCheckStatus(@PathVariable("checkStatus") String checkStatus,@LoginUser LoginUserEntity loginUserEntity){
-//		try {
-//			viewWorklistService.queryBtnsByCheckStatus(checkStatus,loginUserEntity);
-//			return BaseResponse.getSuccessResponse();
-//		}catch (Exception e) {
-//			log.error("申请弹出框按钮查询失败！", e);
-//		}
-//		return BaseResponse.getFailResponse("申请弹出框按钮查询失败！");
-//	}
-	
-	
-	
 	
 	@RequestMapping(method = RequestMethod.GET,path="/repimage/{repUid}")
 	@ApiOperation(value = "worklist查询报告贴图", notes = "worklist查询报告贴图详情")
@@ -189,6 +175,14 @@ public class ViewWorklistController {
 			log.info(loginUserEntity.getSysOperator().getLogincode()+"：处理报告开始..........");
 			ValidatorUtils.validateEntity(viewWorklistRequest, Edit.class);
 			viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
+			if(StringUtils.equals("isOpen", viewWorklistRequest.getCheckBut())) {
+				//第一次打开   返回老数据给前端 让保存
+				ViewWorklist viewWorklist=new ViewWorklist();
+				viewWorklist.setCheckAccessionNum(viewWorklistRequest.getCheckAccessionNum());
+				List<ViewWorklist> viewWorklists = viewWorklistMapper.select(viewWorklist);
+				Assert.isListOnlyOne(viewWorklists, "流水号查询信息异常！");
+				return BaseResponse.getSuccessResponse(viewWorklists.get(0));
+			}
 			log.info(loginUserEntity.getSysOperator().getLogincode()+"：处理报告结束.........");
 			return BaseResponse.getSuccessResponse();
 		} catch (RmisException e) {
