@@ -109,12 +109,12 @@ public class ApplyWorklistController {
 	
 	/**
 	 * 申请弹出框信息查询
-	 * @param id
+	 * @param checkNum
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET,path="/{checkNum}")
 	@ApiOperation(value = "申请弹出框信息查询", notes = "申请弹出框信息查询详情")
-	public BaseResponse queryApplyWorkListById(@PathVariable("checkNum") String checkNum){
+	public BaseResponse queryApplyWorkListByCheckNum(@PathVariable("checkNum") String checkNum){
 		try {
 			ApplyWorklistResponse applyWorklistResponse=applyWorklistService.queryApplyWorkListById(checkNum);
 			return BaseResponse.getSuccessResponse(applyWorklistResponse);

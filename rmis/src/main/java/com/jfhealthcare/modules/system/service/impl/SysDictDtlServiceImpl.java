@@ -124,4 +124,14 @@ public class SysDictDtlServiceImpl implements SysDictDtlService {
 		List<SysDictDtl> sysDictDtls = sysDictDtlMapper.select(sysDictDtl);
 		return CollectionUtils.isEmpty(sysDictDtls)?new ArrayList<SysDictDtl>():sysDictDtls;
 	}
+
+	@Override
+	public SysDictDtl quertDictDtlByCodeAndName(String code, String name) {
+		SysDictDtl sysDictDtl = new SysDictDtl();
+		sysDictDtl.setCode(code);
+		sysDictDtl.setName(name);
+		sysDictDtl.setIsdelete(Boolean.FALSE);
+		List<SysDictDtl> sysDictDtls = sysDictDtlMapper.select(sysDictDtl);
+		return CollectionUtils.isEmpty(sysDictDtls)?null:sysDictDtls.get(0);
+	}
 }

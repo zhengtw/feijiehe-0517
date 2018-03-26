@@ -3,7 +3,9 @@ package com.jfhealthcare.modules.business.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -118,20 +120,114 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		return viewWorklistResponse;
 	}
 
+	
+//	@Override
+//	public ViewWorklistResponse queryOneViewWorklist(String checkAccessionNum) {
+//		ViewWorklistRequest vwlr=new ViewWorklistRequest();
+//		vwlr.setCheckAccessionNum(checkAccessionNum);
+//		List<ViewWorklistResponse> vwls=viewWorklistMapper.queryViewWorklist(vwlr);
+//		if(!CollectionUtils.isEmpty(vwls)){
+//			ViewWorklistResponse viewWorklistResponse = vwls.get(0);
+//			String checkNum = viewWorklistResponse.getCheckNum();
+//			ApplyWorklist applyWorklist = applyWorklistMapper.selectByPrimaryKey(checkNum);
+//			viewWorklistResponse.setSopUrl(webViewUrl+applyWorklist.getStudyUid());
+//			return viewWorklistResponse;
+//		}
+//		return new ViewWorklistResponse();
+//	}
+	
+	//TODO
 	@Override
-	public ViewWorklistResponse queryOneViewWorklist(String checkAccessionNum) {
+	public ViewWorklistResponse queryOneViewWorklist(String checkAccessionNum, LoginUserEntity user) {
 		ViewWorklistRequest vwlr=new ViewWorklistRequest();
 		vwlr.setCheckAccessionNum(checkAccessionNum);
 		List<ViewWorklistResponse> vwls=viewWorklistMapper.queryViewWorklist(vwlr);
-		if(!CollectionUtils.isEmpty(vwls)){
+		if(!CollectionUtils.isEmpty(vwls)) {
+			//1.确定按钮状态   
 			ViewWorklistResponse viewWorklistResponse = vwls.get(0);
-			String checkNum = viewWorklistResponse.getCheckNum();
-			ApplyWorklist applyWorklist = applyWorklistMapper.selectByPrimaryKey(checkNum);
-			viewWorklistResponse.setSopUrl(webViewUrl+applyWorklist.getStudyUid());
-			return viewWorklistResponse;
+			String checkStatusCode = viewWorklistResponse.getCheckStatusCode();//检查状态
+			String adminCode = user.getSysOperator().getAdminCode();//审核权限
+			SysDictDtl sysDictDtl =	sysDictDtlService.quertDictDtlByCodeAndName("btnStatus",adminCode+checkStatusCode);
+			Map<String, String> btnsMap=null;
+			if(!ObjectUtils.isEmpty(sysDictDtl)) {
+				//返回结果不为空  ：  匹配中有其存在的按钮  直接返回
+				String btns = sysDictDtl.getOthervalue();
+				btnsMap = getBtns(btns);
+			}else {
+				//返回结果为空  ：   匹配中没有存在的按钮
+				/**
+				 * 报告中： 自己的可打开 可操作   其他权限通待报告     其他人的不可打开
+				 * 审核中：自己的可打开 可操作   其他权限通待审核     其他人的不可打开
+				 * 暂存中：   状态取消   按钮保留，功能保留为保存
+				 */
+				if(CheckStatusEnum.REPORTING.getStatusCode().equals(checkStatusCode)) {
+					
+				}
+				
+				
+				
+				
+				
+				
+			}
+			
+			
+			//2.返回相应的信息
+			
+			
+			
+			
 		}
 		return new ViewWorklistResponse();
 	}
+	
+	
+	@Override
+	public Map<String, String> queryBtnsByCheckStatus(String checkStatus, LoginUserEntity user) {
+		//TODO
+		String adminCode = user.getSysOperator().getAdminCode();//审核权限
+		SysDictDtl sysDictDtl =	sysDictDtlService.quertDictDtlByCodeAndName("btnStatus",adminCode+checkStatus);
+		if(!ObjectUtils.isEmpty(sysDictDtl)) {
+			//返回结果不为空  ：  匹配中有其存在的按钮  直接返回
+			String btns = sysDictDtl.getOthervalue();
+			return getBtns(btns);
+		}else {
+			//返回结果为空  ：   匹配中唯有安管的按钮
+			
+			
+			
+			
+			
+			
+		}
+		return null;
+	}
+
+	private Map<String, String> getBtns(String newBtns) {
+		Map btnsMap=new HashMap() ;
+		String[] allBtns= new String[] {"isOpen","isWork","tc","jj","fq","zc","yl","zhz","wctj","shxf","zf","dhcx"};
+		for (String allbtn : allBtns) {
+			/**
+			 * 所有按钮初始时为不可用状态，除了 退出和预览
+			 */
+			if(StringUtils.equalsAny(allbtn, "isOpen","tc","yl")) {
+				btnsMap.put(allbtn, "1");
+			}else {
+				btnsMap.put(allbtn, "0");
+			}
+		}
+		/**
+		 * 给有权限的按钮复制为可使用状态
+		 */
+		String[] split = StringUtils.split(newBtns, ",");
+		for (String btn : split) {
+			btnsMap.put(btn, "1");
+		}
+		
+		return btnsMap;
+	}
+	
+	//TODO
 	
 	@Override
 	public List<ViewWorklistResponse> queryHistoryReport(ViewWorklistRequest vr) {
@@ -344,6 +440,8 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		int num = viewWorklistMapper.selectCountByExample(ex);
 		return num>0?1:0;
 	}
+
+	
 
 	
 

@@ -83,17 +83,49 @@ public class ViewWorklistController {
 		}
 	}
 	
+	
+//	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
+//	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
+//	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum) {
+//		try {
+//			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum);
+//			return BaseResponse.getSuccessResponse(viewWorklistResponse);
+//		}catch (Exception e) {
+//			log.error("worklist单个查询!", e);
+//			return BaseResponse.getFailResponse("worklist单个查询失败!");
+//		}
+//	}
+	//TODO
 	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
 	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
-	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum) {
+	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum,@LoginUser LoginUserEntity loginUserEntity) {
 		try {
-			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum);
+			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum,loginUserEntity);
 			return BaseResponse.getSuccessResponse(viewWorklistResponse);
 		}catch (Exception e) {
 			log.error("worklist单个查询!", e);
 			return BaseResponse.getFailResponse("worklist单个查询失败!");
 		}
 	}
+//	/**
+//	 * 申请弹出框按钮查询
+//	 * @param id
+//	 * @return
+//	 */
+//	@RequestMapping(method=RequestMethod.GET,path="/{checkStatus}")
+//	@ApiOperation(value = "申请弹出框按钮查询", notes = "申请弹出框按钮查询详情")
+//	public BaseResponse queryBtnsByCheckStatus(@PathVariable("checkStatus") String checkStatus,@LoginUser LoginUserEntity loginUserEntity){
+//		try {
+//			viewWorklistService.queryBtnsByCheckStatus(checkStatus,loginUserEntity);
+//			return BaseResponse.getSuccessResponse();
+//		}catch (Exception e) {
+//			log.error("申请弹出框按钮查询失败！", e);
+//		}
+//		return BaseResponse.getFailResponse("申请弹出框按钮查询失败！");
+//	}
+	
+	
+	
 	
 	@RequestMapping(method = RequestMethod.GET,path="/repimage/{repUid}")
 	@ApiOperation(value = "worklist查询报告贴图", notes = "worklist查询报告贴图详情")
@@ -145,6 +177,8 @@ public class ViewWorklistController {
 			return BaseResponse.getFailResponse("worklist删除报告贴图失败!");
 		}
 	}
+	
+	
 	
 	@SysLogAop("更新报告")
 	@ApiOperation(value = "更新报告", notes = "更新报告详情")
