@@ -22,7 +22,6 @@ import com.jfhealthcare.modules.system.entity.SysRightModset;
 import com.jfhealthcare.modules.system.entity.SysRightModule;
 import com.jfhealthcare.modules.system.mapper.SysMenuMapper;
 import com.jfhealthcare.modules.system.mapper.SysRightModsetMapper;
-import com.jfhealthcare.modules.system.mapper.SysRightModuleMapper;
 import com.jfhealthcare.modules.system.request.SysMenuRequest;
 import com.jfhealthcare.modules.system.service.SysMenuService;
 
@@ -36,8 +35,8 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
 	private SysMenuMapper sysMenuMapper;
 
-	@Autowired
-	private SysRightModuleMapper sysRightModuleMapper;
+	/*@Autowired
+	private SysRightModuleMapper sysRightModuleMapper;*/
 	
 	@Autowired
 	private SysRightModsetMapper sysRightModsetMapper;
@@ -101,9 +100,9 @@ public class SysMenuServiceImpl implements SysMenuService {
 		
 		if(menuIds.size()>0){
 			for (String menuId : menuIds) {
-				SysRightModule srmo=new SysRightModule();
+				/*SysRightModule srmo=new SysRightModule();
 				srmo.setMenuId(menuId);
-				sysRightModuleMapper.delete(srmo);
+				sysRightModuleMapper.delete(srmo);*/
 				SysRightModset srmt=new SysRightModset();
 				srmt.setMenuId(menuId);
 				sysRightModsetMapper.delete(srmt);
@@ -133,10 +132,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	public List<SysRightModule> querySysMenuForClick(String logincode) {
-		SysRightModule sysRightModule=new SysRightModule();
-		sysRightModule.setLogincode(logincode);
-		List<SysRightModule> sysRightModules = sysRightModuleMapper.select(sysRightModule);
-		return sysRightModules;
+		return sysMenuMapper.querySysMenuForClick(logincode);
 	}
 	
 	@Override

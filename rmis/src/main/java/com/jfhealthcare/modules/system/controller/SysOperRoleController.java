@@ -79,7 +79,7 @@ public class SysOperRoleController {
 		}
 	}
 
-	/* 批量删除组和人员关系表中的 相关数据 */
+	/* 批量删除角色和人员关系表中的 相关数据 */
 	@SysLogAop("删除角色和人员关系")
 	@RequestMapping(path = "/{ids}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "删除角色和人员关系", notes = "删除角色和人员关系，需要删除的IDs 放到路径中如：/v2/SysOperRole/1,2,3")

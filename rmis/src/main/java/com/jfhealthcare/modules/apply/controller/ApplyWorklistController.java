@@ -205,7 +205,7 @@ public class ApplyWorklistController {
 			businChecklistIndex.setAccessionNum(checkAccessionNum);
 			businChecklistIndex.setStatus(CheckStatusEnum.COMPLETE_PRINT.getStatus());
 			businChecklistIndex.setStatusCode(CheckStatusEnum.COMPLETE_PRINT.getStatusCode());
-			businChecklistIndex.setPrintDr(loginUserEntity.getSysOperatorDtl().getName());
+			businChecklistIndex.setPrintDr(loginUserEntity.getSysOperator().getName());
 			businChecklistIndex.setPrintTime(new Date());
 			businChecklistIndexMapper.updateByPrimaryKeySelective(businChecklistIndex);
 			return BaseResponse.getSuccessResponse();

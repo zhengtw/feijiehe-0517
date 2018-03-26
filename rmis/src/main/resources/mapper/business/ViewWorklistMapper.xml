@@ -203,9 +203,9 @@
 		 from (
 		       select * from (
 				    select *,
-				    (select name from sys_operator_dtl where logincode=a.CHECK_REPORT_DR) CHECK_REPORT_DR_NAME,
+				    (select name from sys_operator where logincode=a.CHECK_REPORT_DR) CHECK_REPORT_DR_NAME,
 			        (select signature from sys_operator where logincode=a.CHECK_REPORT_DR) CHECK_REPORT_DR_SIGNA,
-			        (select name from sys_operator_dtl where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_NAME,
+			        (select name from sys_operator where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_NAME,
 			        (select signature from sys_operator where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_SIGNA,
 			        (select signature from sys_operator where logincode=a.CHECK_PRINT_DR) CHECK_PRINT_DR_SIGNA,
 					a.CHECK_IMG_NUM imageNum
