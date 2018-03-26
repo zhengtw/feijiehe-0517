@@ -59,8 +59,8 @@
       a.NAMEPY, a.NAMEWB, a.REMARK, a.UPD_USER, a.UPD_TIME, a.CRT_USER, a.CRT_TIME, ifnull(b.MNAME,'父级') FATHER_MNAME 
       from sys_menu a 
       LEFT JOIN sys_menu b on a.UPPDER_ID=b.ID 
-      WHERE  a.UPPDER_ID !='0' 
        <where>
+      	  a.UPPDER_ID !='0'
 	      <if test="namepy !=null and namepy !=''">
 	         and (a.namepy like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%') or a.namewb like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%'))
 	     </if>
