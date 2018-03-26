@@ -15,6 +15,7 @@ import org.springframework.util.ObjectUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jfhealthcare.common.entity.LoginUserEntity;
 import com.jfhealthcare.common.entity.MyPageInfo;
 import com.jfhealthcare.common.enums.CheckStatusEnum;
@@ -131,7 +132,19 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		}
 		return new ViewWorklistResponse();
 	}
-
+	
+	@Override
+	public List<ViewWorklistResponse> queryHistoryReport(ViewWorklistRequest vr) {
+		List<ViewWorklistResponse> vws=viewWorklistMapper.queryHistoryReport(vr);
+		return vws;
+	}
+	
+	@Override
+	public String queryHistoryReportImage(String checkNum) {
+		ApplyWorklist applyWorklist = applyWorklistMapper.selectByPrimaryKey(checkNum);
+		return webViewUrl+applyWorklist.getStudyUid();
+	}
+	
 	@Override
 	@Transactional
 	public void updateCheckListIndex(ViewWorklistRequest vmlr,LoginUserEntity loginUserEntity) {
@@ -331,4 +344,8 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		int num = viewWorklistMapper.selectCountByExample(ex);
 		return num>0?1:0;
 	}
+
+	
+
+	
 }
