@@ -67,8 +67,8 @@
 	      <if test="uppderId !=null and uppderId !=''">
 	         and a.UPPDER_ID=#{uppderId,jdbcType=VARCHAR}
 	     </if>
-     </where>  
-	   AND a.ID IN (
+     
+	    AND a.ID IN (
               SELECT DISTINCT srm.MENU_ID MENU_ID 
               FROM( SELECT sor.ROLE_ID FROM sys_oper_role sor WHERE sor.LOGINCODE = #{logincode,jdbcType=VARCHAR}) rli
 		      LEFT JOIN (
@@ -79,7 +79,7 @@
 		      ON rli.ROLE_ID = srm.LOGINCODE
 		      WHERE MENU_ID IS NOT NULL
 	    )
-         
+     </where>  
      order by CAST(a.NINDEX AS DECIMAL) asc;
   </select>
   
