@@ -2,6 +2,7 @@ package com.jfhealthcare.modules.business.controller;
 
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,17 +102,17 @@ public class ViewWorklistController {
 //		}
 //	}
 	//TODO
-	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
-	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
-	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum,@LoginUser LoginUserEntity loginUserEntity) {
-		try {
-			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum,loginUserEntity);
-			return BaseResponse.getSuccessResponse(viewWorklistResponse);
-		}catch (Exception e) {
-			log.error("worklist单个查询!", e);
-			return BaseResponse.getFailResponse("worklist单个查询失败!");
-		}
-	}
+//	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
+//	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
+//	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum,@LoginUser LoginUserEntity loginUserEntity) {
+//		try {
+//			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum,loginUserEntity);
+//			return BaseResponse.getSuccessResponse(viewWorklistResponse);
+//		}catch (Exception e) {
+//			log.error("worklist单个查询!", e);
+//			return BaseResponse.getFailResponse("worklist单个查询失败!");
+//		}
+//	}
 	
 	@RequestMapping(method = RequestMethod.GET,path="/repimage/{repUid}")
 	@ApiOperation(value = "worklist查询报告贴图", notes = "worklist查询报告贴图详情")
@@ -171,17 +172,22 @@ public class ViewWorklistController {
 	@RequestMapping(method = RequestMethod.POST,path="/report")
 	public BaseResponse updateCheckListIndex(@RequestBody ViewWorklistRequest viewWorklistRequest,@LoginUser LoginUserEntity loginUserEntity) {
 		try {
-			
 			log.info(loginUserEntity.getSysOperator().getLogincode()+"：处理报告开始..........");
 			ValidatorUtils.validateEntity(viewWorklistRequest, Edit.class);
-			viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
-			if(StringUtils.equals("isOpen", viewWorklistRequest.getCheckBut())) {
-				//第一次打开   返回老数据给前端 让保存
-				ViewWorklist viewWorklist=new ViewWorklist();
-				viewWorklist.setCheckAccessionNum(viewWorklistRequest.getCheckAccessionNum());
-				List<ViewWorklist> viewWorklists = viewWorklistMapper.select(viewWorklist);
-				Assert.isListOnlyOne(viewWorklists, "流水号查询信息异常！");
-				return BaseResponse.getSuccessResponse(viewWorklists.get(0));
+			if(StringUtils.equals("isOpen",viewWorklistRequest.getCheckBut() )) {
+				//判断是不是第一次打开
+				
+				ViewWorklistResponse viewWorklistResponse = viewWorklistService.queryOneViewWorklist(viewWorklistRequest.getCheckAccessionNum(), loginUserEntity);
+				Map<String, String> btnsMap = viewWorklistResponse.getBtnsMap();
+				if(StringUtils.equals("0",btnsMap.get("isOpen")) || 
+						(StringUtils.equals("1",btnsMap.get("isOpen")) && StringUtils.equals("0",btnsMap.get("isWork")))) {//不可打开 直接返回
+					return BaseResponse.getSuccessResponse(viewWorklistResponse);
+				}else {
+					viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
+					return BaseResponse.getSuccessResponse(viewWorklistResponse);
+				}
+			}else {
+				viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
 			}
 			log.info(loginUserEntity.getSysOperator().getLogincode()+"：处理报告结束.........");
 			return BaseResponse.getSuccessResponse();

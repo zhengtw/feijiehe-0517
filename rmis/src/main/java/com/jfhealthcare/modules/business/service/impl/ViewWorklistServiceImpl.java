@@ -193,6 +193,7 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 				viewWorklistResponse.setSopUrl(webViewUrl+applyWorklist.getStudyUid());
 		    }
 		    viewWorklistResponse.setBtnsMap(btnsMap);
+		    return viewWorklistResponse;
 		}
 		return new ViewWorklistResponse();
 	}
@@ -254,7 +255,7 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		//2018 03 26 重构更新功能    以按钮传值为准
 		//isOpen,wctj,shxf,tc,jj,fq,zc,yl,zhz,zf,thcx: 打开 退回 拒绝 预览 暂存 转会诊 完成提交 完成下发 作废 退回重写
 		String statusCode = bCLI.getStatusCode();//当前状态
-		ViewWorklist oldViewWorklist = vmlr.getOldViewWorklist();//打开前数据收集
+		ViewWorklistResponse oldViewWorklist = vmlr.getOldViewWorklist();//打开前数据收集
 		String checkOldStatus = oldViewWorklist.getCheckStatus();//打开前报告状态
 		String checkBut = vmlr.getCheckBut();//按钮传值
 		Assert.isBlank(checkBut, "按钮状态不能为空！");

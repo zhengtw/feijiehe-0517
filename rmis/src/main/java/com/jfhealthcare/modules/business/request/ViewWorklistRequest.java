@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jfhealthcare.common.validator.group.Edit;
 import com.jfhealthcare.modules.basics.BasicPageEntity;
 import com.jfhealthcare.modules.business.entity.ViewWorklist;
+import com.jfhealthcare.modules.business.response.ViewWorklistResponse;
 
 import lombok.Data;
 /**
@@ -268,5 +269,5 @@ public class ViewWorklistRequest extends BasicPageEntity{
     
     private String checkBut;//用于worklist 弹出框的按钮接属性   属性值：isOpen,tc,jj,fq,zc,yl,zhz,wctj,shxf,zf,dhcx
     
-    private ViewWorklist oldViewWorklist;//用于worklist 传打开前数据
+    private ViewWorklistResponse oldViewWorklist;//用于worklist 传打开前数据
 }
