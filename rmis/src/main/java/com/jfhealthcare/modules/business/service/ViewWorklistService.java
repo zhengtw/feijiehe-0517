@@ -20,7 +20,7 @@ public interface ViewWorklistService {
 
 	void deleteRepImageByRepImageId(String repImageId);
 
-	ViewWorklistResponse queryCountViewWorklist(ViewWorklistRequest viewWorklistRequest);
+//	ViewWorklistResponse queryCountViewWorklist(ViewWorklistRequest viewWorklistRequest);
 
 	int queryViewWorklistIsRemind();
 
@@ -28,9 +28,9 @@ public interface ViewWorklistService {
 
 	String queryHistoryReportImage(String checkNum);
 
-	Map<String,String> queryBtnsByCheckStatus(String checkStatus, LoginUserEntity loginUserEntity);
+	Map<String,String> queryBtnsByCheckAccessionNum(String checkAccessionNum, LoginUserEntity loginUserEntity);
 
-	ViewWorklistResponse queryOneViewWorklist(String checkAccessionNum, LoginUserEntity loginUserEntity);
+	ViewWorklistResponse queryOneViewWorklist(String checkAccessionNum);
 
 
 }

@@ -183,8 +183,8 @@
    
    <select id="queryHistoryReport"  parameterType="com.jfhealthcare.modules.business.request.ViewWorklistRequest" resultMap="ResponseMap">
      SELECT *,
-      (select name from sys_operator_dtl where logincode=a.CHECK_REPORT_DR) CHECK_REPORT_DR_NAME,
-      (select name from sys_operator_dtl where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_NAME
+      (select name from sys_operator where logincode=a.CHECK_REPORT_DR) CHECK_REPORT_DR_NAME,
+      (select name from sys_operator where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_NAME
       FROM view_worklist a
      <where>
         a.CHECK_APPLY_HOSP_CODE=#{checkApplyHospCode,jdbcType=VARCHAR}
@@ -294,88 +294,106 @@
 		) z ORDER BY CHECK_APPLY_TIME desc
   </select>
   
-     <select id="queryCountViewWorklist"  parameterType="com.jfhealthcare.modules.business.request.ViewWorklistRequest" resultType="com.jfhealthcare.modules.business.response.ViewWorklistResponse">
-		    select 
-			count(case when a.CHECK_STATUS_CODE='3434' then 1 end) pendingreportNum,
-			count(case when a.CHECK_STATUS_CODE='3445' then 1 end ) pendingonereviewNum,
-			count(case when a.CHECK_STATUS_CODE='3449' then 1 end ) pendingtworeviewNum,
-			count(case when a.CHECK_STATUS_CODE='3550' then 1 end ) pendingthreereviewNum,
-			count(case when a.CHECK_STATUS_CODE='3552' then 1 end ) reportingNum,
-			count(case when a.CHECK_STATUS_CODE='3553' then 1 end ) reviewingNum,
-			count(case when a.CHECK_STATUS_CODE='3554' then 1 end ) zancuningNum,
-			count(case when a.CHECK_STATUS_CODE='3555' then 1 end ) completerefuseNum,
-			count(case when a.CHECK_STATUS_CODE='3556' then 1 end ) completereviewNum,
-			count(case when a.CHECK_STATUS_CODE='3557' then 1 end ) completeprintNum,
-			count(case when a.CHECK_STATUS_CODE='3558' then 1 end ) pendinghuizhenReportNum,
-			count(case when a.CHECK_STATUS_CODE='3559' then 1 end ) pendinghuizhenReviewNum,
-			count(case when a.CHECK_STATUS_CODE='3560' then 1 end ) completeAbandonedNum
-			from view_worklist a
-			<where>
-<!-- 			    <if test="checkJzFlag !=null"> -->
-<!-- 				   and a.CHECK_JZ_FLAG=#{checkJzFlag,jdbcType=BIT} -->
-<!-- 				</if> -->
-<!-- 				<if test="checkVjFlag !=null"> -->
-<!-- 				   and a.CHECK_VJ_FLAG=#{checkVjFlag,jdbcType=BIT} -->
-<!-- 				</if> -->
-<!-- 				<if test="checkAccessionNum !=null and checkAccessionNum !=''"> -->
-<!-- 				   and a.CHECK_ACCESSION_NUM=#{checkAccessionNum,jdbcType=VARCHAR} -->
-<!-- 				</if> -->
-<!-- 				<if test="checkNum !=null and checkNum !=''"> -->
-<!-- 				   and a.CHECK_NUM=#{checkNum,jdbcType=VARCHAR} -->
-<!-- 				</if> -->
-<!-- 				<if test="checkStatusCodes !=null and checkStatusCodes.size>0"> -->
-<!-- 				   and a.CHECK_STATUS_CODE in -->
-<!-- 				   <foreach item="item" collection="checkStatusCodes" index="index" open="(" separator="," close=")">   -->
-<!-- 		                #{item}   -->
-<!-- 		           </foreach> -->
-<!-- 				</if> -->
-<!-- 				<if test="checkStatusAiCode !=null and checkStatusAiCode !=''"> -->
-<!-- 				   and  a.CHECK_STATUS_AI_CODE=#{checkStatusAiCode,jdbcType=VARCHAR} -->
-<!-- 				</if> -->
-				<if test="checkTypeCodes !=null and checkTypeCodes.size>0">
-				   and  a.CHECK_TYPE_CODE in
-				   <foreach item="item" collection="checkTypeCodes" index="index" open="(" separator="," close=")">  
-		                #{item}  
-		           </foreach>
-				</if>
-<!-- 				<if test="checkSummaryCode !=null and checkSummaryCode !=''"> -->
-<!-- 				   and  a.CHECK_SUMMARY_CODE=#{checkSummaryCode,jdbcType=VARCHAR} -->
-<!-- 				</if> -->
-<!-- 				<if test="patName !=null and patName !=''"> -->
-<!-- 			       and a.PAT_NAME like concat(concat('%',#{patName,jdbcType=VARCHAR}),'%') -->
-<!-- 			    </if> -->
-<!-- 				<if test="patSexCode !=null and patSexCode !=''"> -->
-<!-- 				   and a.PAT_SEX_CODE=#{patSexCode,jdbcType=VARCHAR} -->
-<!-- 				</if> -->
-				<if test="checkApplyStartTime !=null and checkApplyEndTime !=null">
-			     	and  a.CHECK_APPLY_TIME &gt;= #{checkApplyStartTime,jdbcType=TIMESTAMP}
-			     	and a.CHECK_APPLY_TIME &lt;= #{checkApplyEndTime,jdbcType=TIMESTAMP}
-				</if>
-<!-- 				<if test="checkApplyDoc !=null and checkApplyDoc !=''"> -->
-<!-- 			        and  a.CHECK_APPLY_DOC like concat(concat('%',#{checkApplyDoc,jdbcType=VARCHAR}),'%') -->
-<!-- 			    </if> -->
-<!-- 			    <if test="checkReportDr !=null and checkReportDr !=''"> -->
-<!-- 			        and  a.CHECK_REPORT_DR like concat(concat('%',#{checkReportDr,jdbcType=VARCHAR}),'%') -->
-<!-- 			    </if> -->
-<!-- 			    <if test="checkAuditDr !=null and checkAuditDr !=''"> -->
-<!-- 			        and  a.CHECK_AUDIT_DR like concat(concat('%',#{checkAuditDr,jdbcType=VARCHAR}),'%') -->
-<!-- 			    </if> -->
-				<if test="checkApplyHospCode !=null and checkApplyHospCode !=''">
-				    and  a.CHECK_APPLY_HOSP_CODE=#{checkApplyHospCode,jdbcType=VARCHAR}
-				</if>
-				<if test="checkRepGroupId !=null and checkRepGroupId !=''">
-				    and  a.CHECK_REP_GROUP_ID=#{checkRepGroupId,jdbcType=VARCHAR}
-				</if>
-<!-- 				<if test="checkParts !=null and checkParts !=''"> -->
-<!-- 				    and  a.CHECK_PARTS like concat(concat('%',#{checkParts,jdbcType=VARCHAR}),'%') -->
-<!-- 				</if> -->
-<!-- 				<if test="reprcdImpression1 !=null and reprcdImpression1 !=''"> -->
-<!-- 				    and a.REPRCD_IMPRESSION1 like concat(concat('%',#{reprcdImpression1,jdbcType=VARCHAR}),'%') -->
-<!-- 				</if> -->
-<!-- 				<if test="reprcdHp !=null and reprcdHp !=''"> -->
-<!-- 				    and  a.REPRCD_HP=#{reprcdHp,jdbcType=VARCHAR} -->
-<!-- 				</if> -->
-			</where>
+	  <select id="queryOneViewWorklist"  parameterType="com.jfhealthcare.modules.business.request.ViewWorklistRequest" resultMap="ResponseMap">
+		    select <include refid="Base_Column_List"/>
+		    from ( select a.*,
+			    (select name from sys_operator where logincode=a.CHECK_REPORT_DR) CHECK_REPORT_DR_NAME,
+		        (select signature from sys_operator where logincode=a.CHECK_REPORT_DR) CHECK_REPORT_DR_SIGNA,
+		        (select name from sys_operator where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_NAME,
+		        (select signature from sys_operator where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_SIGNA,
+		        (select signature from sys_operator where logincode=a.CHECK_PRINT_DR) CHECK_PRINT_DR_SIGNA
+				from view_worklist a
+				<where>
+					<if test="checkAccessionNum !=null and checkAccessionNum !=''">
+					   and a.CHECK_ACCESSION_NUM=#{checkAccessionNum,jdbcType=VARCHAR}
+					</if>
+					<if test="checkNum !=null and checkNum !=''">
+					   and a.CHECK_NUM=#{checkNum,jdbcType=VARCHAR}
+					</if>
+					<if test="checkApplyStartTime !=null and checkApplyEndTime !=null">
+				     	and  a.CHECK_APPLY_TIME &gt;= #{checkApplyStartTime,jdbcType=TIMESTAMP}
+				     	and a.CHECK_APPLY_TIME &lt;= #{checkApplyEndTime,jdbcType=TIMESTAMP}
+					</if>
+				</where>
+			) b
+	  </select>
+  
+     <select id="queryCountViewWorklist"  parameterType="com.jfhealthcare.modules.business.request.ViewWorklistRequest" resultType="Map">
+		    select a.OTHERVALUE name,a.id code,IFNULL(b.num,0) num 
+			    from sys_dict_dtl a 
+			    left join (
+				    select count(0) num,CHECK_STATUS_CODE from view_worklist a
+					<where>
+		<!-- 			    <if test="checkJzFlag !=null"> -->
+		<!-- 				   and a.CHECK_JZ_FLAG=#{checkJzFlag,jdbcType=BIT} -->
+		<!-- 				</if> -->
+		<!-- 				<if test="checkVjFlag !=null"> -->
+		<!-- 				   and a.CHECK_VJ_FLAG=#{checkVjFlag,jdbcType=BIT} -->
+		<!-- 				</if> -->
+		<!-- 				<if test="checkAccessionNum !=null and checkAccessionNum !=''"> -->
+		<!-- 				   and a.CHECK_ACCESSION_NUM=#{checkAccessionNum,jdbcType=VARCHAR} -->
+		<!-- 				</if> -->
+		<!-- 				<if test="checkNum !=null and checkNum !=''"> -->
+		<!-- 				   and a.CHECK_NUM=#{checkNum,jdbcType=VARCHAR} -->
+		<!-- 				</if> -->
+		<!-- 				<if test="checkStatusCodes !=null and checkStatusCodes.size>0"> -->
+		<!-- 				   and a.CHECK_STATUS_CODE in -->
+		<!-- 				   <foreach item="item" collection="checkStatusCodes" index="index" open="(" separator="," close=")">   -->
+		<!-- 		                #{item}   -->
+		<!-- 		           </foreach> -->
+		<!-- 				</if> -->
+		<!-- 				<if test="checkStatusAiCode !=null and checkStatusAiCode !=''"> -->
+		<!-- 				   and  a.CHECK_STATUS_AI_CODE=#{checkStatusAiCode,jdbcType=VARCHAR} -->
+		<!-- 				</if> -->
+						<if test="checkTypeCodes !=null and checkTypeCodes.size>0">
+						   and  a.CHECK_TYPE_CODE in
+						   <foreach item="item" collection="checkTypeCodes" index="index" open="(" separator="," close=")">  
+				                #{item}  
+				           </foreach>
+						</if>
+		<!-- 				<if test="checkSummaryCode !=null and checkSummaryCode !=''"> -->
+		<!-- 				   and  a.CHECK_SUMMARY_CODE=#{checkSummaryCode,jdbcType=VARCHAR} -->
+		<!-- 				</if> -->
+		<!-- 				<if test="patName !=null and patName !=''"> -->
+		<!-- 			       and a.PAT_NAME like concat(concat('%',#{patName,jdbcType=VARCHAR}),'%') -->
+		<!-- 			    </if> -->
+		<!-- 				<if test="patSexCode !=null and patSexCode !=''"> -->
+		<!-- 				   and a.PAT_SEX_CODE=#{patSexCode,jdbcType=VARCHAR} -->
+		<!-- 				</if> -->
+						<if test="checkApplyStartTime !=null and checkApplyEndTime !=null">
+					     	and  a.CHECK_APPLY_TIME &gt;= #{checkApplyStartTime,jdbcType=TIMESTAMP}
+					     	and a.CHECK_APPLY_TIME &lt;= #{checkApplyEndTime,jdbcType=TIMESTAMP}
+						</if>
+		<!-- 				<if test="checkApplyDoc !=null and checkApplyDoc !=''"> -->
+		<!-- 			        and  a.CHECK_APPLY_DOC like concat(concat('%',#{checkApplyDoc,jdbcType=VARCHAR}),'%') -->
+		<!-- 			    </if> -->
+		<!-- 			    <if test="checkReportDr !=null and checkReportDr !=''"> -->
+		<!-- 			        and  a.CHECK_REPORT_DR like concat(concat('%',#{checkReportDr,jdbcType=VARCHAR}),'%') -->
+		<!-- 			    </if> -->
+		<!-- 			    <if test="checkAuditDr !=null and checkAuditDr !=''"> -->
+		<!-- 			        and  a.CHECK_AUDIT_DR like concat(concat('%',#{checkAuditDr,jdbcType=VARCHAR}),'%') -->
+		<!-- 			    </if> -->
+						<if test="checkApplyHospCode !=null and checkApplyHospCode !=''">
+						    and  a.CHECK_APPLY_HOSP_CODE=#{checkApplyHospCode,jdbcType=VARCHAR}
+						</if>
+						<if test="checkRepGroupId !=null and checkRepGroupId !=''">
+						    and  a.CHECK_REP_GROUP_ID=#{checkRepGroupId,jdbcType=VARCHAR}
+						</if>
+		<!-- 				<if test="checkParts !=null and checkParts !=''"> -->
+		<!-- 				    and  a.CHECK_PARTS like concat(concat('%',#{checkParts,jdbcType=VARCHAR}),'%') -->
+		<!-- 				</if> -->
+		<!-- 				<if test="reprcdImpression1 !=null and reprcdImpression1 !=''"> -->
+		<!-- 				    and a.REPRCD_IMPRESSION1 like concat(concat('%',#{reprcdImpression1,jdbcType=VARCHAR}),'%') -->
+		<!-- 				</if> -->
+		<!-- 				<if test="reprcdHp !=null and reprcdHp !=''"> -->
+		<!-- 				    and  a.REPRCD_HP=#{reprcdHp,jdbcType=VARCHAR} -->
+		<!-- 				</if> -->
+					</where>
+					group by CHECK_STATUS_CODE
+				) b on a.id=b.CHECK_STATUS_CODE 
+				<where>
+				  a.code='checkStatus'
+				</where>
      </select>
      
      <select id="queryPrintWorklist"  parameterType="com.jfhealthcare.modules.apply.request.PrintWorklistRequest" resultMap="ResponsePrintMap">

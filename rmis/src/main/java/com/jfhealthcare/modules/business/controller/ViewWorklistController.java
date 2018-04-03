@@ -77,42 +77,30 @@ public class ViewWorklistController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST,path="/count")
-	@ApiOperation(value = "worklist数量统计查询", notes = "worklist数量统计查询详情")
-	public BaseResponse queryCountViewWorklist(@RequestBody ViewWorklistRequest viewWorklistRequest) {
+//	@RequestMapping(method = RequestMethod.POST,path="/count")
+//	@ApiOperation(value = "worklist数量统计查询", notes = "worklist数量统计查询详情")
+//	public BaseResponse queryCountViewWorklist(@RequestBody ViewWorklistRequest viewWorklistRequest) {
+//		try {
+//			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryCountViewWorklist(viewWorklistRequest);
+//			return BaseResponse.getSuccessResponse(viewWorklistResponse);
+//		}catch (Exception e) {
+//			log.error("worklist数量统计查询!", e);
+//			return BaseResponse.getFailResponse("worklist数量统计查询失败!");
+//		}
+//	}
+	
+	
+	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
+	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
+	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum) {
 		try {
-			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryCountViewWorklist(viewWorklistRequest);
+			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum);
 			return BaseResponse.getSuccessResponse(viewWorklistResponse);
 		}catch (Exception e) {
-			log.error("worklist数量统计查询!", e);
-			return BaseResponse.getFailResponse("worklist数量统计查询失败!");
+			log.error("worklist单个查询!", e);
+			return BaseResponse.getFailResponse("worklist单个查询失败!");
 		}
 	}
-	
-	
-//	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
-//	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
-//	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum) {
-//		try {
-//			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum);
-//			return BaseResponse.getSuccessResponse(viewWorklistResponse);
-//		}catch (Exception e) {
-//			log.error("worklist单个查询!", e);
-//			return BaseResponse.getFailResponse("worklist单个查询失败!");
-//		}
-//	}
-	//TODO
-//	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
-//	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
-//	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum,@LoginUser LoginUserEntity loginUserEntity) {
-//		try {
-//			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryOneViewWorklist(checkAccessionNum,loginUserEntity);
-//			return BaseResponse.getSuccessResponse(viewWorklistResponse);
-//		}catch (Exception e) {
-//			log.error("worklist单个查询!", e);
-//			return BaseResponse.getFailResponse("worklist单个查询失败!");
-//		}
-//	}
 	
 	@RequestMapping(method = RequestMethod.GET,path="/repimage/{repUid}")
 	@ApiOperation(value = "worklist查询报告贴图", notes = "worklist查询报告贴图详情")
@@ -176,14 +164,17 @@ public class ViewWorklistController {
 			ValidatorUtils.validateEntity(viewWorklistRequest, Edit.class);
 			if(StringUtils.equals("isOpen",viewWorklistRequest.getCheckBut() )) {
 				//判断是不是第一次打开
-				
-				ViewWorklistResponse viewWorklistResponse = viewWorklistService.queryOneViewWorklist(viewWorklistRequest.getCheckAccessionNum(), loginUserEntity);
-				Map<String, String> btnsMap = viewWorklistResponse.getBtnsMap();
-				if(StringUtils.equals("0",btnsMap.get("isOpen")) || 
-						(StringUtils.equals("1",btnsMap.get("isOpen")) && StringUtils.equals("0",btnsMap.get("isWork")))) {//不可打开 直接返回
+				Map<String, String> btnsMap = viewWorklistService.queryBtnsByCheckAccessionNum(viewWorklistRequest.getCheckAccessionNum(),loginUserEntity);
+				ViewWorklistResponse viewWorklistResponse =new ViewWorklistResponse();
+				if(StringUtils.equals("0",btnsMap.get("isOpen"))) {//不可打开 直接返回
+					viewWorklistResponse.setBtnsMap(btnsMap);
 					return BaseResponse.getSuccessResponse(viewWorklistResponse);
 				}else {
-					viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
+					if(StringUtils.equals("1",btnsMap.get("isWork"))) {//不需要操作的  不更新
+						viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
+					}
+					viewWorklistResponse = viewWorklistService.queryOneViewWorklist(viewWorklistRequest.getCheckAccessionNum());
+					viewWorklistResponse.setBtnsMap(btnsMap);
 					return BaseResponse.getSuccessResponse(viewWorklistResponse);
 				}
 			}else {
