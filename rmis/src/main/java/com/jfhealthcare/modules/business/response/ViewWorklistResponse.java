@@ -38,7 +38,7 @@ public class ViewWorklistResponse {
     @Column(name = "CHECK_VJ_FLAG")
     private Boolean checkVjFlag;
     
-    private Boolean isHaveImage;
+    private String  imageNum;
     
     /**
      * 检查流水号

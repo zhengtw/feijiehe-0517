@@ -92,7 +92,7 @@
     <result column="PAT_ONLY_ID" property="patOnlyId" jdbcType="VARCHAR" />
     <result column="CHECK_JZ_FLAG" property="checkJzFlag" jdbcType="BIT" />
     <result column="CHECK_VJ_FLAG" property="checkVjFlag" jdbcType="BIT" />
-    <result column="IS_HAVE_IMAGE" property="isHaveImage" jdbcType="BIT" />
+    <result column="imageNum" property="imageNum" jdbcType="VARCHAR" />
     <result column="CHECK_ACCESSION_NUM" property="checkAccessionNum" jdbcType="VARCHAR" />
     <result column="CHECK_STATUS_CODE" property="checkStatusCode" jdbcType="VARCHAR" />
     <result column="CHECK_STATUS" property="checkStatus" jdbcType="VARCHAR" />
@@ -197,9 +197,7 @@
   </select>
   
    <select id="queryViewWorklist"  parameterType="com.jfhealthcare.modules.business.request.ViewWorklistRequest" resultMap="ResponseMap">
-     select <include refid="Base_Column_List"/>,
-		case when z.imageNum>0 then 1
-		else 0 end IS_HAVE_IMAGE 
+     select <include refid="Base_Column_List"/>,imageNum
 		 from (
 		       select * from (
 				    select *,
@@ -394,6 +392,7 @@
 				<where>
 				  a.code='checkStatus'
 				</where>
+				order by a.id ASC
      </select>
      
      <select id="queryPrintWorklist"  parameterType="com.jfhealthcare.modules.apply.request.PrintWorklistRequest" resultMap="ResponsePrintMap">
