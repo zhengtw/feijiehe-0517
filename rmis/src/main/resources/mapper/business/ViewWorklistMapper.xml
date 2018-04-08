@@ -180,21 +180,6 @@
     CHECK_REPORT_TIME,CHECK_AUDIT_DR,CHECK_AUDIT_DR_NAME,CHECK_AUDIT_DR_SIGNA,CHECK_AUDIT_TIME,CHECK_PRINT_DR_SIGNA,
     CHECK_PRINT_DR,CHECK_PRINT_TIME,REPRCD_REP_UID,REPRCD_FINDING1,REPRCD_FINDING2,REPRCD_FINDING3,REPRCD_IMPRESSION1,REPRCD_IMPRESSION2,REPRCD_IMPRESSION3,REPRCD_HP,CHECK_REFUSE_NAME
    </sql>
-   
-   <select id="queryHistoryReport"  parameterType="com.jfhealthcare.modules.business.request.ViewWorklistRequest" resultMap="ResponseMap">
-     SELECT *,
-      (select name from sys_operator_dtl where logincode=a.CHECK_REPORT_DR) CHECK_REPORT_DR_NAME,
-      (select name from sys_operator_dtl where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_NAME
-      FROM view_worklist a
-     <where>
-        a.CHECK_APPLY_HOSP_CODE=#{checkApplyHospCode,jdbcType=VARCHAR}
-		AND a.PAT_NAME = #{patName,jdbcType=VARCHAR}
-		AND a.CHECK_STATUS_CODE IN ('3557','3556')
-		AND a.CHECK_ACCESSION_NUM !=#{checkAccessionNum,jdbcType=VARCHAR}
-		AND a.CHECK_APPLY_TIME BETWEEN DATE_SUB(now(),INTERVAL 3 YEAR) and NOW()
-     </where>
-		ORDER BY CHECK_APPLY_TIME DESC
-  </select>
   
    <select id="queryViewWorklist"  parameterType="com.jfhealthcare.modules.business.request.ViewWorklistRequest" resultMap="ResponseMap">
      select <include refid="Base_Column_List"/>,

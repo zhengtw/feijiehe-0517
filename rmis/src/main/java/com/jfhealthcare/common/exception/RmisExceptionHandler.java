@@ -25,11 +25,11 @@ public class RmisExceptionHandler {
 	@ExceptionHandler(RmisException.class)
 	public BaseResponse handleRRException(RmisException e){
 		if("token不能为空".equals(e.getMessage()) || "token失效，请重新登录".equals(e.getMessage())){
-//			log.error("token异常：=========="+e.getMessage()+"==========");
+			log.error("token异常：=========="+e.getMessage()+"==========");
 			return BaseResponse.getFailResponse(e.getCode(), e.getMessage());
 		}
 		if("version不能为空".equals(e.getMessage()) || "版本更新，需要升级".equals(e.getMessage())){
-//			log.error("版本异常：=========="+e.getMessage()+"==========");
+			log.error("版本异常：=========="+e.getMessage()+"==========");
 			return BaseResponse.getFailResponse(e.getCode(), e.getMessage());
 		}
 		log.error(e.getMessage(), e);

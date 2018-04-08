@@ -22,10 +22,8 @@ import com.jfhealthcare.common.exception.RmisException;
 import com.jfhealthcare.common.utils.HttpClientUtils;
 import com.jfhealthcare.common.validator.ValidatorUtils;
 import com.jfhealthcare.common.validator.group.Edit;
-import com.jfhealthcare.common.validator.group.Query;
 import com.jfhealthcare.modules.business.entity.AiCheckEntity;
 import com.jfhealthcare.modules.business.entity.RepImage;
-import com.jfhealthcare.modules.business.entity.ViewWorklist;
 import com.jfhealthcare.modules.business.request.CheckApiRequest;
 import com.jfhealthcare.modules.business.request.ViewWorklistRequest;
 import com.jfhealthcare.modules.business.response.CheckApiResponse;
@@ -104,33 +102,6 @@ public class ViewWorklistController {
 		}catch (Exception e) {
 			log.error("worklist查询报告贴图失败!", e);
 			return BaseResponse.getFailResponse("worklist查询报告贴图失败!");
-		}
-	}
-	
-	@ApiOperation(value = "查询历史报告", notes = "查询历史报告详情")
-	@RequestMapping(method = RequestMethod.POST,path="/historyReport")
-	public BaseResponse queryHistoryReport(@RequestBody ViewWorklistRequest viewWorklistRequest) {
-		try {
-			
-			ValidatorUtils.validateEntity(viewWorklistRequest, Query.class);
-			List<ViewWorklistResponse> vwls=viewWorklistService.queryHistoryReport(viewWorklistRequest);
-			return BaseResponse.getSuccessResponse(vwls);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return BaseResponse.getFailResponse(e.getMessage());
-		}
-	}
-	
-	@ApiOperation(value = "查询历史报告影像", notes = "查询历史报告影像详情")
-	@RequestMapping(method = RequestMethod.GET,path="/historyReport/{checkNum}")
-	public BaseResponse queryHistoryReportImage(@PathVariable("checkNum")String checkNum) {
-		try {
-			
-			String sopUrl=viewWorklistService.queryHistoryReportImage(checkNum);
-			return BaseResponse.getSuccessResponse(sopUrl);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return BaseResponse.getFailResponse(e.getMessage());
 		}
 	}
 	

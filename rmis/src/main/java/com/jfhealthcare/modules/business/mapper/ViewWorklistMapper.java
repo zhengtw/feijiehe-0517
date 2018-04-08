@@ -23,6 +23,4 @@ public interface ViewWorklistMapper extends MyMapper<ViewWorklist> {
 	List<Map<String, Object>> queryPrintCountWorklist(PrintWorklistRequest vwlr);
 
 	String queryApplyWorkListToRemind(@Param(value="checkNum")String checkNum);
-
-	List<ViewWorklistResponse> queryHistoryReport(ViewWorklistRequest vr);
 }
