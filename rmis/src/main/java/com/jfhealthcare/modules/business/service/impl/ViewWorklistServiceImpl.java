@@ -100,15 +100,8 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		List<ViewWorklistResponse> vwls=viewWorklistMapper.queryViewWorklist(vwlr);
 		MyPageInfo<ViewWorklistResponse> pageInfo = new MyPageInfo<ViewWorklistResponse>(vwls);
 		ViewWorklistResponse viewWorklistResponse =new ViewWorklistResponse();
-		System.out.println("+++++++isbutton++++++"+vwlr.getIsButton()+"++++++++++++++");
 		if("1".equals(vwlr.getIsButton())) {
-			System.out.println("+++++++++++++ViewWorklistRequest+++++++++++++");
-			System.out.println(JSON.toJSONString(vwlr));
-			System.out.println("+++++++++++++ViewWorklistRequest+++++++++++++");
 			viewWorklistResponse = viewWorklistMapper.queryCountViewWorklist(vwlr);
-			System.out.println("+++++++++++++viewWorklistResponse+++++++++++++");
-			System.out.println(JSON.toJSONString(viewWorklistResponse));
-			System.out.println("+++++++++++++viewWorklistResponse+++++++++++++");
 		}
 		pageInfo.setValue(viewWorklistResponse);
 		return pageInfo;

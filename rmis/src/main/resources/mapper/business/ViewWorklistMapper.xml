@@ -193,7 +193,7 @@
 			        (select name from sys_operator_dtl where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_NAME,
 			        (select signature from sys_operator where logincode=a.CHECK_AUDIT_DR) CHECK_AUDIT_DR_SIGNA,
 			        (select signature from sys_operator where logincode=a.CHECK_PRINT_DR) CHECK_PRINT_DR_SIGNA,
-					(select count(c.ID) from rep_record b,rep_image c where b.ACCESSION_NUM=a.CHECK_ACCESSION_NUM and c.REP_UID=b.REP_UID) imageNum
+					a.CHECK_IMG_NUM imageNum
 					from view_worklist a
 					<where>
 					    <if test="checkJzFlag !=null">
@@ -207,6 +207,9 @@
 						</if>
 						<if test="checkNum !=null and checkNum !=''">
 						   and a.CHECK_NUM=#{checkNum,jdbcType=VARCHAR}
+						</if>
+						<if test="checkStatusCodes ==null or checkStatusCodes.size &lt;= 0">
+						   and a.CHECK_STATUS_CODE != '3560'
 						</if>
 						<if test="checkStatusCodes !=null and checkStatusCodes.size>0">
 						   and a.CHECK_STATUS_CODE in
