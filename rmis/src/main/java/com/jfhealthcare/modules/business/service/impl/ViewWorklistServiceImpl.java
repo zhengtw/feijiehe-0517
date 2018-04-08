@@ -1,13 +1,9 @@
 package com.jfhealthcare.modules.business.service.impl;
 
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +18,6 @@ import com.github.pagehelper.PageHelper;
 import com.jfhealthcare.common.entity.LoginUserEntity;
 import com.jfhealthcare.common.entity.MyPageInfo;
 import com.jfhealthcare.common.enums.CheckStatusEnum;
-import com.jfhealthcare.common.exception.RmisException;
 import com.jfhealthcare.common.utils.DateUtils;
 import com.jfhealthcare.common.utils.NameUtils;
 import com.jfhealthcare.common.validator.Assert;
@@ -129,34 +124,9 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		List<ViewWorklistResponse> vwls=viewWorklistMapper.queryViewWorklist(vwlr);
 		if(!CollectionUtils.isEmpty(vwls)){
 			ViewWorklistResponse viewWorklistResponse = vwls.get(0);
-			String reprcdRepUid = viewWorklistResponse.getReprcdRepUid();
-			RepImage repImage=new RepImage();
-			repImage.setRepUid(reprcdRepUid);
-			List<RepImage> repImages = repImageMapper.select(repImage);
-			List<Map<String, String>> uidmaps=new ArrayList<Map<String, String>>();
-			for (RepImage rimg : repImages) {
-				String[] splits = StringUtils.split(rimg.getImgPage(), "&");
-				Map<String, String> uidmap=new HashMap<String, String>();
-				for (String uids : splits) {
-					String[] keyAndUid = uids.split("=");
-					String uid = keyAndUid[1];
-					if("studyUID".equals(keyAndUid[0])) {
-						uidmap.put("StudyUid", uid);
-					}else if("seriesUID".equals(keyAndUid[0])) {
-						uidmap.put("SeriesUid", uid);
-					}else if("objectUID".equals(keyAndUid[0])) {
-						uidmap.put("ObjectUid", uid);
-					}
-				}
-				uidmaps.add(uidmap);
-			}
-			try {
-				String encode = URLEncoder.encode(JSON.toJSONString(uidmaps),"UTF-8");
-				viewWorklistResponse.setSopUrl(webViewUrl+encode);
-				log.info("web view url:{}", uidmaps);
-			} catch (Exception e) {
-				throw new RmisException("web view encode exception!");
-			}
+			String checkNum = viewWorklistResponse.getCheckNum();
+			ApplyWorklist applyWorklist = applyWorklistMapper.selectByPrimaryKey(checkNum);
+			viewWorklistResponse.setSopUrl(webViewUrl+applyWorklist.getStudyUid());
 			return viewWorklistResponse;
 		}
 		return new ViewWorklistResponse();
