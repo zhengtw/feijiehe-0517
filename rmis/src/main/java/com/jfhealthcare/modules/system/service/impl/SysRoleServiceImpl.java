@@ -35,8 +35,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 	SysOperRoleMapper sysOperRoleMapper;
 	@Autowired
 	SysRightModsetService sysRightModsetService;
-	@Autowired
-	SysRightModuleService sysRightModuleService;
+	/*@Autowired
+	SysRightModuleService sysRightModuleService;*/
 	@Override
 	public PageInfo<SysRole> querySysRole(Integer pageNum, Integer pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
@@ -61,10 +61,10 @@ public class SysRoleServiceImpl implements SysRoleService {
 			sysRoleMapper.updateByPrimaryKeySelective(sysRole);
 			//同时更新表 菜单 角色 用户 表
 			sysRightModsetService.updateSysRightModset(id,null,2);
-			List<SysOperRole> selects = sysOperRoleMapper.selectByExample(example);
+			/*List<SysOperRole> selects = sysOperRoleMapper.selectByExample(example);
 			for (SysOperRole sysOperRole : selects) {
 				sysRightModuleService.restartSysRightModule(sysOperRole.getLogincode());
-			}
+			}*/
 			//删除角色和用户表
 			sysOperRoleMapper.deleteByExample(example);
 		}

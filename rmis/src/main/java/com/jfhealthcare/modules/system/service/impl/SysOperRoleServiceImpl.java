@@ -1,6 +1,7 @@
 package com.jfhealthcare.modules.system.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -16,6 +17,8 @@ import com.jfhealthcare.modules.system.entity.SysOperatorDtl;
 import com.jfhealthcare.modules.system.mapper.SysDepartmentMapper;
 import com.jfhealthcare.modules.system.mapper.SysOperRoleMapper;
 import com.jfhealthcare.modules.system.mapper.SysOperatorDtlMapper;
+import com.jfhealthcare.modules.system.mapper.SysOperatorMapper;
+import com.jfhealthcare.modules.system.response.OperatorResponse;
 import com.jfhealthcare.modules.system.response.OperatorRoleResponse;
 import com.jfhealthcare.modules.system.service.SysOperRoleService;
 
@@ -30,6 +33,8 @@ public class SysOperRoleServiceImpl implements SysOperRoleService {
 	private SysOperatorDtlMapper sysOperatorDtlMapper;
 	@Autowired
 	private SysDepartmentMapper sysDepartmentMapper;
+	@Autowired
+	private SysOperatorMapper sysOperatorMapper;
 
 	@Override
 	public PageInfo<SysOperRole> querySysOperRole(Integer pageNum, Integer pageSize) {
@@ -61,8 +66,12 @@ public class SysOperRoleServiceImpl implements SysOperRoleService {
 			operatorRoleResponse.setRoleId(sysOperRole.getRoleId());
 			if (selectOne == null || selectOne.size() < 1 || selectOne.get(0) == null) {
 			} else {
+				//从人员表中获取人员姓名
+				HashMap<String,Object> pmap = new HashMap<String,Object>();
+				pmap.put("logincode",sysOperRole.getLogincode());
+				List<OperatorResponse> queryOperatorListByParameter = sysOperatorMapper.queryOperatorAllInfoByLogincode(pmap);
 				operatorRoleResponse.setDeptId(selectOne.get(0).getDepId());
-				operatorRoleResponse.setName(selectOne.get(0).getName());
+				operatorRoleResponse.setName(queryOperatorListByParameter.get(0).getName());
 
 				SysDepartment selectByPrimaryKey = sysDepartmentMapper.selectByPrimaryKey(selectOne.get(0).getDepId());
 				if (selectByPrimaryKey != null) {

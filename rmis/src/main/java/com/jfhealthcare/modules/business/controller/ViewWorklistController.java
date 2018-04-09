@@ -2,6 +2,7 @@ package com.jfhealthcare.modules.business.controller;
 
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,14 @@ import com.jfhealthcare.common.base.ValueResponse;
 import com.jfhealthcare.common.entity.LoginUserEntity;
 import com.jfhealthcare.common.exception.RmisException;
 import com.jfhealthcare.common.utils.HttpClientUtils;
+import com.jfhealthcare.common.validator.Assert;
 import com.jfhealthcare.common.validator.ValidatorUtils;
 import com.jfhealthcare.common.validator.group.Edit;
+import com.jfhealthcare.common.validator.group.Query;
 import com.jfhealthcare.modules.business.entity.AiCheckEntity;
 import com.jfhealthcare.modules.business.entity.RepImage;
+import com.jfhealthcare.modules.business.entity.ViewWorklist;
+import com.jfhealthcare.modules.business.mapper.ViewWorklistMapper;
 import com.jfhealthcare.modules.business.request.CheckApiRequest;
 import com.jfhealthcare.modules.business.request.ViewWorklistRequest;
 import com.jfhealthcare.modules.business.response.CheckApiResponse;
@@ -56,6 +61,9 @@ public class ViewWorklistController {
 	@Autowired
 	private ViewWorklistService viewWorklistService;
 	
+	@Autowired
+	private ViewWorklistMapper viewWorklistMapper;
+	
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "worklist查询", notes = "worklist查询详情")
@@ -69,17 +77,18 @@ public class ViewWorklistController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST,path="/count")
-	@ApiOperation(value = "worklist数量统计查询", notes = "worklist数量统计查询详情")
-	public BaseResponse queryCountViewWorklist(@RequestBody ViewWorklistRequest viewWorklistRequest) {
-		try {
-			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryCountViewWorklist(viewWorklistRequest);
-			return BaseResponse.getSuccessResponse(viewWorklistResponse);
-		}catch (Exception e) {
-			log.error("worklist数量统计查询!", e);
-			return BaseResponse.getFailResponse("worklist数量统计查询失败!");
-		}
-	}
+//	@RequestMapping(method = RequestMethod.POST,path="/count")
+//	@ApiOperation(value = "worklist数量统计查询", notes = "worklist数量统计查询详情")
+//	public BaseResponse queryCountViewWorklist(@RequestBody ViewWorklistRequest viewWorklistRequest) {
+//		try {
+//			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryCountViewWorklist(viewWorklistRequest);
+//			return BaseResponse.getSuccessResponse(viewWorklistResponse);
+//		}catch (Exception e) {
+//			log.error("worklist数量统计查询!", e);
+//			return BaseResponse.getFailResponse("worklist数量统计查询失败!");
+//		}
+//	}
+	
 	
 	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
 	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
@@ -105,6 +114,33 @@ public class ViewWorklistController {
 		}
 	}
 	
+	@ApiOperation(value = "查询历史报告", notes = "查询历史报告详情")
+	@RequestMapping(method = RequestMethod.POST,path="/historyReport")
+	public BaseResponse queryHistoryReport(@RequestBody ViewWorklistRequest viewWorklistRequest) {
+		try {
+			
+			ValidatorUtils.validateEntity(viewWorklistRequest, Query.class);
+			List<ViewWorklistResponse> vwls=viewWorklistService.queryHistoryReport(viewWorklistRequest);
+			return BaseResponse.getSuccessResponse(vwls);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return BaseResponse.getFailResponse(e.getMessage());
+		}
+	}
+	
+	@ApiOperation(value = "查询历史报告影像", notes = "查询历史报告影像详情")
+	@RequestMapping(method = RequestMethod.GET,path="/historyReport/{checkNum}")
+	public BaseResponse queryHistoryReportImage(@PathVariable("checkNum")String checkNum) {
+		try {
+			
+			String sopUrl=viewWorklistService.queryHistoryReportImage(checkNum);
+			return BaseResponse.getSuccessResponse(sopUrl);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return BaseResponse.getFailResponse(e.getMessage());
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.DELETE,path="/repimage/{repImageId}")
 	@ApiOperation(value = "worklist删除报告贴图", notes = "worklist删除报告贴图详情")
 	public BaseResponse deleteRepImageByRepImageId(@PathVariable("repImageId")String repImageId) {
@@ -117,15 +153,33 @@ public class ViewWorklistController {
 		}
 	}
 	
+	
+	
 	@SysLogAop("更新报告")
 	@ApiOperation(value = "更新报告", notes = "更新报告详情")
 	@RequestMapping(method = RequestMethod.POST,path="/report")
 	public BaseResponse updateCheckListIndex(@RequestBody ViewWorklistRequest viewWorklistRequest,@LoginUser LoginUserEntity loginUserEntity) {
 		try {
-			
 			log.info(loginUserEntity.getSysOperator().getLogincode()+"：处理报告开始..........");
 			ValidatorUtils.validateEntity(viewWorklistRequest, Edit.class);
-			viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
+			if(StringUtils.equals("isOpen",viewWorklistRequest.getCheckBut() )) {
+				//判断是不是第一次打开
+				Map<String, String> btnsMap = viewWorklistService.queryBtnsByCheckAccessionNum(viewWorklistRequest.getCheckAccessionNum(),loginUserEntity);
+				ViewWorklistResponse viewWorklistResponse =new ViewWorklistResponse();
+				if(StringUtils.equals("0",btnsMap.get("isOpen"))) {//不可打开 直接返回
+					viewWorklistResponse.setBtnsMap(btnsMap);
+					return BaseResponse.getSuccessResponse(viewWorklistResponse);
+				}else {
+					if(StringUtils.equals("1",btnsMap.get("isWork"))) {//不需要操作的  不更新
+						viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
+					}
+					viewWorklistResponse = viewWorklistService.queryOneViewWorklist(viewWorklistRequest.getCheckAccessionNum());
+					viewWorklistResponse.setBtnsMap(btnsMap);
+					return BaseResponse.getSuccessResponse(viewWorklistResponse);
+				}
+			}else {
+				viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
+			}
 			log.info(loginUserEntity.getSysOperator().getLogincode()+"：处理报告结束.........");
 			return BaseResponse.getSuccessResponse();
 		} catch (RmisException e) {

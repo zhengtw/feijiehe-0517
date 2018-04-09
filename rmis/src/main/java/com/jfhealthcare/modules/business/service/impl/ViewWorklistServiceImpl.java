@@ -18,12 +18,15 @@ import org.springframework.util.ObjectUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jfhealthcare.common.entity.LoginUserEntity;
 import com.jfhealthcare.common.entity.MyPageInfo;
+import com.jfhealthcare.common.enums.AdminEnum;
 import com.jfhealthcare.common.enums.CheckStatusEnum;
-import com.jfhealthcare.common.exception.RmisException;
+import com.jfhealthcare.common.properties.BtnPropertiesConfig;
 import com.jfhealthcare.common.utils.DateUtils;
 import com.jfhealthcare.common.utils.NameUtils;
+import com.jfhealthcare.common.utils.TransferUtils;
 import com.jfhealthcare.common.validator.Assert;
 import com.jfhealthcare.modules.apply.entity.ApplyWorklist;
 import com.jfhealthcare.modules.apply.mapper.ApplyWorklistMapper;
@@ -81,6 +84,9 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 	@Autowired
 	private SysDictDtlService sysDictDtlService;
 	
+	@Autowired
+	private BtnPropertiesConfig btnPropertiesConfig;
+	
 	@Value("${dcm.webview.url}")
 	private String webViewUrl;
 	
@@ -98,69 +104,150 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		PageHelper.startPage(vwlr.getPageNum(), vwlr.getPageSize());
 		List<ViewWorklistResponse> vwls=viewWorklistMapper.queryViewWorklist(vwlr);
 		MyPageInfo<ViewWorklistResponse> pageInfo = new MyPageInfo<ViewWorklistResponse>(vwls);
-		ViewWorklistResponse viewWorklistResponse =new ViewWorklistResponse();
 		if("1".equals(vwlr.getIsButton())) {
-			viewWorklistResponse = viewWorklistMapper.queryCountViewWorklist(vwlr);
+			List<Map<String, Object>> queryCountViewWorklist = viewWorklistMapper.queryCountViewWorklist(vwlr);
+			pageInfo.setOtherValue(queryCountViewWorklist);
 		}
-		pageInfo.setValue(viewWorklistResponse);
+		
 		return pageInfo;
 	}
 	
-	@Override
-	public ViewWorklistResponse queryCountViewWorklist(ViewWorklistRequest vwlr) {
-		if(vwlr.getCheckDate()!=null){
-			if(vwlr.getCheckApplyStartTime()==null || vwlr.getCheckApplyEndTime()==null){
-				List<Date> checkTime = DateUtils.getCheckTime(vwlr.getCheckDate());
-				if(!ObjectUtils.isEmpty(checkTime)){
-					vwlr.setCheckApplyStartTime(checkTime.get(0));
-					vwlr.setCheckApplyEndTime(checkTime.get(1));
-				}
-			}
-		}
-		ViewWorklistResponse viewWorklistResponse = viewWorklistMapper.queryCountViewWorklist(vwlr);
-		return viewWorklistResponse;
-	}
+//	@Override
+//	public ViewWorklistResponse queryCountViewWorklist(ViewWorklistRequest vwlr) {
+//		if(vwlr.getCheckDate()!=null){
+//			if(vwlr.getCheckApplyStartTime()==null || vwlr.getCheckApplyEndTime()==null){
+//				List<Date> checkTime = DateUtils.getCheckTime(vwlr.getCheckDate());
+//				if(!ObjectUtils.isEmpty(checkTime)){
+//					vwlr.setCheckApplyStartTime(checkTime.get(0));
+//					vwlr.setCheckApplyEndTime(checkTime.get(1));
+//				}
+//			}
+//		}
+//		ViewWorklistResponse viewWorklistResponse = viewWorklistMapper.queryCountViewWorklist(vwlr);
+//		return viewWorklistResponse;
+//	}
+
 
 	@Override
 	public ViewWorklistResponse queryOneViewWorklist(String checkAccessionNum) {
 		ViewWorklistRequest vwlr=new ViewWorklistRequest();
 		vwlr.setCheckAccessionNum(checkAccessionNum);
-		List<ViewWorklistResponse> vwls=viewWorklistMapper.queryViewWorklist(vwlr);
-		if(!CollectionUtils.isEmpty(vwls)){
-			ViewWorklistResponse viewWorklistResponse = vwls.get(0);
-			String reprcdRepUid = viewWorklistResponse.getReprcdRepUid();
-			RepImage repImage=new RepImage();
-			repImage.setRepUid(reprcdRepUid);
-			List<RepImage> repImages = repImageMapper.select(repImage);
-			List<Map<String, String>> uidmaps=new ArrayList<Map<String, String>>();
-			for (RepImage rimg : repImages) {
-				String[] splits = StringUtils.split(rimg.getImgPage(), "&");
-				Map<String, String> uidmap=new HashMap<String, String>();
-				for (String uids : splits) {
-					String[] keyAndUid = uids.split("=");
-					String uid = keyAndUid[1];
-					if("studyUID".equals(keyAndUid[0])) {
-						uidmap.put("StudyUid", uid);
-					}else if("seriesUID".equals(keyAndUid[0])) {
-						uidmap.put("SeriesUid", uid);
-					}else if("objectUID".equals(keyAndUid[0])) {
-						uidmap.put("ObjectUid", uid);
-					}
-				}
-				uidmaps.add(uidmap);
-			}
-			try {
-				String encode = URLEncoder.encode(JSON.toJSONString(uidmaps),"UTF-8");
-				viewWorklistResponse.setSopUrl(webViewUrl+encode);
-				log.info("web view url:{}", uidmaps);
-			} catch (Exception e) {
-				throw new RmisException("web view encode exception!");
-			}
-			return viewWorklistResponse;
+		List<ViewWorklistResponse> vs=viewWorklistMapper.queryOneViewWorklist(vwlr);
+		if(!CollectionUtils.isEmpty(vs)){
+			ViewWorklistResponse viewWorklist = vs.get(0);
+			String checkNum = viewWorklist.getCheckNum();
+			ApplyWorklist applyWorklist = applyWorklistMapper.selectByPrimaryKey(checkNum);
+			viewWorklist.setSopUrl(webViewUrl+applyWorklist.getStudyUid());
+			return viewWorklist;
 		}
 		return new ViewWorklistResponse();
 	}
-
+	
+	@Override
+	public Map<String, String> queryBtnsByCheckAccessionNum(String checkAccessionNum, LoginUserEntity user) {
+		ViewWorklistRequest vwlr=new ViewWorklistRequest();
+		vwlr.setCheckAccessionNum(checkAccessionNum);
+		List<ViewWorklistResponse> vwls=viewWorklistMapper.queryViewWorklist(vwlr);
+		Map<String, String> allBtnsMap = btnPropertiesConfig.getBtnsMap();
+		
+		Map<String, String> btnsMap=getBtns(null);
+		if(!CollectionUtils.isEmpty(vwls)) {
+			//1.确定按钮状态   
+			ViewWorklistResponse viewWorklistResponse = vwls.get(0);
+			String checkStatusCode = viewWorklistResponse.getCheckStatusCode();//检查状态
+			String adminCode = user.getSysOperator().getAdminCode();//审核权限
+			String loginCode = user.getSysOperator().getLogincode();//登录账号
+			String btn = allBtnsMap.get(adminCode+checkStatusCode);
+			if(StringUtils.isNoneBlank(btn)) {
+				//返回结果不为空  ：  匹配中有其存在的按钮  直接返回
+				btnsMap = getBtns(btn);
+			}else {
+				//返回结果为空  ：   匹配中没有存在的按钮
+				/**
+				 * 报告中： 自己的可打开 可操作   其他权限通待报告     其他人的不可打开
+				 * 审核中： 自己的可打开 可操作   其他权限通待审核     其他人的不可打开
+				 * 暂存中： 状态取消   按钮保留，功能保留为保存
+				 */
+				//报告中
+				if(CheckStatusEnum.REPORTING.getStatusCode().equals(checkStatusCode)) {
+					//自己的
+					if(loginCode.equals(viewWorklistResponse.getCheckReportDr())) {
+						String reportingBtn = allBtnsMap.get(adminCode+CheckStatusEnum.PENDING_REPORT.getStatusCode());
+						btnsMap = getBtns(reportingBtn);
+					}else {
+					//不是自己的
+						btnsMap.put("isOpen", "0");
+					}
+				//审核中
+				}else if(CheckStatusEnum.REVIEWING.getStatusCode().equals(checkStatusCode)) {
+					//自己的
+					if(loginCode.equals(viewWorklistResponse.getCheckAuditDr())) {
+						String reviewingBtn = allBtnsMap.get(adminCode+CheckStatusEnum.PENDING_ONE_REVIEW.getStatusCode());
+						btnsMap = getBtns(reviewingBtn);
+					}else {
+					//不是自己的
+						btnsMap.put("isOpen", "0");
+					}
+				//已作废
+				}else if(CheckStatusEnum.COMPLETE_ABANDONED.getStatusCode().equals(checkStatusCode)) {
+					btnsMap.put("isOpen", "0");
+				//待会报
+				}else if(CheckStatusEnum.PENGING_HUIZHENG_REPORT.getStatusCode().equals(checkStatusCode)) {
+					String huibaoBtn = allBtnsMap.get(adminCode+CheckStatusEnum.PENDING_REPORT.getStatusCode());
+					if(StringUtils.isNoneBlank(huibaoBtn)) {
+						btnsMap = getBtns(huibaoBtn);
+					}
+				//待会审
+				}else if(CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatusCode().equals(checkStatusCode)) {
+					String huishenBtn = allBtnsMap.get(adminCode+CheckStatusEnum.PENDING_ONE_REVIEW.getStatusCode());
+					if(StringUtils.isNoneBlank(huishenBtn)) {
+						btnsMap = getBtns(huishenBtn);
+					}
+				}
+			}
+		}
+		return btnsMap;
+	}
+	
+	private Map<String, String> getBtns(String newBtns) {
+		Map<String, String> btnsMap=new HashMap<String, String>() ;
+		String btnString = btnPropertiesConfig.getBtnsMap().get("00000000");
+		String[] allBtns = StringUtils.split(btnString,",");
+		for (String allbtn : allBtns) {
+			/**
+			 * 所有按钮初始时为不可用状态，除了 退出和预览
+			 */
+			if(StringUtils.equalsAny(allbtn, "isOpen","tc","yl")) {
+				btnsMap.put(allbtn, "1");
+			}else {
+				btnsMap.put(allbtn, "0");
+			}
+		}
+		/**
+		 * 给有权限的按钮复制为可使用状态
+		 */
+		if(StringUtils.isNotEmpty(newBtns)) {
+			String[] split = StringUtils.split(newBtns, ",");
+			for (String btn : split) {
+				btnsMap.put(btn, "1");
+			}
+		}
+		return btnsMap;
+	}
+	
+	
+	@Override
+	public List<ViewWorklistResponse> queryHistoryReport(ViewWorklistRequest vr) {
+		List<ViewWorklistResponse> vws=viewWorklistMapper.queryHistoryReport(vr);
+		return vws;
+	}
+	
+	@Override
+	public String queryHistoryReportImage(String checkNum) {
+		ApplyWorklist applyWorklist = applyWorklistMapper.selectByPrimaryKey(checkNum);
+		return webViewUrl+applyWorklist.getStudyUid();
+	}
+	
 	@Override
 	@Transactional
 	public void updateCheckListIndex(ViewWorklistRequest vmlr,LoginUserEntity loginUserEntity) {
@@ -176,103 +263,114 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		Assert.isListOnlyOne(repRecords, "诊断报告异常，请联系开发人员！");
 		RepRecord rrd = repRecords.get(0);
 		
-		Example example = new Example(BusinChecklistIndex.class);
-		Criteria createCriteria = example.createCriteria();
-		//第一次打开   报告中 审核中状态处理
-		//报告中
-		if(CheckStatusEnum.REPORTING.getStatusCode().equals(vmlr.getCheckStatusCode())){
-			createCriteria.andNotEqualTo("statusCode", CheckStatusEnum.REPORTING.getStatusCode());
-			createCriteria.andEqualTo("accessionNum", vmlr.getCheckAccessionNum());
-			
-			bCLI.setStatus(CheckStatusEnum.REPORTING.getStatus());
-			bCLI.setStatusCode(CheckStatusEnum.REPORTING.getStatusCode());
-			bCLI.setReportDr(NameUtils.getLoginCode());
-			bCLI.setReportTime(new Date());
-			int updateByExampleSelective = businChecklistIndexMapper.updateByExampleSelective(bCLI, example);
-			if(updateByExampleSelective==1){
-				updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.REPORTING.getStatus(),CheckStatusEnum.REPORTING.getStatusCode());
+		//2018 03 26 重构更新功能    以按钮传值为准
+		//isOpen,wctj,shxf,tc,jj,fq,zc,yl,zhz,zf,thcx: 打开 退回 拒绝 预览 暂存 转会诊 完成提交 完成下发 作废 退回重写
+		String statusCode = bCLI.getStatusCode();//当前状态值
+		String status = bCLI.getStatus();//当前状态
+		ViewWorklistResponse oldViewWorklist = vmlr.getOldViewWorklist();//打开前数据收集
+		String checkOldStatus = oldViewWorklist.getCheckStatusCode();//打开前报告状态
+		String checkBut = vmlr.getCheckBut();//按钮传值
+		Assert.isBlank(checkBut, "按钮状态不能为空！");
+		if(StringUtils.equals("isOpen", checkBut)) {
+			Example example = new Example(BusinChecklistIndex.class);
+			Criteria createCriteria = example.createCriteria();
+			//第一次打开   待报告     待会报
+			int updateByExampleSelective = 0;
+			if(StringUtils.equalsAny(statusCode,CheckStatusEnum.PENDING_REPORT.getStatusCode(),CheckStatusEnum.PENGING_HUIZHENG_REPORT.getStatusCode())  ) {
+				createCriteria.andNotEqualTo("statusCode", CheckStatusEnum.REPORTING.getStatusCode());
+				createCriteria.andEqualTo("accessionNum", vmlr.getCheckAccessionNum());
+				
+				bCLI.setStatus(CheckStatusEnum.REPORTING.getStatus());
+				bCLI.setStatusCode(CheckStatusEnum.REPORTING.getStatusCode());
+				bCLI.setReportDr(NameUtils.getLoginCode());
+				bCLI.setReportTime(new Date());
+				updateByExampleSelective = businChecklistIndexMapper.updateByExampleSelective(bCLI, example);
+				if(updateByExampleSelective==1){
+					updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.REPORTING.getStatus(),CheckStatusEnum.REPORTING.getStatusCode());
+				}
+			}else if(StringUtils.equalsAny(statusCode,CheckStatusEnum.PENDING_ONE_REVIEW.getStatusCode(),CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatusCode(),
+					  CheckStatusEnum.PENDING_TWO_REVIEW.getStatusCode(),CheckStatusEnum.PENDING_THREE_REVIEW.getStatusCode())) {
+				//第一次打开   待审核 待二审 待三审    待会审
+				createCriteria.andNotEqualTo("statusCode", CheckStatusEnum.REVIEWING.getStatusCode());
+				createCriteria.andEqualTo("accessionNum", vmlr.getCheckAccessionNum());
+				
+				bCLI.setStatus(CheckStatusEnum.REVIEWING.getStatus());
+				bCLI.setStatusCode(CheckStatusEnum.REVIEWING.getStatusCode());
+				bCLI.setAuditDr(NameUtils.getLoginCode());
+				bCLI.setAuditTime(new Date());
+				updateByExampleSelective =businChecklistIndexMapper.updateByExampleSelective(bCLI, example);
+				if(updateByExampleSelective==1){
+					updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.REVIEWING.getStatus(),CheckStatusEnum.REVIEWING.getStatusCode());
+				}
 			}
-		//审核中
-		}else if(CheckStatusEnum.REVIEWING.getStatusCode().equals(vmlr.getCheckStatusCode())){
-			createCriteria.andNotEqualTo("statusCode", CheckStatusEnum.REVIEWING.getStatusCode());
-			createCriteria.andEqualTo("accessionNum", vmlr.getCheckAccessionNum());
-			
-			bCLI.setStatus(CheckStatusEnum.REVIEWING.getStatus());
-			bCLI.setStatusCode(CheckStatusEnum.REVIEWING.getStatusCode());
-			bCLI.setAuditDr(NameUtils.getLoginCode());
+			if(updateByExampleSelective==1) {
+				updateReportFlow(bc.getAccessionNum(),status,statusCode,-1);
+			}
+		}else if(StringUtils.equals(checkBut, "wctj")) {
+			//完成提交   报告   一审  二审    wctj wctj wctj
+			if(StringUtils.equalsAny(checkOldStatus,CheckStatusEnum.PENDING_REPORT.getStatusCode(),
+					CheckStatusEnum.REPORTING.getStatusCode(),CheckStatusEnum.PENGING_HUIZHENG_REPORT.getStatusCode())) {
+				bCLI.setStatus(CheckStatusEnum.PENDING_ONE_REVIEW.getStatus());
+				bCLI.setStatusCode(CheckStatusEnum.PENDING_ONE_REVIEW.getStatusCode());
+				bCLI.setReportTime(new Date());
+				bCLI.setReportDr(NameUtils.getLoginCode());
+			}else if(StringUtils.equals(CheckStatusEnum.PENDING_ONE_REVIEW.getStatusCode(), checkOldStatus)) {
+				bCLI.setStatus(CheckStatusEnum.PENDING_TWO_REVIEW.getStatus());
+				bCLI.setStatusCode(CheckStatusEnum.PENDING_TWO_REVIEW.getStatusCode());
+				bCLI.setAuditTime(new Date());
+				bCLI.setAuditDr(NameUtils.getLoginCode());
+			}else if(StringUtils.equals(CheckStatusEnum.PENDING_TWO_REVIEW.getStatusCode(), checkOldStatus)) {
+				bCLI.setStatus(CheckStatusEnum.PENDING_THREE_REVIEW.getStatus());
+				bCLI.setStatusCode(CheckStatusEnum.PENDING_THREE_REVIEW.getStatusCode());
+				bCLI.setAuditTime(new Date());
+				bCLI.setAuditDr(NameUtils.getLoginCode());
+			}else if(StringUtils.equalsAny(checkOldStatus,CheckStatusEnum.REVIEWING.getStatusCode(),CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatusCode())) {
+				String adminCode = loginUserEntity.getSysOperator().getAdminCode();
+				if(StringUtils.equals(AdminEnum.ONE_REVIEW.getAdminCode(), adminCode)) {
+					bCLI.setStatus(CheckStatusEnum.PENDING_TWO_REVIEW.getStatus());
+					bCLI.setStatusCode(CheckStatusEnum.PENDING_TWO_REVIEW.getStatusCode());
+				}else if(StringUtils.equals(AdminEnum.TWO_REVIEW.getAdminCode(), adminCode)) {
+					bCLI.setStatus(CheckStatusEnum.PENDING_THREE_REVIEW.getStatus());
+					bCLI.setStatusCode(CheckStatusEnum.PENDING_THREE_REVIEW.getStatusCode());
+				}
+				bCLI.setAuditTime(new Date());
+				bCLI.setAuditDr(NameUtils.getLoginCode());
+			}
+			rrd.setFinding1(vmlr.getReprcdFinding1());
+			rrd.setImpression1(vmlr.getReprcdImpression1());
+			rrd.setHp(vmlr.getReprcdHp());
+			businChecklistIndexMapper.updateByPrimaryKey(bCLI);
+			repRecordMapper.updateByPrimaryKey(rrd);
+			updateReportFlow(bc.getAccessionNum(),status,statusCode);
+		}else if(StringUtils.equals(checkBut, "shxf")) {
+			//审核下发
+			bCLI.setStatus(CheckStatusEnum.COMPLETE_REVIEW.getStatus());
+			bCLI.setStatusCode(CheckStatusEnum.COMPLETE_REVIEW.getStatusCode());
+			if(StringUtils.isEmpty(bCLI.getReportDr())) {
+				bCLI.setReportTime(new Date());
+				bCLI.setReportDr(NameUtils.getLoginCode());
+			}
 			bCLI.setAuditTime(new Date());
-			int updateByExampleSelective =businChecklistIndexMapper.updateByExampleSelective(bCLI, example);
-			if(updateByExampleSelective==1){
-				updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.REPORTING.getStatus(),CheckStatusEnum.REPORTING.getStatusCode());
-			}
-		//退出
-		}else if("000".equals(vmlr.getCheckStatusCode())){
+			bCLI.setAuditDr(NameUtils.getLoginCode());
+			rrd.setFinding1(vmlr.getReprcdFinding1());
+			rrd.setImpression1(vmlr.getReprcdImpression1());
+			rrd.setHp(vmlr.getReprcdHp());
+			businChecklistIndexMapper.updateByPrimaryKey(bCLI);
+			repRecordMapper.updateByPrimaryKey(rrd);
+			updateReportFlow(bc.getAccessionNum(),status,statusCode);
+			//删除记录中初始记录
+			BusinCheckFlowState businCheckFlowState=new BusinCheckFlowState();
+			businCheckFlowState.setAccessionNum(bc.getAccessionNum());
+			businCheckFlowState.setNumber(-1);
+			businCheckFlowStateMapper.delete(businCheckFlowState);
+		}else if(StringUtils.equalsAny(checkBut, "tc","zc")) {
+			//退出  暂存
 			rrd.setFinding1(vmlr.getReprcdFinding1());
 			rrd.setImpression1(vmlr.getReprcdImpression1());
 			rrd.setHp(vmlr.getReprcdHp());
 			repRecordMapper.updateByPrimaryKey(rrd);
-		//放弃
-		}else if(CheckStatusEnum.PENDING_REPORT.getStatusCode().equals(vmlr.getCheckStatusCode())){
-			bCLI.setStatus(CheckStatusEnum.PENDING_REPORT.getStatus());
-			bCLI.setStatusCode(CheckStatusEnum.PENDING_REPORT.getStatusCode());
-			bCLI.setReportDr(null);
-			bCLI.setReportTime(null);
-			rrd.setFinding1(null);
-			rrd.setImpression1(null);
-			rrd.setHp(null);
-			businChecklistIndexMapper.updateByPrimaryKey(bCLI);
-			repRecordMapper.updateByPrimaryKey(rrd);
-			updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.PENDING_REPORT.getStatus(),CheckStatusEnum.PENDING_REPORT.getStatusCode());
-		//待会诊报告
-		}else if(CheckStatusEnum.PENGING_HUIZHENG_REPORT.getStatusCode().equals(vmlr.getCheckStatusCode())){
-			bCLI.setReportDr(null);
-			bCLI.setReportTime(null);
-			rrd.setFinding1(null);
-			rrd.setImpression1(null);
-			rrd.setHp(null);
-			repRecordMapper.updateByPrimaryKey(rrd);
-			bCLI.setStatus(CheckStatusEnum.PENGING_HUIZHENG_REPORT.getStatus());
-			bCLI.setStatusCode(CheckStatusEnum.PENGING_HUIZHENG_REPORT.getStatusCode());
-			RepGroup repGroup=new RepGroup();
-			repGroup.setStatus("1");
-			//会诊分组---没有会诊则不修改
-			List<RepGroup> repGroups = repGroupMapper.select(repGroup);
-			if(!ObjectUtils.isEmpty(repGroups)){
-				RepGroup rg = repGroups.get(0);
-				bCLI.setRepGroupId(rg.getId());
-			}
-			businChecklistIndexMapper.updateByPrimaryKey(bCLI);
-		//待会诊审核	
-		}else if(CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatusCode().equals(vmlr.getCheckStatusCode())){
-			bCLI.setAuditDr(null);
-			bCLI.setAuditTime(null);
-			bCLI.setReportTime(vmlr.getCheckReportTime());
-			bCLI.setReportDr(vmlr.getCheckReportDr());
-			bCLI.setStatus(CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatus());
-			bCLI.setStatusCode(CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatusCode());
-			
-			RepGroup repGroup=new RepGroup();
-			repGroup.setStatus("1");
-			//会诊分组---没有会诊则不修改
-			List<RepGroup> repGroups = repGroupMapper.select(repGroup);
-			if(!ObjectUtils.isEmpty(repGroups)){
-				RepGroup rg = repGroups.get(0);
-				bCLI.setRepGroupId(rg.getId());
-			}
-			businChecklistIndexMapper.updateByPrimaryKey(bCLI);
-			rrd.setFinding1(vmlr.getReprcdFinding1());
-			rrd.setImpression1(vmlr.getReprcdImpression1());
-			rrd.setHp(vmlr.getReprcdHp());
-			repRecordMapper.updateByPrimaryKey(rrd);
-			updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatus(),CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatusCode());
-		//已作废
-		}else if(CheckStatusEnum.COMPLETE_ABANDONED.getStatusCode().equals(vmlr.getCheckStatusCode())){
-			bCLI.setStatus(CheckStatusEnum.COMPLETE_ABANDONED.getStatus());
-			bCLI.setStatusCode(CheckStatusEnum.COMPLETE_ABANDONED.getStatusCode());
-			businChecklistIndexMapper.updateByPrimaryKey(bCLI);
-			updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.COMPLETE_ABANDONED.getStatus(),CheckStatusEnum.COMPLETE_ABANDONED.getStatusCode());
-		//已拒绝
-		}else if(CheckStatusEnum.COMPLETE_REFUSE.getStatusCode().equals(vmlr.getCheckStatusCode())){
+		}else if(StringUtils.equals(checkBut, "jj")) {
+			//已拒绝
 			bCLI.setStatus(CheckStatusEnum.COMPLETE_REFUSE.getStatus());
 			bCLI.setStatusCode(CheckStatusEnum.COMPLETE_REFUSE.getStatusCode());
 			SysDictDtl sysDictDtl = sysDictDtlService.queryDictDtlById(vmlr.getCheckRefuseCode());
@@ -283,42 +381,123 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 			}
 			businChecklistIndexMapper.updateByPrimaryKey(bCLI);
 			updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.COMPLETE_REFUSE.getStatus(),CheckStatusEnum.COMPLETE_REFUSE.getStatusCode());
-		}else{
-			String status="";
-			for (CheckStatusEnum checkStatusEnum : CheckStatusEnum.values()) {
-				if(checkStatusEnum.getStatusCode().equals(vmlr.getCheckStatusCode())){
-					status=checkStatusEnum.getStatus();
-					break;
+		}else if(StringUtils.equals(checkBut, "zf")) {
+			//作废
+			bCLI.setStatus(CheckStatusEnum.COMPLETE_ABANDONED.getStatus());
+			bCLI.setStatusCode(CheckStatusEnum.COMPLETE_ABANDONED.getStatusCode());
+			businChecklistIndexMapper.updateByPrimaryKey(bCLI);
+			updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.COMPLETE_ABANDONED.getStatus(),CheckStatusEnum.COMPLETE_ABANDONED.getStatusCode());
+		}else if(StringUtils.equals(checkBut, "zhz")) {
+			//转会诊
+			//报告转会诊
+			if(StringUtils.equals(statusCode,CheckStatusEnum.REPORTING.getStatusCode())) {
+				bCLI.setReportDr(null);
+				bCLI.setReportTime(null);
+				rrd.setFinding1(null);
+				rrd.setImpression1(null);
+				rrd.setHp(null);
+				bCLI.setStatus(CheckStatusEnum.PENGING_HUIZHENG_REPORT.getStatus());
+				bCLI.setStatusCode(CheckStatusEnum.PENGING_HUIZHENG_REPORT.getStatusCode());
+				RepGroup repGroup=new RepGroup();
+				repGroup.setStatus("1");
+				//会诊分组---没有会诊则不修改
+				List<RepGroup> repGroups = repGroupMapper.select(repGroup);
+				if(!ObjectUtils.isEmpty(repGroups)){
+					RepGroup rg = repGroups.get(0);
+					bCLI.setRepGroupId(rg.getId());
 				}
+				repRecordMapper.updateByPrimaryKey(rrd);
+				businChecklistIndexMapper.updateByPrimaryKey(bCLI);
+				updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.PENGING_HUIZHENG_REPORT.getStatus(),CheckStatusEnum.PENGING_HUIZHENG_REPORT.getStatusCode());
+			//审核转会诊
+			}else if(StringUtils.equals(statusCode,CheckStatusEnum.REVIEWING.getStatusCode())) {
+				bCLI.setAuditDr(null);
+				bCLI.setAuditTime(null);
+				bCLI.setStatus(CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatus());
+				bCLI.setStatusCode(CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatusCode());
+				
+				RepGroup repGroup=new RepGroup();
+				repGroup.setStatus("1");
+				//会诊分组---没有会诊则不修改
+				List<RepGroup> repGroups = repGroupMapper.select(repGroup);
+				if(!ObjectUtils.isEmpty(repGroups)){
+					RepGroup rg = repGroups.get(0);
+					bCLI.setRepGroupId(rg.getId());
+				}
+				rrd.setFinding1(vmlr.getReprcdFinding1());
+				rrd.setImpression1(vmlr.getReprcdImpression1());
+				rrd.setHp(vmlr.getReprcdHp());
+				businChecklistIndexMapper.updateByPrimaryKey(bCLI);
+				repRecordMapper.updateByPrimaryKey(rrd);
+				updateReportFlow(bc.getAccessionNum(),CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatus(),CheckStatusEnum.PENGING_HUIZHENG_REVIEW.getStatusCode());
 			}
-			Assert.isBlank(status, "状态传值异常，请联系开发人员！");
-			bCLI.setStatus(status);
-			if(vmlr.getCheckReportTime()!=null){
-				bCLI.setReportTime(vmlr.getCheckReportTime());
-				bCLI.setReportDr(NameUtils.getLoginCode());
+		}else if(StringUtils.equals(checkBut, "fq")) {
+			BusinCheckFlowState bcfs=new BusinCheckFlowState();
+			bcfs.setAccessionNum(bc.getAccessionNum());
+			bcfs.setNumber(-1);
+			List<BusinCheckFlowState> businCheckFlowStates = businCheckFlowStateMapper.select(bcfs);
+			Assert.isListOnlyOne(businCheckFlowStates, "记录初始状态值只会有一个！");
+			BusinCheckFlowState businCheckFlowState = businCheckFlowStates.get(0);
+			bCLI.setStatus(businCheckFlowState.getStatus());
+			bCLI.setStatusCode(businCheckFlowState.getStatusCode());
+			//放弃 报告中放弃
+			if(StringUtils.equals(statusCode,CheckStatusEnum.REPORTING.getStatusCode())) {
+				bCLI.setReportDr(null);
+				bCLI.setReportTime(null);
+				rrd.setFinding1(null);
+				rrd.setImpression1(null);
+				rrd.setHp(null);
+			}else if(StringUtils.equals(statusCode,CheckStatusEnum.REVIEWING.getStatusCode())) {
+				//放弃 审核中放弃	
+				//获取第一次打开时  更新的状态   （只有  待**  才会记录）
+				bCLI.setAuditDr(oldViewWorklist.getCheckAuditDr());
+				bCLI.setAuditTime(oldViewWorklist.getCheckAuditTime());
+				rrd.setFinding1(oldViewWorklist.getReprcdFinding1());
+				rrd.setImpression1(oldViewWorklist.getReprcdImpression1());
+				rrd.setHp(oldViewWorklist.getReprcdHp());
 			}
-			if(vmlr.getCheckAuditTime()!=null){
-				bCLI.setAuditTime(vmlr.getCheckAuditTime());
-				bCLI.setAuditDr(NameUtils.getLoginCode());
-			}
-			bCLI.setStatusCode(vmlr.getCheckStatusCode());
-			rrd.setFinding1(vmlr.getReprcdFinding1());
-			rrd.setImpression1(vmlr.getReprcdImpression1());
-			rrd.setHp(vmlr.getReprcdHp());
 			businChecklistIndexMapper.updateByPrimaryKey(bCLI);
 			repRecordMapper.updateByPrimaryKey(rrd);
-			updateReportFlow(bc.getAccessionNum(),status,vmlr.getCheckStatusCode());
-			log.info(loginUserEntity.getSysOperator().getLogincode()+"：报告(accessnum:"+bCLI.getAccessionNum()+")处理后状态为："+bCLI.getStatus());
-			log.info(loginUserEntity.getSysOperator().getLogincode()+"：报告(accessnum:"+bCLI.getAccessionNum()+")处理后内容为：报告：{},记录：{}",JSON.toJSONString(bCLI),JSON.toJSONString(rrd));
+			updateReportFlow(bc.getAccessionNum(),status,statusCode);
+		}else if(StringUtils.equals(checkBut, "thcx")) {
+			//退回重写
+			bCLI.setStatus(CheckStatusEnum.REPORTING.getStatus());
+			bCLI.setStatusCode(CheckStatusEnum.REPORTING.getStatusCode());
+			bCLI.setAuditDr(null);
+			bCLI.setAuditTime(null);
+			rrd.setFinding1(oldViewWorklist.getReprcdFinding1());
+			rrd.setImpression1(oldViewWorklist.getReprcdImpression1());
+			rrd.setHp(oldViewWorklist.getReprcdHp());
+			businChecklistIndexMapper.updateByPrimaryKey(bCLI);
+			repRecordMapper.updateByPrimaryKey(rrd);
+			updateReportFlow(bc.getAccessionNum(),status,statusCode);
 		}
+		log.info(loginUserEntity.getSysOperator().getLogincode()+"：报告(accessnum:"+bCLI.getAccessionNum()+")处理后状态为："+status);
 	}
-
+	
 	/**
 	 * 报告流跟踪
 	 * @param accessionNum
 	 * @param status
 	 * @param statusCode
 	 */
+	private void updateReportFlow(String accessionNum, String status, String statusCode,int num) {
+		BusinCheckFlowState bcfs=new BusinCheckFlowState();
+		bcfs.setAccessionNum(accessionNum);
+		bcfs.setNumber(num);
+		List<BusinCheckFlowState> businCheckFlowStates = businCheckFlowStateMapper.select(bcfs);
+		bcfs.setStatus(status);
+		bcfs.setStatusCode(statusCode);
+		bcfs.setOperationUser(NameUtils.getLoginCode());
+		bcfs.setOperationTime(new Date());
+		if(CollectionUtils.isEmpty(businCheckFlowStates)) {
+			businCheckFlowStateMapper.insertSelective(bcfs);
+		}else {
+			bcfs.setId(businCheckFlowStates.get(0).getId());
+			businCheckFlowStateMapper.updateByPrimaryKey(bcfs);
+		}
+	}
+	
 	private void updateReportFlow(String accessionNum, String status, String statusCode) {
 		BusinCheckFlowState bcfs=new BusinCheckFlowState();
 		bcfs.setAccessionNum(accessionNum);
@@ -360,4 +539,12 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		int num = viewWorklistMapper.selectCountByExample(ex);
 		return num>0?1:0;
 	}
+
+	
+
+	
+
+	
+
+	
 }

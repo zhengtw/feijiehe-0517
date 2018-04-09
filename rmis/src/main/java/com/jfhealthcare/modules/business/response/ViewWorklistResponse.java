@@ -1,6 +1,9 @@
 package com.jfhealthcare.modules.business.response;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -35,7 +38,7 @@ public class ViewWorklistResponse {
     @Column(name = "CHECK_VJ_FLAG")
     private Boolean checkVjFlag;
     
-    private Boolean isHaveImage;
+    private String  imageNum;
     
     /**
      * 检查流水号
@@ -342,4 +345,6 @@ public class ViewWorklistResponse {
     //--------------------------------------
     private String sopUrl;
     //--------------------------------------
+    //---------------按钮权限map---------------
+    private Map<String,String> btnsMap;
 }

@@ -46,7 +46,7 @@ public class SysRightModsetController {
 		}
 	}
 	
-	@SysLogAop("用户修改菜单")
+	/*@SysLogAop("用户修改菜单")
 	@ApiOperation(value = "用户修改菜单", notes = "用户修改菜单说明")
 	@RequestMapping(method = RequestMethod.POST,path="/oper")
 	public BaseResponse updateSysRightModsetByOper(@RequestBody SysRightModsetRequest sysRightModsetRequest) {
@@ -57,7 +57,7 @@ public class SysRightModsetController {
 			log.debug("用户修改菜单", e);
 			return BaseResponse.getFailResponse("修改失败！");
 		}
-	}
+	}*/
 	
 	
 }

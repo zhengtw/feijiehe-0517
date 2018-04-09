@@ -34,6 +34,7 @@ public class SysDictServiceImpl implements SysDictService {
 		PageHelper.startPage(pageNum, pageSize);
 		Example example = new Example(SysDict.class);
 		example.createCriteria().andEqualTo("isdelete",Boolean.FALSE);
+		example.setOrderByClause("DNAME asc");
 		List<SysDict> selectAll = sysDictMapper.selectByExample(example);
 		PageInfo<SysDict> pageInfo = new PageInfo<SysDict>(selectAll);
 		return pageInfo;

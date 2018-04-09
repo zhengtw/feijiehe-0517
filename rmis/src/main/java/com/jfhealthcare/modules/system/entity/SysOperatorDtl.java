@@ -16,8 +16,6 @@ public class SysOperatorDtl {
 
     private String archivesNum;
 
-    private String name;
-
     private String beforeName;
 
     private String idNum;

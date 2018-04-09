@@ -6,6 +6,7 @@
 		<!-- WARNING - @mbg.generated -->
 		<id column="LOGINCODE" property="logincode" jdbcType="VARCHAR" />
 		<result column="OID" property="id" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
 		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
 		<result column="ADMIN_CODE" property="adminCode" jdbcType="VARCHAR" />
 		<result column="ADMIN" property="admin" jdbcType="VARCHAR" />
@@ -81,7 +82,7 @@
 	</sql>
 
 	<select id="queryOperatorList" resultMap="OperatorResultMap">
-		SELECT so.ID OID,sod.ID DID,so.LOGINCODE,sod.NAME,sod.DEP_ID,
+		SELECT so.ID OID,sod.ID DID,so.LOGINCODE,so.NAME,sod.DEP_ID,
 		(SELECT DEP_NAME FROM sys_department WHERE ID = sod.DEP_ID) DEP_NAME,
 		sod.MANAGE MANAGE,sod.MANAGE_CODE MANAGE_CODE,so.ADMIN ADMIN,so.ADMIN_CODE ADMIN_CODE,
 		sod.NAMEPY NAMEPY,sod.NAMEWB NAMEWB,sod.EFLAG_CODE EFLAG_CODE,sod.EFLAG EFLAG,
@@ -93,7 +94,7 @@
 	</select>
 	
 	<select id="queryOperatorListByParameter" resultMap="OperatorResultMap" parameterType="com.jfhealthcare.modules.system.request.SysOperatorQueryRequest">
-		SELECT so.ID OID,sod.ID DID,so.LOGINCODE,sod.NAME,sod.DEP_ID,
+		SELECT so.ID OID,sod.ID DID,so.LOGINCODE,so.NAME,sod.DEP_ID,
 		( SELECT DEP_NAME FROM sys_department WHERE ID = sod.DEP_ID ) DEP_NAME,
 		sod.MANAGE manage,sod.MANAGE_CODE,so.ADMIN,so.ADMIN_CODE,sod.NAMEPY,sod.NAMEWB,
 		sod.EFLAG_CODE,sod.EFLAG,sod.EDUCATION,sod.ORG_ID,
@@ -125,7 +126,7 @@
 	
 	<select id="queryOperatorAllInfoByLogincode" resultMap="OperatorResultMap" parameterType="MAP">
 		SELECT
-		so.ID OID,sod.ID DID,so.LOGINCODE ,sod.NAME ,sod.DEP_ID ,
+		so.ID OID,sod.ID DID,so.LOGINCODE ,so.NAME ,sod.DEP_ID ,
 		(SELECT DEP_NAME FROM sys_department WHERE ID = sod.DEP_ID ) DEP_NAME,
 		sod.MANAGE ,sod.MANAGE_CODE ,so.ADMIN ,so.ADMIN_CODE ,
 		sod.NAMEPY ,sod.NAMEWB ,sod.EFLAG_CODE ,sod.EFLAG ,

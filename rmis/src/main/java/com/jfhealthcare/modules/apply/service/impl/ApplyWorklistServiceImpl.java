@@ -3,6 +3,7 @@ package com.jfhealthcare.modules.apply.service.impl;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -235,6 +236,7 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		applyWorklist.setApplyStatusCode(ApplyStatusEnum.COMPLETE_APPLY.getStatusCode());
 		applyWorklistMapper.updateByPrimaryKey(applyWorklist);
 	}
+	
 
 	@Override
 	@Transactional
@@ -264,7 +266,7 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		bizindex.setSummary(applyWorklistRequest.getSummary());//检查方法
 		bizindex.setExam(applyWorklistRequest.getExam());
 //		bizindex.setSummaryCode(applyWorklistRequest.getSummaryCode());//检查方法code
-		bizindex.setApplyDoc(loginUserEntity.getSysOperatorDtl().getName());//申请医生
+		bizindex.setApplyDoc(loginUserEntity.getSysOperator().getName());//申请医生
 		bizindex.setApplyDocCode(logincode);//申请医生账号
 		bizindex.setApplyHosp(org.getName());
 		bizindex.setApplyHospCode(loginUserEntity.getSysOperatorDtl().getOrgId());
@@ -511,6 +513,8 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		return CollectionUtils.isEmpty(applyImages)?"0":"1";
 	}
 
+
+	
 
 	
 }

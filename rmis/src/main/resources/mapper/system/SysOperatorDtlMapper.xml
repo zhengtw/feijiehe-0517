@@ -7,7 +7,6 @@
     -->
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="ARCHIVES_NUM" property="archivesNum" jdbcType="VARCHAR" />
-    <result column="NAME" property="name" jdbcType="VARCHAR" />
     <result column="BEFORE_NAME" property="beforeName" jdbcType="VARCHAR" />
     <result column="ID_NUM" property="idNum" jdbcType="VARCHAR" />
     <result column="BIRTHDAY" property="birthday" jdbcType="TIMESTAMP" />

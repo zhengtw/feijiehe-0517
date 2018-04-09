@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.jfhealthcare.modules.system.entity.SysMenu;
+import com.jfhealthcare.modules.system.entity.SysRightModule;
 import com.jfhealthcare.tk.mybatis.util.MyMapper;
 
 public interface SysMenuMapper extends MyMapper<SysMenu> {
@@ -17,4 +18,6 @@ public interface SysMenuMapper extends MyMapper<SysMenu> {
 	Integer querySysMenuMaxNindex(@Param(value="faMenuId")String faMenuId);
 	
 	List<Map<String, Object>> querySysMenuForFatherId(@Param(value="logincode")String logincode);
+
+	List<SysRightModule> querySysMenuForClick(@Param(value="logincode")String logincode);
 }
