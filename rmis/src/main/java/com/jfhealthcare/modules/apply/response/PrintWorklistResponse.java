@@ -34,5 +34,8 @@ public class PrintWorklistResponse {
 	private String checkType;
     private String checkRefuseCode;
     private String checkRefuseName;
+    private String checkPtnSource;
+    private String checkPastIllness;
     private String imageNum;
+    private boolean checkJzFlag;
 }

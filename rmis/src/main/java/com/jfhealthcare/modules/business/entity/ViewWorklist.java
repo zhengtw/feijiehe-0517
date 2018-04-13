@@ -401,6 +401,18 @@ public class ViewWorklist {
      */
     @Column(name = "CHECK_REFUSE_NAME")
     private String checkRefuseName;
+    
+    /**
+     * 患者来源
+     */
+    @Column(name = "CHECK_PTN_SOURCE")
+    private String checkPtnSource;
+    
+    /**
+     * 既往史
+     */
+    @Column(name = "CHECK_PAST_ILLNESS")
+    private String checkPastIllness;
 
     /**
      * ID

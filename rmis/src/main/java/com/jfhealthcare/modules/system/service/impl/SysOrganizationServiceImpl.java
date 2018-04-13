@@ -106,7 +106,6 @@ public class SysOrganizationServiceImpl implements SysOrganizationService {
 		sysDepartment.setOrgId(id);
 		List<SysDepartment> sysDepartments = sysDepartmentMapper.select(sysDepartment);
 		for (SysDepartment sd : sysDepartments) {
-			sysDepartmentMapper.deleteByPrimaryKey(sd.getId());
 			SysOperatorDtl sysOperatorDtl=new SysOperatorDtl();
 			sysOperatorDtl.setDepId(sd.getId());
 			List<SysOperatorDtl> sysOperatorDtls = sysOperatorDtlMapper.select(sysOperatorDtl);
@@ -116,6 +115,7 @@ public class SysOrganizationServiceImpl implements SysOrganizationService {
 					sysOperatorDtlMapper.updateByPrimaryKey(sdl);
 				}
 			}
+			sysDepartmentMapper.deleteByPrimaryKey(sd.getId());
 		}
 		SysOrganization sysOrganization = sysOrganizationMapper.selectByPrimaryKey(id);
 		Assert.isNull(sysOrganization, "没有对应机构，无法删除！");

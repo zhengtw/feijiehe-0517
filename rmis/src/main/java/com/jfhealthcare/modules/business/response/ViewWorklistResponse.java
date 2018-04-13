@@ -279,6 +279,19 @@ public class ViewWorklistResponse {
     private Date checkPrintTime;
     
     /**
+     * 患者来源
+     */
+    @Column(name = "CHECK_PTN_SOURCE")
+    private String checkPtnSource;
+    
+    /**
+     * 既往史
+     */
+    @Column(name = "CHECK_PAST_ILLNESS")
+    private String checkPastIllness;
+    
+    
+    /**
      * 影像所见1
      */
     @Column(name = "REPRCD_FINDING1")
@@ -328,20 +341,22 @@ public class ViewWorklistResponse {
     
     private String checkRefuseName;
     
+    private int historyNum;//历史报告数量
+    
     //-----------------worklist数量---------------------
-    private int pendingreportNum;
-    private int pendingonereviewNum;
-    private int pendingtworeviewNum;
-    private int pendingthreereviewNum;
-    private int reportingNum;
-    private int reviewingNum;
-    private int zancuningNum;
-    private int completerefuseNum;
-    private int completereviewNum;
-    private int completeprintNum;
-    private int pendinghuizhenReportNum;
-    private int pendinghuizhenReviewNum;
-    private int completeAbandonedNum;
+//    private int pendingreportNum;
+//    private int pendingonereviewNum;
+//    private int pendingtworeviewNum;
+//    private int pendingthreereviewNum;
+//    private int reportingNum;
+//    private int reviewingNum;
+//    private int zancuningNum;
+//    private int completerefuseNum;
+//    private int completereviewNum;
+//    private int completeprintNum;
+//    private int pendinghuizhenReportNum;
+//    private int pendinghuizhenReviewNum;
+//    private int completeAbandonedNum;
     //--------------------------------------
     private String sopUrl;
     //--------------------------------------

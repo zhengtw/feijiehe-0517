@@ -71,6 +71,8 @@
     <result column="CHECK_PRINT_TIME" property="checkPrintTime" jdbcType="TIMESTAMP" />
     <result column="CHECK_REFUSE_CODE" property="checkRefuseCode" jdbcType="VARCHAR" />
     <result column="CHECK_REFUSE_NAME" property="checkRefuseName" jdbcType="VARCHAR" />
+    <result column="CHECK_PTN_SOURCE" property="checkPtnSource" jdbcType="VARCHAR" />
+    <result column="CHECK_PAST_ILLNESS" property="checkPastIllness" jdbcType="LONGVARCHAR" />
     <result column="REPRCD_ID" property="reprcdId" jdbcType="VARCHAR" />
     <result column="REPRCD_ACCESSION_NUM" property="reprcdAccessionNum" jdbcType="VARCHAR" />
     <result column="REPRCD_PAT_ONLY_ID" property="reprcdPatOnlyId" jdbcType="VARCHAR" />
@@ -133,6 +135,8 @@
     <result column="CHECK_PRINT_DR" property="checkPrintDr" jdbcType="VARCHAR" />
     <result column="CHECK_PRINT_DR_SIGNA" property="checkPrintDrSigna" jdbcType="VARCHAR" />
     <result column="CHECK_PRINT_TIME" property="checkPrintTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_PTN_SOURCE" property="checkPtnSource" jdbcType="VARCHAR" />
+    <result column="CHECK_PAST_ILLNESS" property="checkPastIllness" jdbcType="LONGVARCHAR" />
     <result column="REPRCD_REP_UID" property="reprcdRepUid" jdbcType="VARCHAR" />
     <result column="REPRCD_FINDING1" property="reprcdFinding1" jdbcType="LONGVARCHAR" />
     <result column="REPRCD_FINDING2" property="reprcdFinding2" jdbcType="LONGVARCHAR" />
@@ -169,7 +173,12 @@
     <result column="CHECK_TYPE" property="checkType" jdbcType="VARCHAR" />
     <result column="CHECK_REFUSE_CODE" property="checkRefuseCode" jdbcType="VARCHAR" />
     <result column="CHECK_REFUSE_NAME" property="checkRefuseName" jdbcType="VARCHAR" />
+    <result column="CHECK_PTN_SOURCE" property="checkPtnSource" jdbcType="VARCHAR" />
+    <result column="CHECK_PAST_ILLNESS" property="checkPastIllness" jdbcType="LONGVARCHAR" />
     <result column="imageNum" property="imageNum" jdbcType="VARCHAR" />
+    <result column="CHECK_JZ_FLAG" property="checkJzFlag" jdbcType="BIT" />
+    <result column="CHECK_PTN_SOURCE" property="checkPtnSource" jdbcType="VARCHAR" />
+    <result column="CHECK_PAST_ILLNESS" property="checkPastIllness" jdbcType="LONGVARCHAR" />
   </resultMap>
   
    <sql id="Base_Column_List" >
@@ -178,7 +187,8 @@
     CHECK_APPLY_DOC_CODE,CHECK_APPLY_DOC,CHECK_APPLY_HOSP_CODE,CHECK_APPLY_HOSP,CHECK_REP_GROUP_ID,CHECK_PARTS_CODE,CHECK_PARTS,CHECK_NUM,
     CHECK_EXAM_CODE,CHECK_EXAM,CHECK_SUMMARY_CODE,CHECK_SUMMARY,CHECK_TYPE_CODE,CHECK_TYPE,CHECK_DESCRIBE_BQ,CHECK_REPORT_DR,CHECK_REPORT_DR_NAME,CHECK_REPORT_DR_SIGNA,
     CHECK_REPORT_TIME,CHECK_AUDIT_DR,CHECK_AUDIT_DR_NAME,CHECK_AUDIT_DR_SIGNA,CHECK_AUDIT_TIME,CHECK_PRINT_DR_SIGNA,
-    CHECK_PRINT_DR,CHECK_PRINT_TIME,REPRCD_REP_UID,REPRCD_FINDING1,REPRCD_FINDING2,REPRCD_FINDING3,REPRCD_IMPRESSION1,REPRCD_IMPRESSION2,REPRCD_IMPRESSION3,REPRCD_HP,CHECK_REFUSE_NAME
+    CHECK_PRINT_DR,CHECK_PRINT_TIME,CHECK_PTN_SOURCE,CHECK_PAST_ILLNESS,REPRCD_REP_UID,REPRCD_FINDING1,REPRCD_FINDING2,REPRCD_FINDING3,
+    REPRCD_IMPRESSION1,REPRCD_IMPRESSION2,REPRCD_IMPRESSION3,REPRCD_HP,CHECK_REFUSE_NAME
    </sql>
    
    <select id="queryHistoryReport"  parameterType="com.jfhealthcare.modules.business.request.ViewWorklistRequest" resultMap="ResponseMap">
@@ -399,7 +409,7 @@
      select d.*,
           (select othervalue from sys_dict_dtl e where e.id=d.CHECK_STATUS_CODE) printStatus
      from (
-	      select 
+	      select CHECK_JZ_FLAG,CHECK_PTN_SOURCE,CHECK_PAST_ILLNESS,
 	      CHECK_ACCESSION_NUM,PAT_NAME,PAT_SEX_CODE,PAT_SEX,REPRCD_PAT_AGE,REPRCD_AGE_UNIT_CODE,REPRCD_AGE_UNIT,CHECK_APPLY_TIME,CHECK_PARTS,CHECK_PARTS_CODE,CHECK_SUMMARY_CODE,CHECK_SUMMARY,
 	      CHECK_EXAM_CODE,CHECK_EXAM,CHECK_TYPE_CODE,CHECK_TYPE,CHECK_IMG_RECEIVE_TIME,CHECK_APPLY_HOSP_CODE,CHECK_REFUSE_CODE,CHECK_REFUSE_NAME,
 	      (select othervalue from sys_dict_dtl c where c.CODE='contrastCP' and c.name=a.CHECK_STATUS_CODE) CHECK_STATUS_CODE,

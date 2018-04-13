@@ -202,6 +202,11 @@ public class ApplyWorklistResponse {
      * 病情描述
      */
     private String describeBq;
+    
+    /**
+     * 既往史
+     */
+    private String checkPastIllness;
     /**
      * instances，接收的图像数组
      */
