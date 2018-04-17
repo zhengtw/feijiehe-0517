@@ -21,14 +21,11 @@ import com.jfhealthcare.common.base.ValueResponse;
 import com.jfhealthcare.common.entity.LoginUserEntity;
 import com.jfhealthcare.common.exception.RmisException;
 import com.jfhealthcare.common.utils.HttpClientUtils;
-import com.jfhealthcare.common.validator.Assert;
 import com.jfhealthcare.common.validator.ValidatorUtils;
 import com.jfhealthcare.common.validator.group.Edit;
 import com.jfhealthcare.common.validator.group.Query;
 import com.jfhealthcare.modules.business.entity.AiCheckEntity;
 import com.jfhealthcare.modules.business.entity.RepImage;
-import com.jfhealthcare.modules.business.entity.ViewWorklist;
-import com.jfhealthcare.modules.business.mapper.ViewWorklistMapper;
 import com.jfhealthcare.modules.business.request.CheckApiRequest;
 import com.jfhealthcare.modules.business.request.ViewWorklistRequest;
 import com.jfhealthcare.modules.business.response.CheckApiResponse;
@@ -60,10 +57,6 @@ public class ViewWorklistController {
 	
 	@Autowired
 	private ViewWorklistService viewWorklistService;
-	
-	@Autowired
-	private ViewWorklistMapper viewWorklistMapper;
-	
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "worklist查询", notes = "worklist查询详情")

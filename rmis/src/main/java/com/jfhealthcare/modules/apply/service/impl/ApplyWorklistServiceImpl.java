@@ -447,18 +447,18 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		log.info(logseries+":=========初始化结束===========");
 	}
 	
-	private void doFinishForWorkListByDistributedLock(boolean isBPNeed, BusinChecklistIndex bizindex, BusinPatient bp,
-			RepRecord repRecord, List<RepImage> repImages,ApplyWorklist applyWorklist) {
-		DistributedLock lock = DistributedLockUtil.getDistributedLock(redisTemplate,RedisEnum.DISTRIBUTELOCK_APPLY.getValue());
-		if (lock.acquire()) {
-	    	//获取锁成功业务代码
-			doFinishForWorkList(isBPNeed, bizindex, bp, repRecord, repImages, applyWorklist);
-	    } else { 
-	        //获取锁失败业务代码
-	    	log.info("分布式锁获取失败(申请),不使用锁直接操作");
-	    	doFinishForWorkList(isBPNeed, bizindex, bp, repRecord, repImages, applyWorklist);
-	    }
-	}
+//	private void doFinishForWorkListByDistributedLock(boolean isBPNeed, BusinChecklistIndex bizindex, BusinPatient bp,
+//			RepRecord repRecord, List<RepImage> repImages,ApplyWorklist applyWorklist) {
+//		DistributedLock lock = DistributedLockUtil.getDistributedLock(redisTemplate,RedisEnum.DISTRIBUTELOCK_APPLY.getValue());
+//		if (lock.acquire()) {
+//	    	//获取锁成功业务代码
+//			doFinishForWorkList(isBPNeed, bizindex, bp, repRecord, repImages, applyWorklist);
+//	    } else { 
+//	        //获取锁失败业务代码
+//	    	log.info("分布式锁获取失败(申请),不使用锁直接操作");
+//	    	doFinishForWorkList(isBPNeed, bizindex, bp, repRecord, repImages, applyWorklist);
+//	    }
+//	}
 	
 	private void doFinishForWorkList(boolean isBPNeed, BusinChecklistIndex bizindex, BusinPatient bp,
 			RepRecord repRecord, List<RepImage> repImages,ApplyWorklist applyWorklist) {

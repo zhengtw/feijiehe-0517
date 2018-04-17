@@ -17,5 +17,5 @@ public class LoginUserEntity {
 	
 	private List<SysArmariumOper> sysArmariumOpers;//用户一起权限
 	
-	private String cloudImageUrl;//云上訪問地址 首
+	private String cloudImageUrl;//云上头像地址
 }
