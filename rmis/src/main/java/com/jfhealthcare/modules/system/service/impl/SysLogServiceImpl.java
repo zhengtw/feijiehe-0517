@@ -41,7 +41,7 @@ public class SysLogServiceImpl implements SysLogService {
 			createCriteria.andLike("operation", sysLogRequest.getOperation());
 		}
 		if(sysLogRequest.getCrtTime()!=null){
-			createCriteria.andBetween("crtTime", DateUtils.getStartDateDay(new Date()), DateUtils.getEndDateDay(new Date()));
+			createCriteria.andBetween("crtTime", DateUtils.getStartDateDay(sysLogRequest.getCrtTime()), DateUtils.getEndDateDay(sysLogRequest.getCrtTime()));
 		}
 		example.setOrderByClause("crt_time desc");
 		List<SysLog> selectByExample = sysLogMapper.selectByExample(example);

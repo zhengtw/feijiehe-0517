@@ -13,5 +13,8 @@
     <result column="OPERATION_USER" property="operationUser" jdbcType="VARCHAR" />
     <result column="OPERATION_TIME" property="operationTime" jdbcType="TIMESTAMP" />
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="FINDING" property="finding" jdbcType="LONGVARCHAR" />
+    <result column="IMPRESSION" property="impression" jdbcType="LONGVARCHAR" />
+    <result column="HP" property="hp" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>

@@ -12,25 +12,21 @@ import com.jfhealthcare.modules.business.response.ViewWorklistResponse;
 public interface ViewWorklistService {
 	PageInfo<ViewWorklistResponse> queryViewWorklist(ViewWorklistRequest viewWorklistRequest);
 
-//	ViewWorklistResponse queryOneViewWorklist(String checkAccessionNum);
-
 	void updateCheckListIndex(ViewWorklistRequest viewWorklistRequest,LoginUserEntity loginUserEntity);
 
 	List<RepImage> queryRepImageByRepUid(String repUid);
 
 	void deleteRepImageByRepImageId(String repImageId);
 
-//	ViewWorklistResponse queryCountViewWorklist(ViewWorklistRequest viewWorklistRequest);
-
 	int queryViewWorklistIsRemind();
 
 	List<ViewWorklistResponse> queryHistoryReport(ViewWorklistRequest viewWorklistRequest);
 
-	String queryHistoryReportImage(String checkNum);
-
 	Map<String,String> queryBtnsByCheckAccessionNum(String checkAccessionNum, LoginUserEntity loginUserEntity);
 
 	ViewWorklistResponse queryOneViewWorklist(String checkAccessionNum);
+
+	String queryWebviewerUrlByAccessionNum(String checkAccessionNum);
 
 
 }

@@ -45,5 +45,7 @@
     <result column="PRINT_TIME" property="printTime" jdbcType="TIMESTAMP" />
     <result column="REFUSE_CODE" property="refuseCode" jdbcType="VARCHAR" />
     <result column="REFUSE_NAME" property="refuseName" jdbcType="VARCHAR" />
+    <result column="PAST_ILLNESS" property="pastIllness" jdbcType="LONGVARCHAR" />
+    <result column="PTN_SOURCE" property="ptnSource" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>

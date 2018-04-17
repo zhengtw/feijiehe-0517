@@ -29,9 +29,9 @@
 		<commons.lang3.version>3.7</commons.lang3.version>
 		<commons.fileupload.version>1.3.1</commons.fileupload.version>
 		<commons.io.version>2.5</commons.io.version>
-		<commons.codec.version>1.10</commons.codec.version>
+<!-- 		<commons.codec.version>1.10</commons.codec.version> -->
 		<commons.configuration.version>1.10</commons.configuration.version>
-		<httpclient>4.5.3</httpclient>
+<!-- 		<httpclient>4.5.3</httpclient> -->
 		<fastjson>1.2.29</fastjson>
 		<shiro.version>1.3.2</shiro.version>
 		<swagger.version>2.2.2</swagger.version>
@@ -61,8 +61,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.version}</version>
-		</dependency>
+			</dependency>
 		<!--mybatis -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
@@ -138,7 +137,7 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>${commons.codec.version}</version>
+<!-- 			<version>${commons.codec.version}</version> -->
 		</dependency>
 		<dependency>
 			<groupId>commons-configuration</groupId>
@@ -148,7 +147,6 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>${httpclient}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -185,37 +183,6 @@
 			<artifactId>bcprov-jdk16</artifactId>
 			<version>${bcprov.version}</version>
 		</dependency>
-		<!--自定义jar包  -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.ij</groupId> -->
-<!-- 			<artifactId>ij</artifactId> -->
-<!-- 			<version>1.0</version> -->
-<!-- 		</dependency> -->
-		<!-- fastdfs -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.luhuiguo</groupId> -->
-<!-- 			<artifactId>fastdfs-spring-boot-starter</artifactId> -->
-<!-- 			<version>${fastdfs.version}</version> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>fakepath</groupId> -->
-<!-- 			<artifactId>snappy-java</artifactId> -->
-<!-- 			<version>1.1.4</version> -->
-<!-- 			<classifier>M3</classifier> -->
-<!-- 		</dependency> -->
-		<!-- dcm -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.dcm4che</groupId> -->
-<!-- 			<artifactId>dcm4che-core</artifactId> -->
-<!-- 			<version>dcm4chee-arc-light-5.10.5</version> -->
-<!-- 		</dependency> -->
-		
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.dcm4che</groupId> -->
-<!-- 			<artifactId>dcm4che-imageio</artifactId> -->
-<!-- 			<version>dcm4chee-arc-light-5.10.5</version> -->
-<!-- 		</dependency> -->
-		
 		<!-- ailiMQ -->
 		<dependency>
 		   <groupId>com.aliyun.openservices</groupId>

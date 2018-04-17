@@ -77,19 +77,6 @@ public class ViewWorklistController {
 		}
 	}
 	
-//	@RequestMapping(method = RequestMethod.POST,path="/count")
-//	@ApiOperation(value = "worklist数量统计查询", notes = "worklist数量统计查询详情")
-//	public BaseResponse queryCountViewWorklist(@RequestBody ViewWorklistRequest viewWorklistRequest) {
-//		try {
-//			ViewWorklistResponse viewWorklistResponse=viewWorklistService.queryCountViewWorklist(viewWorklistRequest);
-//			return BaseResponse.getSuccessResponse(viewWorklistResponse);
-//		}catch (Exception e) {
-//			log.error("worklist数量统计查询!", e);
-//			return BaseResponse.getFailResponse("worklist数量统计查询失败!");
-//		}
-//	}
-	
-	
 	@RequestMapping(method = RequestMethod.GET,path="/{checkAccessionNum}")
 	@ApiOperation(value = "worklist单个查询", notes = "worklist单个查询详情")
 	public BaseResponse queryOneViewWorklist(@PathVariable("checkAccessionNum")String checkAccessionNum) {
@@ -99,6 +86,18 @@ public class ViewWorklistController {
 		}catch (Exception e) {
 			log.error("worklist单个查询!", e);
 			return BaseResponse.getFailResponse("worklist单个查询失败!");
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET,path="/webviewer/{checkAccessionNum}")
+	@ApiOperation(value = "webviewer地址查询", notes = "webviewer地址查询详情")
+	public BaseResponse queryWebviewerUrlByAccessionNum(@PathVariable("checkAccessionNum")String checkAccessionNum) {
+		try {
+			String sopUrl=viewWorklistService.queryWebviewerUrlByAccessionNum(checkAccessionNum);
+			return BaseResponse.getSuccessResponse(sopUrl);
+		}catch (Exception e) {
+			log.error("worklist单个查询!", e);
+			return BaseResponse.getFailResponse("webviewer地址查询失败!");
 		}
 	}
 	
@@ -128,18 +127,6 @@ public class ViewWorklistController {
 		}
 	}
 	
-	@ApiOperation(value = "查询历史报告影像", notes = "查询历史报告影像详情")
-	@RequestMapping(method = RequestMethod.GET,path="/historyReport/{checkNum}")
-	public BaseResponse queryHistoryReportImage(@PathVariable("checkNum")String checkNum) {
-		try {
-			
-			String sopUrl=viewWorklistService.queryHistoryReportImage(checkNum);
-			return BaseResponse.getSuccessResponse(sopUrl);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return BaseResponse.getFailResponse(e.getMessage());
-		}
-	}
 	
 	@RequestMapping(method = RequestMethod.DELETE,path="/repimage/{repImageId}")
 	@ApiOperation(value = "worklist删除报告贴图", notes = "worklist删除报告贴图详情")

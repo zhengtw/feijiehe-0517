@@ -208,6 +208,7 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		if(CollectionUtils.isNotEmpty(businChecklistIndexs)){
 			BusinChecklistIndex bcli = businChecklistIndexs.get(0);
 			applyWorklistResponse.setDescribeBq(bcli.getDescribeBq());
+			applyWorklistResponse.setCheckPastIllness(bcli.getPastIllness());
 		}
 		applyWorklistResponse.setImageUrls(l);
 		applyWorklistResponse.setUrlStart(startUrl);
@@ -271,6 +272,8 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		bizindex.setApplyHosp(org.getName());
 		bizindex.setApplyHospCode(loginUserEntity.getSysOperatorDtl().getOrgId());
 		bizindex.setJzFlag(ObjectUtils.isEmpty(applyWorklistRequest.getCheckJzFlag())?false:applyWorklistRequest.getCheckJzFlag());
+		bizindex.setPtnSource(applyWorklistRequest.getCheckPtnSource());//患者来源
+		bizindex.setPastIllness(applyWorklistRequest.getCheckPastIllness());//既往史
 		bizindex.setImgNum(instanceUids.size());
 		bizindex.setType("DR");
 		bizindex.setTypeCode("3406");

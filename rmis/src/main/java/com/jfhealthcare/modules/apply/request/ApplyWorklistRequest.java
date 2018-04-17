@@ -58,7 +58,6 @@ public class ApplyWorklistRequest extends BasicPageEntity{
     
     private String sexCode;
 
-
     /**
      * 检查部位
      */
@@ -70,12 +69,24 @@ public class ApplyWorklistRequest extends BasicPageEntity{
     private String describeBq;
 
     /**
+     * 患者来源  1：门诊 2：住院
+     */
+    private String checkPtnSource;
+    
+    /**
+     * 既往史
+     */
+    private String checkPastIllness;
+
+    /**
      * 上传机构
      */
     private String applyOrg;
     
     private String ptnAge;
+    
     private String ptnAgeUnit;
+    
     private String ptnAgeUnitCode;
     
     /**

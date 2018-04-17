@@ -108,7 +108,10 @@
 				sod.NAMEWB like concat(concat('%',#{namepy,jdbcType=VARCHAR}),'%'))
 			</if>
 			<if test="logincode !=null and logincode !=''">
-				and so.LOGINCODE=#{logincode,jdbcType=VARCHAR}
+				and so.LOGINCODE like concat(concat('%',#{logincode,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="name !=null and name !=''">
+				and so.NAME like concat(concat('%',#{name,jdbcType=VARCHAR}),'%')
 			</if>
 			<if test="eflag !=null and eflag !=''">
 				and sod.EFLAG=#{eflag,jdbcType=VARCHAR}
