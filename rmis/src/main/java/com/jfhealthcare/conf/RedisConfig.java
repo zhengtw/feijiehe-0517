@@ -20,11 +20,6 @@ public class RedisConfig {
     @Autowired
     private RedisConnectionFactory factory;
     
-//    @Bean
-//    public RedisConnectionFactory redisConnectionFactory(){
-//    	return new JedisConnectionFactory();
-//    }
-
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();

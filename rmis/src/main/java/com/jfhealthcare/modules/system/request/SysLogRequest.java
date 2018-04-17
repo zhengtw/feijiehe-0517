@@ -2,7 +2,7 @@ package com.jfhealthcare.modules.system.request;
 
 import java.util.Date;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jfhealthcare.modules.basics.BasicPageEntity;
 
 import lombok.Data;
@@ -48,6 +48,7 @@ public class SysLogRequest extends BasicPageEntity{
     /**
      * 更新时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date updTime;
 
     /**
@@ -58,5 +59,6 @@ public class SysLogRequest extends BasicPageEntity{
     /**
      * 创建时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date crtTime;
 }
