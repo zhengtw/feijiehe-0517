@@ -1,5 +1,6 @@
 package com.jfhealthcare.modules.system.service.impl;
 
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import com.jfhealthcare.modules.system.entity.SysArmariumOper;
 import com.jfhealthcare.modules.system.entity.SysOperator;
 import com.jfhealthcare.modules.system.entity.SysOperatorDtl;
 import com.jfhealthcare.modules.system.entity.SysRightModule;
+import com.jfhealthcare.modules.system.entity.SysRole;
 import com.jfhealthcare.modules.system.entity.SysToken;
 import com.jfhealthcare.modules.system.mapper.SysTokenMapper;
 import com.jfhealthcare.modules.system.mapper.SysArmariumOperMapper;
@@ -16,6 +18,7 @@ import com.jfhealthcare.modules.system.mapper.SysMenuMapper;
 import com.jfhealthcare.modules.system.mapper.SysOperatorDtlMapper;
 import com.jfhealthcare.modules.system.mapper.SysOperatorMapper;
 import com.jfhealthcare.modules.system.mapper.SysRightModuleMapper;
+import com.jfhealthcare.modules.system.mapper.SysRoleMapper;
 import com.jfhealthcare.modules.system.service.ShiroService;
 import com.jfhealthcare.modules.system.service.SysTokenService;
 
@@ -44,6 +47,9 @@ public class ShiroServiceImpl implements ShiroService {
 	
 	@Autowired
     private SysArmariumOperMapper sysArmariumOperMapper;
+	
+	@Autowired
+	private SysRoleMapper sysRoleMapper;
 	
 	@Value("${yun.image.url.path}")
 	private String imageUrl;
@@ -80,22 +86,28 @@ public class ShiroServiceImpl implements ShiroService {
 		SysOperator sysOperator=new SysOperator();
 		sysOperator.setLogincode(logincode);
 		List<SysOperator> sysOperators = sysOperatorMapper.select(sysOperator);
-		if(sysOperators!=null && sysOperators.size()>0){
+		if(!CollectionUtils.isEmpty(sysOperators)){
 			loginUserEntity.setSysOperator(sysOperators.get(0));
 		}
 		SysOperatorDtl sysOperatorDtl=new SysOperatorDtl();
 		sysOperatorDtl.setLogincode(logincode);
 		List<SysOperatorDtl> sysOperatorDtls = sysOperatorDtlMapper.select(sysOperatorDtl);
-		if(sysOperatorDtls!=null && sysOperatorDtls.size()>0){
+		if(!CollectionUtils.isEmpty(sysOperatorDtls)){
 			loginUserEntity.setSysOperatorDtl(sysOperatorDtls.get(0));
 		}
 		SysArmariumOper sysArmariumOper=new SysArmariumOper();
 		sysArmariumOper.setLogincode(logincode);
 		sysArmariumOper.setStatus(true);
 		List<SysArmariumOper> sysArmariumOpers = sysArmariumOperMapper.select(sysArmariumOper);
-		if(sysArmariumOpers!=null && sysArmariumOpers.size()>0){
+		if(!CollectionUtils.isEmpty(sysArmariumOpers)){
 			loginUserEntity.setSysArmariumOpers(sysArmariumOpers);
 		}
+		
+		List<SysRole> roles = sysRoleMapper.selectRolesByLoginCode(logincode);
+		if(!CollectionUtils.isEmpty(roles)){
+			loginUserEntity.setSysRoles(roles);
+		}
+		
 		loginUserEntity.setCloudImageUrl(imageUrl);
 		return loginUserEntity;
 	}

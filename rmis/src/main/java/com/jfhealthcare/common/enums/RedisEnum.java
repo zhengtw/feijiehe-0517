@@ -12,8 +12,8 @@ public enum RedisEnum {
     PUBLICDR("public_dr"),//缓存公共模板
     REPGROUP_NUM("repgroup_num"),//缓存当前组列表下表   与分布式锁结合使用
     DISTRIBUTELOCK_REPGROUP("distributelock_repgroup"),//缓存分布式锁 分组
-    DISTRIBUTELOCK_APPLY("distributelock_apply");//缓存分布式锁 申请
-	
+    DISTRIBUTELOCK_APPLY("distributelock_apply"),//缓存分布式锁 申请
+	AIBTNSTATUS("ai_btn_status");//ai报告转医生的开关 1：开启  0：关闭
     private String value;
     
 	private RedisEnum(String value) {

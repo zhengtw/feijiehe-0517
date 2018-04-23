@@ -13,25 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.jfhealthcare.common.base.BaseResponse;
 import com.jfhealthcare.common.base.PageResponse;
 import com.jfhealthcare.common.base.ValueResponse;
 import com.jfhealthcare.common.entity.LoginUserEntity;
 import com.jfhealthcare.common.exception.RmisException;
-import com.jfhealthcare.common.utils.HttpClientUtils;
-import com.jfhealthcare.common.validator.Assert;
 import com.jfhealthcare.common.validator.ValidatorUtils;
 import com.jfhealthcare.common.validator.group.Edit;
 import com.jfhealthcare.common.validator.group.Query;
-import com.jfhealthcare.modules.business.entity.AiCheckEntity;
 import com.jfhealthcare.modules.business.entity.RepImage;
-import com.jfhealthcare.modules.business.entity.ViewWorklist;
 import com.jfhealthcare.modules.business.mapper.ViewWorklistMapper;
-import com.jfhealthcare.modules.business.request.CheckApiRequest;
 import com.jfhealthcare.modules.business.request.ViewWorklistRequest;
-import com.jfhealthcare.modules.business.response.CheckApiResponse;
 import com.jfhealthcare.modules.business.response.ViewWorklistResponse;
 import com.jfhealthcare.modules.business.service.ViewWorklistService;
 import com.jfhealthcare.modules.system.annotation.LoginUser;
@@ -49,11 +42,11 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/v2/rmis/sysop/worklist")
 public class ViewWorklistController {
-	@Value("${ai.checkapi.host}")
-	private String checkApi; 
-	
-	@Value("${ai.studyapi.host}")
-	private String studyApi; 
+//	@Value("${ai.checkapi.host}")
+//	private String checkApi; 
+//	
+//	@Value("${ai.studyapi.host}")
+//	private String studyApi; 
 	
 	@Value("${dcm.image.url}")
 	private String dcmImageUrl; 
@@ -190,69 +183,69 @@ public class ViewWorklistController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST,path="/checkapi")
-	@ApiOperation(value = "报告纠错", notes = "报告纠错详情")
-	public BaseResponse checkApiViewWorklist(@RequestBody CheckApiRequest checkApiRequest) {
-		try {
-			CheckApiResponse car=new CheckApiResponse();
-			
-			HttpClientUtils instance = HttpClientUtils.getInstance();
-			String findurl =checkApi+URLEncoder.encode(checkApiRequest.getFinding(),"UTF-8");
-			String impressionurl =checkApi+URLEncoder.encode(checkApiRequest.getImpression(),"UTF-8");
-			String findGet =null;
-			String impressionGet =null;
-			try {
-				 findGet = instance.httpGetByWaitTime(findurl, 10000, 20000);
-			} catch (Exception e) {
-				log.error("影像所见异常!", e);
-			}
-			try {
-				impressionGet = instance.httpGetByWaitTime(impressionurl, 10000, 20000);
-			} catch (Exception e) {
-				log.error("诊断建议异常!", e);
-			}
-			if(StringUtils.isNoneBlank(findGet)){
-				AiCheckEntity findObject = JSON.parseObject(findGet, AiCheckEntity.class);
-				car.setFind_has_error(findObject.getHas_error());
-				car.setFinding(findObject.getResult());
-		    }else{
-		    	car.setFind_has_error(Boolean.FALSE);
-		    }
-			if(StringUtils.isNoneBlank(impressionGet)){
-				AiCheckEntity impressionObject = JSON.parseObject(impressionGet, AiCheckEntity.class);
-				car.setImpress_has_error(impressionObject.getHas_error());
-				car.setImpression(impressionObject.getResult());
-			}else{
-				car.setImpress_has_error(Boolean.FALSE);
-			}
-			return BaseResponse.getSuccessResponse(car);
-		}catch (Exception e) {
-			log.error("报告纠错异常!", e);
-			return BaseResponse.getFailResponse("报告纠错异常!");
-		}
-	}
-	
-	@RequestMapping(method = RequestMethod.POST,path="/studyapi")
-	@ApiOperation(value = "报告学习", notes = "报告学习详情")
-	public BaseResponse studyApiViewWorklist(@RequestBody CheckApiRequest checkApiRequest) {
-		try {
-			HttpClientUtils instance = HttpClientUtils.getInstance();
-			String findurl =studyApi+URLEncoder.encode(checkApiRequest.getFinding(),"UTF-8");
-			String impressionurl =studyApi+URLEncoder.encode(checkApiRequest.getImpression(),"UTF-8");
-			try {
-				String findGet = instance.httpGetByWaitTime(findurl, 10000, 20000);
-			} catch (Exception e) {
-				log.error("影像所见学习异常!", e);
-			}
-			try {
-				String impressionGet = instance.httpGetByWaitTime(impressionurl, 10000, 20000);
-			} catch (Exception e) {
-				log.error("诊断建议学习异常!", e);
-			}
-			return BaseResponse.getSuccessResponse();
-		}catch (Exception e) {
-			log.error("报告纠错学习异常!", e);
-			return BaseResponse.getFailResponse("报告纠错学习异常!");
-		}
-	}
+//	@RequestMapping(method = RequestMethod.POST,path="/checkapi")
+//	@ApiOperation(value = "报告纠错", notes = "报告纠错详情")
+//	public BaseResponse checkApiViewWorklist(@RequestBody CheckApiRequest checkApiRequest) {
+//		try {
+//			CheckApiResponse car=new CheckApiResponse();
+//			
+//			HttpClientUtils instance = HttpClientUtils.getInstance();
+//			String findurl =checkApi+URLEncoder.encode(checkApiRequest.getFinding(),"UTF-8");
+//			String impressionurl =checkApi+URLEncoder.encode(checkApiRequest.getImpression(),"UTF-8");
+//			String findGet =null;
+//			String impressionGet =null;
+//			try {
+//				 findGet = instance.httpGetByWaitTime(findurl, 10000, 20000);
+//			} catch (Exception e) {
+//				log.error("影像所见异常!", e);
+//			}
+//			try {
+//				impressionGet = instance.httpGetByWaitTime(impressionurl, 10000, 20000);
+//			} catch (Exception e) {
+//				log.error("诊断建议异常!", e);
+//			}
+//			if(StringUtils.isNoneBlank(findGet)){
+//				AiCheckEntity findObject = JSON.parseObject(findGet, AiCheckEntity.class);
+//				car.setFind_has_error(findObject.getHas_error());
+//				car.setFinding(findObject.getResult());
+//		    }else{
+//		    	car.setFind_has_error(Boolean.FALSE);
+//		    }
+//			if(StringUtils.isNoneBlank(impressionGet)){
+//				AiCheckEntity impressionObject = JSON.parseObject(impressionGet, AiCheckEntity.class);
+//				car.setImpress_has_error(impressionObject.getHas_error());
+//				car.setImpression(impressionObject.getResult());
+//			}else{
+//				car.setImpress_has_error(Boolean.FALSE);
+//			}
+//			return BaseResponse.getSuccessResponse(car);
+//		}catch (Exception e) {
+//			log.error("报告纠错异常!", e);
+//			return BaseResponse.getFailResponse("报告纠错异常!");
+//		}
+//	}
+//	
+//	@RequestMapping(method = RequestMethod.POST,path="/studyapi")
+//	@ApiOperation(value = "报告学习", notes = "报告学习详情")
+//	public BaseResponse studyApiViewWorklist(@RequestBody CheckApiRequest checkApiRequest) {
+//		try {
+//			HttpClientUtils instance = HttpClientUtils.getInstance();
+//			String findurl =studyApi+URLEncoder.encode(checkApiRequest.getFinding(),"UTF-8");
+//			String impressionurl =studyApi+URLEncoder.encode(checkApiRequest.getImpression(),"UTF-8");
+//			try {
+//				String findGet = instance.httpGetByWaitTime(findurl, 10000, 20000);
+//			} catch (Exception e) {
+//				log.error("影像所见学习异常!", e);
+//			}
+//			try {
+//				String impressionGet = instance.httpGetByWaitTime(impressionurl, 10000, 20000);
+//			} catch (Exception e) {
+//				log.error("诊断建议学习异常!", e);
+//			}
+//			return BaseResponse.getSuccessResponse();
+//		}catch (Exception e) {
+//			log.error("报告纠错学习异常!", e);
+//			return BaseResponse.getFailResponse("报告纠错学习异常!");
+//		}
+//	}
 }
