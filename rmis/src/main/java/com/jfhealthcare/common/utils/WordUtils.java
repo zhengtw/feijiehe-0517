@@ -13,9 +13,13 @@ public class WordUtils {
     }  
     // 判断一个字符串是否含有中文  
     public static boolean isChinese(String str) {  
-        if (str == null) return false;  
+        if (str == null) {
+        	return false;
+        }  
         for (char c : str.toCharArray()) {  
-            if (isChinese(c)) return true;// 有一个中文字符就返回  
+            if (isChinese(c)) {
+            	return true;// 有一个中文字符就返回  
+            } 
         }  
         return false;  
     } 

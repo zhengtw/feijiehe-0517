@@ -25,16 +25,16 @@ public class DateTest {
 	
 	@Test
 	public void configurationProperties() {
-		System.out.println("-----------------kaishi------------------");
-		long a=new Date().getTime();
-		Map<String, String> btnsMap = btnPropertiesConfig.getBtnsMap();
-		long b=new Date().getTime();
-        System.out.println(JSON.toJSONString(btnsMap));
-        long c=new Date().getTime();
-        System.out.println(b-a);
-        System.out.println(c-a);
-        System.out.println(c-b);
-        System.out.println("-----------------kaishi------------------");
+//		System.out.println("-----------------kaishi------------------");
+//		long a=new Date().getTime();
+//		Map<String, String> btnsMap = btnPropertiesConfig.getBtnsMap();
+//		long b=new Date().getTime();
+//        System.out.println(JSON.toJSONString(btnsMap));
+//        long c=new Date().getTime();
+//        System.out.println(b-a);
+//        System.out.println(c-a);
+//        System.out.println(c-b);
+//        System.out.println("-----------------kaishi------------------");
     }
 	
 

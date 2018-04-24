@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author Kitty daddy
+ * @author 
  *
  */
 @Component
@@ -153,7 +153,9 @@ public class HttpClientUtils {
  	 * @return
  	 */
  	private static String getSopName(String sopPath){
- 		if(StringUtils.isEmpty(sopPath)) return null;
+ 		if(StringUtils.isEmpty(sopPath)) {
+ 			return null;
+ 		} 
  		String[] strs = sopPath.split("/");
  		return strs[strs.length-1];
  	}
@@ -205,7 +207,7 @@ public class HttpClientUtils {
     
     public boolean downFile(String url, String filePath,Map<String, String> headMap) {  
         CloseableHttpClient httpclient = HttpClients.createDefault();  
-        long percent = 0l;
+        long percent = 0L;
         try {  
             HttpGet httpGet = new HttpGet(url);  
             setGetHead(httpGet, headMap);
@@ -255,7 +257,7 @@ public class HttpClientUtils {
      */  
     public boolean syncHttpDownloadFile(String url, String filePath,Map<String, String> headMap) {  
         CloseableHttpClient httpclient = HttpClients.createDefault();  
-        long percent = 0l;
+        long percent = 0L;
         try {  
             HttpGet httpGet = new HttpGet(url);  
             setGetHead(httpGet, headMap);

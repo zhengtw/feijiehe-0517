@@ -68,6 +68,7 @@ public class JedisLock implements DistributedLock{
      * @throws InterruptedException
      *             in case of thread interruption
      */
+    @Override
     public synchronized boolean acquire() {
         int timeout = timeoutMsecs;
       
@@ -109,6 +110,7 @@ public class JedisLock implements DistributedLock{
     /**
      * 释放锁
      */
+    @Override
     public synchronized void release() {
         try {
             if (locked) {

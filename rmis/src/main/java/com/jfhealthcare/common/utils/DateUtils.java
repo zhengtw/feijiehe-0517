@@ -229,20 +229,25 @@ public class DateUtils {
         Calendar nextMonthFirstDay = Calendar.getInstance();  
         nextMonthFirstDay.set(year, month + 1, 1, 0, 0, 0);  
           
-        if (time.get(Calendar.DAY_OF_YEAR) + 1 == nextMonthFirstDay.get(Calendar.DAY_OF_YEAR))  
-            lastDayOfMonth = true;  
+        if (time.get(Calendar.DAY_OF_YEAR) + 1 == nextMonthFirstDay.get(Calendar.DAY_OF_YEAR)) {
+        	lastDayOfMonth = true; 
+        }  
+            
           
-        if (time.get(Calendar.DAY_OF_YEAR) == time.getMaximum(Calendar.DATE))  
-            lastDayOfYear = true;  
+        if (time.get(Calendar.DAY_OF_YEAR) == time.getMaximum(Calendar.DATE)) {
+        	lastDayOfYear = true; 
+        }  
           
         time.roll(Calendar.DATE, 1);  
           
-        if (lastDayOfMonth)  
-            time.roll(Calendar.MONTH, 1);  
+        if (lastDayOfMonth) {
+        	time.roll(Calendar.MONTH, 1); 
+        }  
+             
           
-        if (lastDayOfYear)  
-            time.roll(Calendar.YEAR, 1);  
-          
+        if (lastDayOfYear) {
+        	time.roll(Calendar.YEAR, 1); 
+        }  
           
         return time.getTime();  
     }  
@@ -280,8 +285,9 @@ public class DateUtils {
      */  
     public static Date getStartDateDay(Date date)  
     {  
-        if(date == null)  
-            return null;  
+        if(date == null) {
+        	return null;
+        }  
         Calendar cal=Calendar.getInstance();  
         cal.setTime(date);  
         cal.set(Calendar.HOUR_OF_DAY,0);  
@@ -297,8 +303,9 @@ public class DateUtils {
      */  
     public static Date getEndDateDay(Date date)  
     {  
-        if(date == null)  
-            return null;  
+        if(date == null) {
+        	return null; 
+        }  
         Calendar cal=Calendar.getInstance();  
         cal.setTime(date);  
         cal.set(Calendar.HOUR_OF_DAY,23);  
@@ -412,10 +419,12 @@ public class DateUtils {
     public static boolean isWorkHour(Date date,String startTimeIn,String endTimeIn){//是否是工作时间  
         String startTime=startTimeIn;  
         String endTime=endTimeIn;  
-        if(StringUtils.isEmpty(startTime))  
-            startTime = "0800";  
-        if(StringUtils.isEmpty(endTime))  
-            endTime = "2200";  
+        if(StringUtils.isEmpty(startTime)) {
+        	startTime = "0800"; 
+        } 
+        if(StringUtils.isEmpty(endTime)) {
+        	endTime = "2200"; 
+        } 
         int start = Integer.parseInt(startTime);  
         int end = Integer.parseInt(endTime);  
         int hour = getDateHour(date);  

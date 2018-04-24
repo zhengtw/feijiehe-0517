@@ -563,7 +563,9 @@ public class ApplyMqInitServiceImpl implements ApplyMqInitService {
 				  
 			       if (temMonth<=0) {  
 			            if (temMonth==0) {  
-			                if (temDay<0) temYear--;  
+			                if (temDay<0) {
+			                	temYear--; 
+			                } 
 			            }else{  
 			            	temYear--;  
 			            }  

@@ -327,7 +327,7 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 				}
 				log.info(logseries+":=========报告贴图初始化完成===========");
 				//AI 初始化
-				long startTime = new Date().getTime();
+				long startTime = System.currentTimeMillis();
 				HttpClientUtils instance = HttpClientUtils.getInstance();
 				
 				String httpGet = instance.httpGetByWaitTime(StringUtils.trim(aiHost)+aiParameter, 10000, 20000);
@@ -389,7 +389,7 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 							bizindex.setAuditTime(new Date());
 						}
 					}
-					long endTime = new Date().getTime();
+					long endTime = System.currentTimeMillis();
 					log.info(logseries+":=========AI申请用时：{}===========",endTime-startTime);
 				}else{
 					throw new RmisException("AI请求连接超时或处理超时");
