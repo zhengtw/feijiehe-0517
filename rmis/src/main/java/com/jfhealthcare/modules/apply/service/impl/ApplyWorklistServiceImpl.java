@@ -325,49 +325,50 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 				}
 				log.info(logseries+":=========报告贴图初始化完成===========");
 				//AI 初始化
-				long startTime = new Date().getTime();
-				HttpClientUtils instance = HttpClientUtils.getInstance();
-				
-				String httpGet = instance.httpGetByWaitTime(StringUtils.trim(aiHost)+aiParameter, 10000, 20000);
-				log.info(logseries+"=====Ai调用地址:{}",StringUtils.trim(aiHost)+aiParameter);
-				if(StringUtils.isNotBlank(httpGet)){
-					log.info(logseries+"=====Ai调用返回:{}",httpGet);
-					AiData aiData = JSON.parseObject(httpGet, AiData.class);
-					//AI转报告
-					if(ReportAiEnum.TOREPORTE.getAiStatusCode().equals(aiData.getReportStatus())){
-						bizindex.setStatusAi(ReportAiEnum.TOREPORTE.getAiStatus());
-						bizindex.setStatusAiCode(ReportAiEnum.TOREPORTE.getAiStatusCode());
-					//转审核
-					}else if(ReportAiEnum.TOREVIEWE.getAiStatusCode().equals(aiData.getReportStatus())){
-						bizindex.setStatusAi(ReportAiEnum.TOREVIEWE.getAiStatus());
-						bizindex.setStatusAiCode(ReportAiEnum.TOREVIEWE.getAiStatusCode());
-						bizindex.setStatus(CheckStatusEnum.PENDING_ONE_REVIEW.getStatus());
-						bizindex.setStatusCode(CheckStatusEnum.PENDING_ONE_REVIEW.getStatusCode());
-						bizindex.setReportDr(aiUserName);
-						bizindex.setReportTime(new Date());
-					//转分片	
-					}else if(ReportAiEnum.TOFENPIAN.getAiStatusCode().equals(aiData.getReportStatus())){
-						bizindex.setStatusAi(ReportAiEnum.TOFENPIAN.getAiStatus());
-						bizindex.setStatusAiCode(ReportAiEnum.TOFENPIAN.getAiStatusCode());
-					//若AI返回结果不正确，ai状态未为处理
-					}else{
-						bizindex.setStatusAi(ReportAiEnum.UNTREATED.getAiStatus());
-						bizindex.setStatusAiCode(ReportAiEnum.UNTREATED.getAiStatusCode());
-						bizindex.setStatus(CheckStatusEnum.PENDING_REPORT.getStatus());
-						bizindex.setStatusCode(CheckStatusEnum.PENDING_REPORT.getStatusCode());
-					}
-					//默认未参与
-					if(StringUtils.isNotBlank(aiData.getImging())){
-						repRecord.setFinding1(aiData.getImging());
-					}
-					if(StringUtils.isNotBlank(aiData.getDiagnosisOpinion())){
-						repRecord.setImpression1(aiData.getDiagnosisOpinion());
-					}
-					long endTime = new Date().getTime();
-					log.info(logseries+":=========AI申请用时：{}===========",endTime-startTime);
-				}else{
-					throw new RmisException("AI请求连接超时或处理超时");
-				}
+				throw new RmisException("AI调用取消");
+//				long startTime = new Date().getTime();
+//				HttpClientUtils instance = HttpClientUtils.getInstance();
+//				
+//				String httpGet = instance.httpGetByWaitTime(StringUtils.trim(aiHost)+aiParameter, 10000, 20000);
+//				log.info(logseries+"=====Ai调用地址:{}",StringUtils.trim(aiHost)+aiParameter);
+//				if(StringUtils.isNotBlank(httpGet)){
+//					log.info(logseries+"=====Ai调用返回:{}",httpGet);
+//					AiData aiData = JSON.parseObject(httpGet, AiData.class);
+//					//AI转报告
+//					if(ReportAiEnum.TOREPORTE.getAiStatusCode().equals(aiData.getReportStatus())){
+//						bizindex.setStatusAi(ReportAiEnum.TOREPORTE.getAiStatus());
+//						bizindex.setStatusAiCode(ReportAiEnum.TOREPORTE.getAiStatusCode());
+//					//转审核
+//					}else if(ReportAiEnum.TOREVIEWE.getAiStatusCode().equals(aiData.getReportStatus())){
+//						bizindex.setStatusAi(ReportAiEnum.TOREVIEWE.getAiStatus());
+//						bizindex.setStatusAiCode(ReportAiEnum.TOREVIEWE.getAiStatusCode());
+//						bizindex.setStatus(CheckStatusEnum.PENDING_ONE_REVIEW.getStatus());
+//						bizindex.setStatusCode(CheckStatusEnum.PENDING_ONE_REVIEW.getStatusCode());
+//						bizindex.setReportDr(aiUserName);
+//						bizindex.setReportTime(new Date());
+//					//转分片	
+//					}else if(ReportAiEnum.TOFENPIAN.getAiStatusCode().equals(aiData.getReportStatus())){
+//						bizindex.setStatusAi(ReportAiEnum.TOFENPIAN.getAiStatus());
+//						bizindex.setStatusAiCode(ReportAiEnum.TOFENPIAN.getAiStatusCode());
+//					//若AI返回结果不正确，ai状态未为处理
+//					}else{
+//						bizindex.setStatusAi(ReportAiEnum.UNTREATED.getAiStatus());
+//						bizindex.setStatusAiCode(ReportAiEnum.UNTREATED.getAiStatusCode());
+//						bizindex.setStatus(CheckStatusEnum.PENDING_REPORT.getStatus());
+//						bizindex.setStatusCode(CheckStatusEnum.PENDING_REPORT.getStatusCode());
+//					}
+//					//默认未参与
+//					if(StringUtils.isNotBlank(aiData.getImging())){
+//						repRecord.setFinding1(aiData.getImging());
+//					}
+//					if(StringUtils.isNotBlank(aiData.getDiagnosisOpinion())){
+//						repRecord.setImpression1(aiData.getDiagnosisOpinion());
+//					}
+//					long endTime = new Date().getTime();
+//					log.info(logseries+":=========AI申请用时：{}===========",endTime-startTime);
+//				}else{
+//					throw new RmisException("AI请求连接超时或处理超时");
+//				}
 			} catch (Exception e) {
 				bizindex.setStatusAi(ReportAiEnum.UNTREATED.getAiStatus());
 				bizindex.setStatusAiCode(ReportAiEnum.UNTREATED.getAiStatusCode());
@@ -375,6 +376,8 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 				bizindex.setStatusCode(CheckStatusEnum.PENDING_REPORT.getStatusCode());
 				if("AI请求连接超时或处理超时".equals(e.getMessage())) {
 					log.error("AI初始化失败！", "AI请求连接超时或处理超时");
+				}else if("AI调用取消".equals(e.getMessage())) {
+					log.error("AI初始化失败！", "AI调用取消");
 				}else {
 					log.error("AI初始化失败！", e);
 				}
