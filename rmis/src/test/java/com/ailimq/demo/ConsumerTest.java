@@ -1,20 +1,39 @@
 package com.ailimq.demo;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.jfhealthcare.common.exception.RmisException;
+import com.jfhealthcare.common.utils.HttpClientUtils;
 
 
 public class ConsumerTest {
 	
 	public static void main(String[] args) {
-		String age="008";
-		
-		Matcher matcher = Pattern.compile("[1-9]").matcher(age);
-		if(matcher.find()) {
-			System.out.println(matcher.start());
-			System.out.println(age.substring(matcher.start()));
+		HttpClientUtils instance = HttpClientUtils.getInstance();
+		String httpGet = instance.httpGetByWaitTime(StringUtils.trim("http://180.167.46.105:8915/tb?")+"jpgurl=http%3A%2F%2Flocalhost%2Fimg%2Ftb.png", 10000, 20000);
+		if(StringUtils.isNotBlank(httpGet)){
+			Map aiResult = JSON.parseObject(httpGet, Map.class);
+			Map tbMap = (Map) aiResult.get("tb_consistency");
+			String tbOj = (String) tbMap.get("cn");
+			if(StringUtils.equalsAny(tbOj, "高度符合", "中度符合")) {
+				System.out.println("疑似结核，请进行进一步检查以明确诊断");	
+			}
+		}else{
+			throw new RmisException("AI请求连接超时或处理超时");
 		}
-		
+//		String age="008";
+//		
+//		Matcher matcher = Pattern.compile("[1-9]").matcher(age);
+//		if(matcher.find()) {
+//			System.out.println(matcher.start());
+//			System.out.println(age.substring(matcher.start()));
+//		}
+//		
 		
 		
 //		boolean startsWithAny = StringUtils.startsWithAny(age, new String[] {"0","00"});

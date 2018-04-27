@@ -325,7 +325,21 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 				}
 				log.info(logseries+":=========报告贴图初始化完成===========");
 				//AI 初始化
-				throw new RmisException("AI调用取消");
+				HttpClientUtils instance = HttpClientUtils.getInstance();
+				String httpGet = instance.httpGetByWaitTime(StringUtils.trim(aiHost)+aiParameter, 15000, 25000);
+				log.info(logseries+"=====Ai调用地址:{}",StringUtils.trim(aiHost)+aiParameter);
+				if(StringUtils.isNotBlank(httpGet)){
+					Map aiResult = JSON.parseObject(httpGet, Map.class);
+					Map tbMap = (Map) aiResult.get("tb_consistency");
+					String tbOj = (String) tbMap.get("cn");
+					if(StringUtils.equalsAny(tbOj, "高度符合", "中度符合")) {
+						bizindex.setStatusAi(ReportAiEnum.TOREPORTE.getAiStatus());
+						bizindex.setStatusAiCode(ReportAiEnum.TOREPORTE.getAiStatusCode());
+						repRecord.setImpression1("疑似结核，请进行进一步检查以明确诊断");	
+					}
+				}else{
+					throw new RmisException("AI请求连接超时或处理超时");
+				}
 //				long startTime = new Date().getTime();
 //				HttpClientUtils instance = HttpClientUtils.getInstance();
 //				
