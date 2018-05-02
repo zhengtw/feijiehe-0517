@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.label.mapper.ViewLabellistMapper">
+	<resultMap id="BaseResultMap"
+		type="com.jfhealthcare.modules.label.entity.ViewLabellist">
+		<!-- WARNING - @mbg.generated -->
+		<result column="check_num" property="checkNum" jdbcType="VARCHAR" />
+		<result column="study_uid" property="studyUid" jdbcType="VARCHAR" />
+		<result column="series_uid" property="seriesUid" jdbcType="VARCHAR" />
+		<result column="body_part" property="bodyPart" jdbcType="VARCHAR" />
+		<result column="series_number" property="seriesNumber"
+			jdbcType="VARCHAR" />
+		<result column="modality" property="modality" jdbcType="VARCHAR" />
+		<result column="ptn_name" property="ptnName" jdbcType="VARCHAR" />
+		<result column="birth_date" property="birthDate" jdbcType="DATE" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="sex_code" property="sexCode" jdbcType="VARCHAR" />
+		<result column="ptn_age" property="ptnAge" jdbcType="VARCHAR" />
+		<result column="ptn_age_unit" property="ptnAgeUnit" jdbcType="VARCHAR" />
+		<result column="ptn_age_unit_code" property="ptnAgeUnitCode"
+			jdbcType="VARCHAR" />
+		<result column="hight" property="hight" jdbcType="VARCHAR" />
+		<result column="weight" property="weight" jdbcType="VARCHAR" />
+		<result column="Wmodality" property="wmodality" jdbcType="VARCHAR" />
+		<result column="study_time" property="studyTime" jdbcType="TIMESTAMP" />
+		<result column="Wbody_part" property="wbodyPart" jdbcType="VARCHAR" />
+		<result column="apply_doc" property="applyDoc" jdbcType="VARCHAR" />
+		<result column="apply_org" property="applyOrg" jdbcType="VARCHAR" />
+		<result column="apply_status_code" property="applyStatusCode"
+			jdbcType="VARCHAR" />
+		<result column="apply_status" property="applyStatus" jdbcType="VARCHAR" />
+		<result column="ptn_id" property="ptnId" jdbcType="VARCHAR" />
+		<result column="IS_NORMAL_IMAGE" property="isNormalImage"
+			jdbcType="BIT" />
+		<result column="LABEL_ACCNUM" property="labelAccnum" jdbcType="VARCHAR" />
+		<result column="STATUS_CODE" property="statusCode" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="LABEL_USER" property="labelUser" jdbcType="VARCHAR" />
+		<result column="LABEL_TIME" property="labelTime" jdbcType="TIMESTAMP" />
+		<result column="AUDIT_USER" property="auditUser" jdbcType="VARCHAR" />
+		<result column="AUDIT_TIME" property="auditTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<select id="selectByParams" resultMap="BaseResultMap"
+		parameterType="com.jfhealthcare.modules.label.request.ViewLabellistRequest">
+		select
+		check_num,study_uid,series_uid,body_part,series_number,modality,ptn_name,birth_date,sex,sex_code,ptn_age,ptn_age_unit,ptn_age_unit_code,hight,weight,Wmodality,study_time
+		,Wbody_part,apply_doc,apply_org,apply_status_code,apply_status,ptn_id,IS_NORMAL_IMAGE,LABEL_ACCNUM,STATUS_CODE,STATUS,LABEL_USER,LABEL_TIME,AUDIT_USER,AUDIT_TIME
+		from view_labellist
+		<where>
+			<if test="check_num != null and check_num != ''">
+				check_num = #{checkNum,jdbcType=VARCHAR}
+			</if>
+			<if test="apply_org != null and apply_org != ''">
+				and apply_org = #{applyOrg,jdbcType=VARCHAR}
+			</if>
+			<if test="bodyPart != null and bodyPart != ''">
+				and body_part = #{bodyPart,jdbcType=VARCHAR}
+			</if>
+			<if test="fromLabelDate != null and endLabelDate != null">
+				and &gt;= #{fromLabelDate,jdbcType=TIMESTAMP}
+				and &lt;=
+				#{endLabelDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="fromDicomDate != null and endDicomDate != null">
+				and studyTime &gt;= #{fromDicomDate,jdbcType=TIMESTAMP}
+				and studyTime &lt;= #{endDicomDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="auditUser !=null and auditUser != ''">
+				audit_user like concat(concat('%',#{auditUser,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="ptnName !=null and ptnName != ''">
+				ptn_name like concat(concat('%',#{ptnName,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="sex_code != null and sex_code !=''">
+				and sex_code = #{sexCode,jdbcTye=VARCHAR}
+			</if>
+			<if test="sex != null and sex != ''">
+				and sex = #{sex,jdbcTye=VARCHAR}
+			</if>
+			<if test="ptn_age != null and ptn_age != '' and ptn_age_unit_code !=null and ptn_age_unit_code != ''">
+				and  ptn_age = #{ptnAge,jdbcType=VARCHAR}
+				and  ptn_age_unit_code = #{ptnAgeUnitCode,jdbcType=VARCHAR}
+			</if>
+			
+			<if></if>
+			<if></if>
+			<if></if>
+			<if></if>
+			<if></if>
+			<if></if>
+			<if></if>
+			<if></if>
+			<if></if>
+			<if></if>
+			<if></if>
+			<if></if>
+			<if></if>
+		</where>
+
+	</select>
+</mapper>

@@ -22,6 +22,7 @@ import org.springframework.util.ObjectUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.jfhealthcare.common.enums.DCMEnum;
+import com.jfhealthcare.common.enums.LabelStatusEnum;
 import com.jfhealthcare.common.exception.RmisException;
 import com.jfhealthcare.common.utils.DateUtils;
 import com.jfhealthcare.common.utils.HttpClientUtils;
@@ -37,6 +38,10 @@ import com.jfhealthcare.modules.apply.mapper.ApplySeriesMapper;
 import com.jfhealthcare.modules.apply.mapper.ApplyStudyMapper;
 import com.jfhealthcare.modules.apply.mapper.ApplyWorklistMapper;
 import com.jfhealthcare.modules.apply.service.ApplyMqInitService;
+import com.jfhealthcare.modules.label.entity.LabelInfo;
+import com.jfhealthcare.modules.label.entity.LabelInfolist;
+import com.jfhealthcare.modules.label.mapper.LabelInfoMapper;
+import com.jfhealthcare.modules.label.mapper.LabelInfolistMapper;
 import com.jfhealthcare.modules.system.entity.SysDictDtl;
 import com.jfhealthcare.modules.system.entity.SysOperatorDtl;
 import com.jfhealthcare.modules.system.entity.SysOrganization;
@@ -69,6 +74,11 @@ public class ApplyMqInitServiceImpl implements ApplyMqInitService {
 	private SysOperatorDtlService sysOperatorDtlService;
 	@Autowired
 	private SysOrganizationService sysOrganizationService;
+	@Autowired
+	private LabelInfolistMapper labelInfolistMapper;
+	@Autowired
+	private LabelInfoMapper labelInfoMapper;
+	
 	@Transactional
 	@Override
 	public void initApply(String sopUID, String seriesUID, String studyUID, String userId) {
@@ -323,6 +333,26 @@ public class ApplyMqInitServiceImpl implements ApplyMqInitService {
 					applyWorklist.setUpdTime(new Date());
 					applyWorklistMapper.updateByPrimaryKey(applyWorklist);
 				}
+			}
+			
+			// 标注列表初始化
+			LabelInfolist labelInfoList = new LabelInfolist();
+			if(ObjectUtils.isEmpty(asrs)){
+				labelInfoList.setSeriesUid(asrs.getSeriesUid());
+				labelInfoList.setStatusCode(LabelStatusEnum.PENDING_LABEL.getStatusCode());
+				labelInfoList.setCrtTime(new Date());
+				SysDictDtl queryDictDtlById = sysDictDtlService.queryDictDtlById(LabelStatusEnum.PENDING_LABEL.getStatusCode());
+				labelInfoList.setStatus(queryDictDtlById.getOthervalue());
+				labelInfolistMapper.insert(labelInfoList);
+			}
+			//标注信息初始化
+			if(ObjectUtils.isEmpty(aimg)){
+				LabelInfo labelInfo = new LabelInfo();
+				labelInfo.setUid(labelInfoList.getLabelAccnum());
+				labelInfo.setStudyUid(studyUID);
+				labelInfo.setSeriesUid(seriesUID);
+				labelInfo.setImageUid(sopUID);
+				labelInfoMapper.insertSelective(labelInfo);
 			}
 			log.info(logseries+":========dcm：申请表信息初始化完成===");
 	}

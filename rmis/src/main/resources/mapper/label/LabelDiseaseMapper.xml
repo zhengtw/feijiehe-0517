@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.label.mapper.LabelDiseaseMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.label.entity.LabelDisease" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="UID" property="uid" jdbcType="VARCHAR" />
+    <result column="disease_code" property="diseaseCode" jdbcType="VARCHAR" />
+    <result column="disease" property="disease" jdbcType="VARCHAR" />
+    <result column="IDC10CODE" property="idc10code" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

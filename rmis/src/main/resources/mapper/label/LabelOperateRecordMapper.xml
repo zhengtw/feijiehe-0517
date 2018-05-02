@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.label.mapper.LabelOperateRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.label.entity.LabelOperateRecord" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="UID" property="uid" jdbcType="VARCHAR" />
+    <result column="operation_step" property="operationStep" jdbcType="INTEGER" />
+    <result column="label_status_code" property="labelStatusCode" jdbcType="VARCHAR" />
+    <result column="label_status" property="labelStatus" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+   <select id="selectByLabelAccnum" resultMap="BaseResultMap" parameterType="String">
+    select ID,UID,operation_step,label_status_code,label_status,operator,operate_time
+  	from label_operate_record where UID = #{labelAccnum,jdbcType=VARCHAR} order by operation_step desc
+  </select>
+</mapper>

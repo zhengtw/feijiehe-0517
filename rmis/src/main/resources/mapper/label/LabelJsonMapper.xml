@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.label.mapper.LabelJsonMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.label.entity.LabelJson" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="JSON_ID" property="jsonId" jdbcType="VARCHAR" />
+    <result column="LABEL_VALUE_UID" property="labelValueUid" jdbcType="VARCHAR" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="JSON_VALUE1" property="jsonValue1" jdbcType="LONGVARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="selectByLabelAccnum" resultMap="BaseResultMap" parameterType="String">
+    select la.JSON_ID jsonId,la.LABEL_VALUE_UID labelValueUid,la.CRT_USER crtUser,la.UPD_USER updUser
+  	from label_json la left join
+  	(select id from label_info where UID = #{labelAccnum,jdbcType=VARCHAR}) i on i.id = la.LABEL_VALUE_UID
+  	order by la.crt_time desc,la.label_value_uid,la.crt_user
+  </select>
+</mapper>
