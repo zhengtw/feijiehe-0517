@@ -82,20 +82,6 @@
 				and  ptn_age = #{ptnAge,jdbcType=VARCHAR}
 				and  ptn_age_unit_code = #{ptnAgeUnitCode,jdbcType=VARCHAR}
 			</if>
-			
-			<if></if>
-			<if></if>
-			<if></if>
-			<if></if>
-			<if></if>
-			<if></if>
-			<if></if>
-			<if></if>
-			<if></if>
-			<if></if>
-			<if></if>
-			<if></if>
-			<if></if>
 		</where>
 
 	</select>
