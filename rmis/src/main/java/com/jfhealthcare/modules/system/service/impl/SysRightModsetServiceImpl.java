@@ -1,5 +1,6 @@
 package com.jfhealthcare.modules.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,13 +58,30 @@ public class SysRightModsetServiceImpl implements SysRightModsetService {
 		sysRightModset.setObjflag(flag);
 		sysRightModsetMapper.delete(sysRightModset);
 		
+		//获取要插入的权限的父类ID  这里因为系统只有两级权限,所以往上查一级插入
+		//当要插入的权限本身为一级权限时，不查父类
+		ArrayList<String> idList = new ArrayList<String>();
 		if(menuIds != null && !menuIds.isEmpty()){
 			for (String menuId : menuIds) {
-				SysRightModset srm =new SysRightModset();
-				srm.setLogincode(logincodeOrRoleId);
-				srm.setMenuId(menuId);
-				srm.setObjflag(flag);
-				sysRightModsetMapper.insert(srm);
+				SysMenu  sym = new SysMenu();
+				sym.setId(menuId);
+				SysMenu selectOne = sysMenuMapper.selectOne(sym);
+				if(!"0".equals(selectOne.getUppderId())&&!idList.contains(selectOne.getUppderId())){
+					SysRightModset srm2 =new SysRightModset();
+					srm2.setLogincode(logincodeOrRoleId);
+					srm2.setMenuId(selectOne.getUppderId());
+					srm2.setObjflag(flag);
+					sysRightModsetMapper.insert(srm2);
+					idList.add(selectOne.getUppderId());
+				}
+				if(!idList.contains(menuId)){
+					SysRightModset srm =new SysRightModset();
+					srm.setLogincode(logincodeOrRoleId);
+					srm.setMenuId(menuId);
+					srm.setObjflag(flag);
+					sysRightModsetMapper.insert(srm);
+					idList.add(menuId);
+				}
 			}
 		}
 	}
