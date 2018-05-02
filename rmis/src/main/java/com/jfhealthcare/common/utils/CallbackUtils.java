@@ -22,7 +22,8 @@ public class CallbackUtils {
 	 */
 	public static void buildCallback(final Callback callback)
 	{
-		Runnable run = new Runnable() {		
+		Runnable run = new Runnable() {	
+			@Override
 			public void run() {
 				callback.buildRun();
 			}

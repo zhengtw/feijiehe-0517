@@ -15,8 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ListUtils {
 	public static List getFiledList(List list, String filed) {
-		if (CollectionUtils.isEmpty(list))
+		if (CollectionUtils.isEmpty(list)) {
 			return null;
+		}
 		List filedList = new ArrayList();
 		try {
 

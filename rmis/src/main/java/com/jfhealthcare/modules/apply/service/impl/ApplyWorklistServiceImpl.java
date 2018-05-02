@@ -82,6 +82,8 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 	private String aiHost;
 	@Value("${ai.userName}")
 	private String aiUserName;
+	@Value("${ai.aiToDocName}")
+	private String aiToDocName;
 	
 	@Autowired
 	private ApplyWorklistMapper applyWorklistMapper;
@@ -208,6 +210,7 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		if(CollectionUtils.isNotEmpty(businChecklistIndexs)){
 			BusinChecklistIndex bcli = businChecklistIndexs.get(0);
 			applyWorklistResponse.setDescribeBq(bcli.getDescribeBq());
+			applyWorklistResponse.setCheckPastIllness(bcli.getPastIllness());
 		}
 		applyWorklistResponse.setImageUrls(l);
 		applyWorklistResponse.setUrlStart(startUrl);
@@ -271,6 +274,8 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 		bizindex.setApplyHosp(org.getName());
 		bizindex.setApplyHospCode(loginUserEntity.getSysOperatorDtl().getOrgId());
 		bizindex.setJzFlag(ObjectUtils.isEmpty(applyWorklistRequest.getCheckJzFlag())?false:applyWorklistRequest.getCheckJzFlag());
+		bizindex.setPtnSource(applyWorklistRequest.getCheckPtnSource());//患者来源
+		bizindex.setPastIllness(applyWorklistRequest.getCheckPastIllness());//既往史
 		bizindex.setImgNum(instanceUids.size());
 		bizindex.setType("DR");
 		bizindex.setTypeCode("3406");
@@ -322,7 +327,7 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 				}
 				log.info(logseries+":=========报告贴图初始化完成===========");
 				//AI 初始化
-				long startTime = new Date().getTime();
+				long startTime = System.currentTimeMillis();
 				HttpClientUtils instance = HttpClientUtils.getInstance();
 				
 				String httpGet = instance.httpGetByWaitTime(StringUtils.trim(aiHost)+aiParameter, 10000, 20000);
@@ -330,10 +335,13 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 				if(StringUtils.isNotBlank(httpGet)){
 					log.info(logseries+"=====Ai调用返回:{}",httpGet);
 					AiData aiData = JSON.parseObject(httpGet, AiData.class);
+//					boolean aiFlag=false;//确定ai是否要转给医师
+					String aiFlag=null;
 					//AI转报告
 					if(ReportAiEnum.TOREPORTE.getAiStatusCode().equals(aiData.getReportStatus())){
 						bizindex.setStatusAi(ReportAiEnum.TOREPORTE.getAiStatus());
 						bizindex.setStatusAiCode(ReportAiEnum.TOREPORTE.getAiStatusCode());
+						aiFlag="report";
 					//转审核
 					}else if(ReportAiEnum.TOREVIEWE.getAiStatusCode().equals(aiData.getReportStatus())){
 						bizindex.setStatusAi(ReportAiEnum.TOREVIEWE.getAiStatus());
@@ -342,11 +350,12 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 						bizindex.setStatusCode(CheckStatusEnum.PENDING_ONE_REVIEW.getStatusCode());
 						bizindex.setReportDr(aiUserName);
 						bizindex.setReportTime(new Date());
+						aiFlag="audit";
 					//转分片	
 					}else if(ReportAiEnum.TOFENPIAN.getAiStatusCode().equals(aiData.getReportStatus())){
 						bizindex.setStatusAi(ReportAiEnum.TOFENPIAN.getAiStatus());
 						bizindex.setStatusAiCode(ReportAiEnum.TOFENPIAN.getAiStatusCode());
-					//若AI返回结果不正确，ai状态未为处理
+					//若AI返回结果不正确，ai状态为未处理
 					}else{
 						bizindex.setStatusAi(ReportAiEnum.UNTREATED.getAiStatus());
 						bizindex.setStatusAiCode(ReportAiEnum.UNTREATED.getAiStatusCode());
@@ -360,7 +369,27 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 					if(StringUtils.isNotBlank(aiData.getDiagnosisOpinion())){
 						repRecord.setImpression1(aiData.getDiagnosisOpinion());
 					}
-					long endTime = new Date().getTime();
+					
+					//AI 对应的转医师相关业务
+					String aistatus = redisUtils.get(RedisEnum.AIBTNSTATUS.getValue());
+					if(StringUtils.isEmpty(aistatus)) {
+						aistatus="0";
+						redisUtils.set(RedisEnum.AIBTNSTATUS.getValue(), aistatus, RedisUtils.NOT_EXPIRE);
+					}
+					if(StringUtils.isNotBlank(aiFlag) && StringUtils.equals("1", aistatus)) {
+						if(StringUtils.equals("report", aiFlag)) {
+							bizindex.setStatus(CheckStatusEnum.REPORTING.getStatus());
+							bizindex.setStatusCode(CheckStatusEnum.REPORTING.getStatusCode());
+							bizindex.setReportDr(aiToDocName);
+							bizindex.setReportTime(new Date());
+						}else{
+							bizindex.setStatus(CheckStatusEnum.REVIEWING.getStatus());
+							bizindex.setStatusCode(CheckStatusEnum.REVIEWING.getStatusCode());
+							bizindex.setAuditDr(aiToDocName);
+							bizindex.setAuditTime(new Date());
+						}
+					}
+					long endTime = System.currentTimeMillis();
 					log.info(logseries+":=========AI申请用时：{}===========",endTime-startTime);
 				}else{
 					throw new RmisException("AI请求连接超时或处理超时");

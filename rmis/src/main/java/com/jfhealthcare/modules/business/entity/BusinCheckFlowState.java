@@ -49,5 +49,18 @@ public class BusinCheckFlowState {
      */
     private String remark;
 
-    
+    /**
+     * 影像所见
+     */
+    private String finding;
+
+    /**
+     * 诊断建议
+     */
+    private String impression;
+
+    /**
+     * HP
+     */
+    private String hp;
 }

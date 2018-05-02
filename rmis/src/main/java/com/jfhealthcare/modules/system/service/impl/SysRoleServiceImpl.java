@@ -48,6 +48,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Transactional
+	@Override
 	public void delectSysRole(String[] split) {
 		SysRole sysRole = new SysRole();
 		for (String id : split) {

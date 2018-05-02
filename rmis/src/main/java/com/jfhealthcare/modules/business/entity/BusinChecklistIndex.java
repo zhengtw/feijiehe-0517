@@ -221,4 +221,12 @@ public class BusinChecklistIndex {
     * 拒绝字典name
     */
    private String refuseName;
+   /**
+    * 患者来源
+    */
+   private String ptnSource;
+   /**
+    * 既往史
+    */
+   private String pastIllness;
 }

@@ -13,5 +13,18 @@
     <result column="OPERATION_USER" property="operationUser" jdbcType="VARCHAR" />
     <result column="OPERATION_TIME" property="operationTime" jdbcType="TIMESTAMP" />
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="FINDING" property="finding" jdbcType="LONGVARCHAR" />
+    <result column="IMPRESSION" property="impression" jdbcType="LONGVARCHAR" />
+    <result column="HP" property="hp" jdbcType="VARCHAR" />
   </resultMap>
+  
+  <select id="selectFlowRorIndex"  parameterType="String" resultMap="BaseResultMap">
+     select a.* 
+     from 
+     (select * from busin_check_flow_state where ACCESSION_NUM=#{accessionNum,jdbcType=VARCHAR}) a ,
+	 (select REMARK from busin_check_flow_state where ACCESSION_NUM=#{accessionNum,jdbcType=VARCHAR} and remark like '%审' ORDER BY OPERATION_TIME DESC limit 1) b
+	 where  a.remark=b.remark  
+	 ORDER BY OPERATION_TIME ASC limit 1
+  </select>
+  
 </mapper>

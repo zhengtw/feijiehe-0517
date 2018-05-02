@@ -17,4 +17,14 @@
     <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
     <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  
+  <select id="selectRolesByLoginCode"  parameterType="String" resultMap="BaseResultMap">
+     SELECT b.* 
+     from sys_oper_role a,sys_role b 
+      <where>
+        a.LOGINCODE=#{logincode,jdbcType=VARCHAR} 
+        and a.ROLE_ID=b.ID and b.`STATUS`='1' and ISDELETE='0'
+      </where> 
+    </select>
+  
 </mapper>
