@@ -211,4 +211,8 @@ public class ApplyWorklistResponse {
      * instances，接收的图像数组
      */
    private List<String> instanceUids=new ArrayList<String>();
+   
+   private String checkPtnSource;
+   
+   private boolean checkJzFlag;
 }

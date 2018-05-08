@@ -211,6 +211,8 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 			BusinChecklistIndex bcli = businChecklistIndexs.get(0);
 			applyWorklistResponse.setDescribeBq(bcli.getDescribeBq());
 			applyWorklistResponse.setCheckPastIllness(bcli.getPastIllness());
+			applyWorklistResponse.setCheckPtnSource(bcli.getPtnSource());
+			applyWorklistResponse.setCheckJzFlag(bcli.getJzFlag());
 		}
 		applyWorklistResponse.setImageUrls(l);
 		applyWorklistResponse.setUrlStart(startUrl);
