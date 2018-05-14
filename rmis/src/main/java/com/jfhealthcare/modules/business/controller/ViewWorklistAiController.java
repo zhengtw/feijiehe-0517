@@ -1,8 +1,6 @@
 package com.jfhealthcare.modules.business.controller;
 
 import java.net.URLEncoder;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,30 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageInfo;
 import com.jfhealthcare.common.base.BaseResponse;
-import com.jfhealthcare.common.base.PageResponse;
-import com.jfhealthcare.common.base.ValueResponse;
-import com.jfhealthcare.common.entity.LoginUserEntity;
 import com.jfhealthcare.common.enums.RedisEnum;
 import com.jfhealthcare.common.exception.RmisException;
 import com.jfhealthcare.common.utils.HttpClientUtils;
 import com.jfhealthcare.common.utils.RedisUtils;
-import com.jfhealthcare.common.validator.Assert;
-import com.jfhealthcare.common.validator.ValidatorUtils;
-import com.jfhealthcare.common.validator.group.Edit;
-import com.jfhealthcare.common.validator.group.Query;
 import com.jfhealthcare.modules.business.entity.AiCheckEntity;
-import com.jfhealthcare.modules.business.entity.RepImage;
-import com.jfhealthcare.modules.business.entity.ViewWorklist;
-import com.jfhealthcare.modules.business.mapper.ViewWorklistMapper;
 import com.jfhealthcare.modules.business.request.CheckApiRequest;
-import com.jfhealthcare.modules.business.request.ViewWorklistRequest;
 import com.jfhealthcare.modules.business.response.CheckApiResponse;
-import com.jfhealthcare.modules.business.response.ViewWorklistResponse;
-import com.jfhealthcare.modules.business.service.ViewWorklistService;
-import com.jfhealthcare.modules.system.annotation.LoginUser;
-import com.jfhealthcare.modules.system.annotation.SysLogAop;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

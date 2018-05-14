@@ -37,5 +37,10 @@ public class RepImage {
      * 图像路径
      */
     private String imgPage;
+    
+    /**
+	 * 逻辑删除
+	 */
+	private Boolean isdelete;
 
 }

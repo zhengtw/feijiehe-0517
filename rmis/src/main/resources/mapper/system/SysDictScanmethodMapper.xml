@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jfhealthcare.modules.system.mapper.SysDictScanmethodMapper" >
-  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.system.entity.SysDictScanmethod" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfhealthcare.modules.system.mapper.SysDictScanmethodMapper">
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.system.entity.SysDictScanmethod">
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="CHECKTYPE_CODE" property="checktypeCode" jdbcType="VARCHAR" />
-    <result column="CHECKTYPE_NAME" property="checktypeName" jdbcType="VARCHAR" />
-    <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="OTHERVALUE" property="othervalue" jdbcType="VARCHAR" />
-    <result column="OTHERVALUE2" property="othervalue2" jdbcType="VARCHAR" />
-    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
-    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
-    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
-    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
-    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
-    <result column="STATUS" property="status" jdbcType="BIT" />
-    <result column="NINDEX" property="nindex" jdbcType="INTEGER" />
-    <result column="NAMEPY" property="namepy" jdbcType="VARCHAR" />
-    <result column="NAMEWB" property="namewb" jdbcType="VARCHAR" />
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CHECKTYPE_CODE" jdbcType="VARCHAR" property="checktypeCode" />
+    <result column="CHECKTYPE_NAME" jdbcType="VARCHAR" property="checktypeName" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="OTHERVALUE" jdbcType="VARCHAR" property="othervalue" />
+    <result column="OTHERVALUE2" jdbcType="VARCHAR" property="othervalue2" />
+    <result column="CRT_USER" jdbcType="VARCHAR" property="crtUser" />
+    <result column="CRT_TIME" jdbcType="TIMESTAMP" property="crtTime" />
+    <result column="UPD_USER" jdbcType="VARCHAR" property="updUser" />
+    <result column="UPD_TIME" jdbcType="TIMESTAMP" property="updTime" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="STATUS" jdbcType="BIT" property="status" />
+    <result column="NINDEX" jdbcType="INTEGER" property="nindex" />
+    <result column="NAMEPY" jdbcType="VARCHAR" property="namepy" />
+    <result column="NAMEWB" jdbcType="VARCHAR" property="namewb" />
   </resultMap>
 </mapper>

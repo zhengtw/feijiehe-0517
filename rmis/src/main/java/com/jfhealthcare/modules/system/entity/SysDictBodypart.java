@@ -5,8 +5,8 @@ import javax.persistence.*;
 
 import lombok.Data;
 
-@Table(name = "sys_dict_bodypart")
 @Data
+@Table(name = "sys_dict_bodypart")
 public class SysDictBodypart {
     /**
      * 部位主键ID
@@ -98,5 +98,14 @@ public class SysDictBodypart {
      */
     @Column(name = "NAMEWB")
     private String namewb;
+
+    /**
+     * 获取部位主键ID
+     *
+     * @return ID - 部位主键ID
+     */
+    public String getId() {
+        return id;
+    }
 
 }

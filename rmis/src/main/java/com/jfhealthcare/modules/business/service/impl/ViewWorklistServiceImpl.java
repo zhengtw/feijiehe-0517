@@ -533,52 +533,13 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 		log.info("报告流：accessnum:"+bCLI.getAccessionNum()+",remark:"+bcfs.getRemark());
 	}
 
-	/**
-	 * 报告流跟踪
-	 * @param accessionNum
-	 * @param status
-	 * @param statusCode
-	 */
-//	private void updateReportFlow(String accessionNum, String status, String statusCode,int num) {
-//		BusinCheckFlowState bcfs=new BusinCheckFlowState();
-//		bcfs.setAccessionNum(accessionNum);
-//		bcfs.setNumber(num);
-//		List<BusinCheckFlowState> businCheckFlowStates = businCheckFlowStateMapper.select(bcfs);
-//		bcfs.setStatus(status);
-//		bcfs.setStatusCode(statusCode);
-//		bcfs.setOperationUser(NameUtils.getLoginCode());
-//		bcfs.setOperationTime(new Date());
-//		if(CollectionUtils.isEmpty(businCheckFlowStates)) {
-//			businCheckFlowStateMapper.insertSelective(bcfs);
-//		}else {
-//			bcfs.setId(businCheckFlowStates.get(0).getId());
-//			businCheckFlowStateMapper.updateByPrimaryKey(bcfs);
-//		}
-//	}
-	
-//	private void updateReportFlow(String accessionNum, String status, String statusCode, String finding, String impression, String hp) {
-//		Example ex=new Example(BusinCheckFlowState.class);
-//		ex.createCriteria().andEqualTo("accessionNum", accessionNum).andNotEqualTo("number", -1);
-//		int count = businCheckFlowStateMapper.selectCountByExample(ex);
-//		BusinCheckFlowState bcfs=new BusinCheckFlowState();
-//		bcfs.setAccessionNum(accessionNum);
-//		bcfs.setNumber(count+1);
-//		bcfs.setStatus(status);
-//		bcfs.setStatusCode(statusCode);
-//		bcfs.setOperationUser(NameUtils.getLoginCode());
-//		bcfs.setOperationTime(new Date());
-//		bcfs.setFinding(finding);
-//		bcfs.setImpression(impression);
-//		bcfs.setHp(hp);
-//		businCheckFlowStateMapper.insertSelective(bcfs);
-//	}
-	
 
 	@Override
 	public List<RepImage> queryRepImageByRepUid(String repUid) {
 		Example example = new Example(RepImage.class);
 		Criteria createCriteria = example.createCriteria();
 		createCriteria.andEqualTo("repUid", repUid);
+		createCriteria.andEqualTo("isdelete", CommonStaticValue.IS_NOT_DELETE);
 		example.setOrderByClause("number asc");
 		List<RepImage> repImages = repImageMapper.selectByExample(example);
 		return repImages;
@@ -586,8 +547,10 @@ public class ViewWorklistServiceImpl implements ViewWorklistService {
 
 	@Override
 	public void deleteRepImageByRepImageId(String repImageId) {
-		RepImage repImage = repImageMapper.selectByPrimaryKey(repImageId);
-		repImageMapper.deleteByPrimaryKey(repImageId);
+		RepImage repImage =new RepImage();
+		repImage.setId(repImageId);
+		repImage.setIsdelete(CommonStaticValue.IS_DELETE);
+		repImageMapper.updateByPrimaryKeySelective(repImage);
 	}
 
 	@Override

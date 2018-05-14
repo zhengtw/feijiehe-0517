@@ -146,17 +146,12 @@ public class ViewWorklistController {
 				//判断是不是第一次打开
 				Map<String, String> btnsMap = viewWorklistService.queryBtnsByCheckAccessionNum(viewWorklistRequest.getCheckAccessionNum(),loginUserEntity);
 				ViewWorklistResponse viewWorklistResponse =new ViewWorklistResponse();
-				if(StringUtils.equals("0",btnsMap.get("isOpen"))) {//不可打开 直接返回
-					viewWorklistResponse.setBtnsMap(btnsMap);
-					return BaseResponse.getSuccessResponse(viewWorklistResponse);
-				}else {
-					if(StringUtils.equals("1",btnsMap.get("isWork"))) {//不需要操作的  不更新
-						viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
-					}
-					viewWorklistResponse = viewWorklistService.queryOneViewWorklist(viewWorklistRequest.getCheckAccessionNum());
-					viewWorklistResponse.setBtnsMap(btnsMap);
-					return BaseResponse.getSuccessResponse(viewWorklistResponse);
+				if(StringUtils.equals("1",btnsMap.get("isWork"))) {//不需要操作的  不更新
+					viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
 				}
+				viewWorklistResponse = viewWorklistService.queryOneViewWorklist(viewWorklistRequest.getCheckAccessionNum());
+				viewWorklistResponse.setBtnsMap(btnsMap);
+				return BaseResponse.getSuccessResponse(viewWorklistResponse);
 			}else {
 				viewWorklistService.updateCheckListIndex(viewWorklistRequest,loginUserEntity);
 			}

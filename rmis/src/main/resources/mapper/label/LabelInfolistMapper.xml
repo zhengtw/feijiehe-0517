@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jfhealthcare.modules.label.mapper.LabelInfolistMapper" >
+  <resultMap id="BaseResultMap" type="com.jfhealthcare.modules.label.entity.LabelInfolist" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="LABEL_ACCNUM" property="labelAccnum" jdbcType="VARCHAR" />
+    <result column="series_uid" property="seriesUid" jdbcType="VARCHAR" />
+    <result column="STATUS_CODE" property="statusCode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="LABEL_USER" property="labelUser" jdbcType="VARCHAR" />
+    <result column="LABEL_TIME" property="labelTime" jdbcType="TIMESTAMP" />
+    <result column="AUDIT_USER" property="auditUser" jdbcType="VARCHAR" />
+    <result column="AUDIT_TIME" property="auditTime" jdbcType="TIMESTAMP" />
+    <result column="LABEL_DESCRIBE" property="labelDescribe" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="APPLY_CHECK_NUM" property="applyCheckNum" jdbcType="VARCHAR" />
+    <result column="CHECK_BODYPART" property="checkBodypart" jdbcType="VARCHAR" />
+    <result column="label_Task_Code" property="labelTaskCode" jdbcType="VARCHAR" />
+    <result column="label_Task" property="labelTask" jdbcType="VARCHAR" />
+    <result column="nidus_Type_Code" property="nidusTypeCode" jdbcType="VARCHAR" />
+    <result column="nidus_Type" property="nidusType" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>
