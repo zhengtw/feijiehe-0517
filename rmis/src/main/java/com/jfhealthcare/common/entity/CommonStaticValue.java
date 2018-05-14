@@ -4,6 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommonStaticValue {
+	
+	/**
+	 * 是否删除--删除
+	 */
+	public static final Boolean IS_DELETE = Boolean.TRUE;
+	
+	/**
+	 * 是否删除--不删除
+	 */
+	public static final Boolean IS_NOT_DELETE = Boolean.FALSE;
+	
+	
 	//按钮 常量
 	private static Map<String, String> btnsMap = new HashMap<String, String>();
 	//报告流 常量

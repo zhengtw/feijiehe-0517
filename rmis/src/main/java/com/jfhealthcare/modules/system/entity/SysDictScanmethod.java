@@ -5,8 +5,8 @@ import javax.persistence.*;
 
 import lombok.Data;
 
-@Table(name = "sys_dict_scanmethod")
 @Data
+@Table(name = "sys_dict_scanmethod")
 public class SysDictScanmethod {
     /**
      * 主键ID

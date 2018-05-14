@@ -303,9 +303,10 @@ public class SysOperatorController {
 						formatName = split[split.length-1];
 					}
 				}
-				String sigpicpath=sigpicPath+DateUtils.dateToString(new Date(), DateUtils.patternB)+"_"+sysOperator.getLogincode()+"."+formatName;
+				String sigpicpath=sigpicPath+DateUtils.dateToString(new Date(), DateUtils.patternF)+"_"+sysOperator.getLogincode()+"."+formatName;
 				File file = new File(sysPsth+sigpicpath);
 				signImageFile.transferTo(file);
+				log.info("签名上传："+file.getName()+",大小："+file.length());
 				if(file.exists() && FileUtils.sizeOf(file)>0){
 					sysOperator.setSignature(sigpicpath);
 					sysOperatorMapper.updateByPrimaryKey(sysOperator);
@@ -316,6 +317,9 @@ public class SysOperatorController {
 				}else{
 					return BaseResponse.getFailResponse("签名上传失败！");
 				}
+			}else {
+				log.info("签名上传失败！  signImageFile 为空！");
+				return BaseResponse.getFailResponse("签名上传失败！");
 			}
 		} catch (Exception e) {
 			log.error("签名更新失败！", e);

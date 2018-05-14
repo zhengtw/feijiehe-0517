@@ -23,6 +23,7 @@ import org.springframework.util.ObjectUtils;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jfhealthcare.common.entity.CommonStaticValue;
 import com.jfhealthcare.common.entity.LoginUserEntity;
 import com.jfhealthcare.common.entity.MyPageInfo;
 import com.jfhealthcare.common.enums.ApplyStatusEnum;
@@ -322,6 +323,7 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 					repImage.setRepUid(repRecord.getRepUid());
 					repImage.setImgPage((String)map.get("imageUrl"));
 					repImage.setNumber(i);
+					repImage.setIsdelete(CommonStaticValue.IS_NOT_DELETE);
 					repImages.add(repImage);
 					String jpgurl = "jpgurl="+URLEncoder.encode(startUrl+map.get("imageUrl"),"UTF-8");
 					aiParameter=StringUtils.isEmpty(aiParameter)?jpgurl:aiParameter+"&"+jpgurl;

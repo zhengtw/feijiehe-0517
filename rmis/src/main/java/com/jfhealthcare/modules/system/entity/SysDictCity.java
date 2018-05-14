@@ -9,7 +9,7 @@ import lombok.Data;
 @Table(name = "sys_dict_city")
 public class SysDictCity {
 	@Id
-	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "select uuid()")
 	private Integer id;
 
 	@Column(name = "AREACODE")

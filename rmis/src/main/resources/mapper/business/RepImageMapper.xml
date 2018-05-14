@@ -11,5 +11,6 @@
     <result column="IMG_LABEL_CODE" property="imgLabelCode" jdbcType="VARCHAR" />
     <result column="IMG_LABEL" property="imgLabel" jdbcType="VARCHAR" />
     <result column="IMG_PAGE" property="imgPage" jdbcType="LONGVARCHAR" />
+    <result column="ISDELETE" property="isdelete" jdbcType="BIT" />
   </resultMap>
 </mapper>
