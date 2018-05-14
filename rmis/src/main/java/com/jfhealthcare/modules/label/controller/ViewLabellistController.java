@@ -50,7 +50,6 @@ public class ViewLabellistController {
 	@ApiOperation(value = "labellist查询", notes = "labellist查询详情")
 	public BaseResponse queryViewLabellist(@RequestBody ViewLabellistRequest viewLabellistRequest) {
 		try {
-			//通知前段 起始时间 和结束时间要传时分秒 TODO
 			if(viewLabellistRequest.getCheckTime()!=null){
 				List<Date> checkTime = DateUtils.getCheckTime(viewLabellistRequest.getCheckTime());
 				viewLabellistRequest.setFromLabelDate(checkTime.get(0));

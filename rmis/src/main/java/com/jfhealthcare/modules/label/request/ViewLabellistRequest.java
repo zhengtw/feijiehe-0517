@@ -136,12 +136,12 @@ public class ViewLabellistRequest extends BasicPageEntity {
 	/**
 	 * 标注状态CODE
 	 */
-	private String statusCode;
+	private String[] statusCode;
 
 	/**
 	 * 标注状态
 	 */
-	private String status;
+	private String[] status;
 
 	/**
 	 * 标注人
@@ -180,4 +180,21 @@ public class ViewLabellistRequest extends BasicPageEntity {
 	 * 标注时间段
 	 * */
 	private Integer checkTime;
+	
+	/**
+	 * 上传开始日期
+	 * */
+	private Date fromApplyDate;
+	
+	/**
+	 * 上传结束日期
+	 * */
+	private Date endApplyDate;
+	
+	private String labelTaskCode;
+	private String labelTask;
+	private String nidusTypeCode;
+	private String nidusType;
+	
+	private String[] modalitys;
 }

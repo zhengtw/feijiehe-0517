@@ -70,6 +70,9 @@ public class SysDictDtlServiceImpl implements SysDictDtlService {
 		if(StringUtils.isNotBlank(sysDictDtl.getNamepy())){
 			criteria.andCondition("(namepy like \"%"+sysDictDtl.getNamepy()+"%\"" +"or namewb like \"%"+sysDictDtl.getNamepy()+"%\")");
 		}
+		if(StringUtils.isNotBlank(sysDictDtl.getOthervalue2())){
+			criteria.andCondition("(OTHERVALUE2 like \"%"+sysDictDtl.getOthervalue2()+"%\")");
+		}
 		List<SysDictDtl> selectByExample = sysDictDtlMapper.selectByExample(example);
 		PageInfo<SysDictDtl> pageInfo = new PageInfo<SysDictDtl>(selectByExample);
 		return pageInfo;

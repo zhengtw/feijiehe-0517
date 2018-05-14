@@ -273,8 +273,8 @@ public class ApplyMqInitServiceImpl implements ApplyMqInitService {
 			log.info(logseries+":========dcm：患者信息初始化完成===");
 			
 			//申请表初始化
+			ApplyWorklist applyWorklist=new ApplyWorklist();
 			if(ObjectUtils.isEmpty(applyWorklists) || (!ObjectUtils.isEmpty(asrs) && !haveNormalImage )){
-				ApplyWorklist applyWorklist=new ApplyWorklist();
 				String checkNum=getRandomNum();
 				applyWorklist.setCheckNum(checkNum);//检查单号由自己生成
 				applyWorklist.setPtnId("pid-"+checkNum);
@@ -322,36 +322,46 @@ public class ApplyMqInitServiceImpl implements ApplyMqInitService {
 				}
 			}else {
 				//申请不为空  如果存在多部位需要更新
-				ApplyWorklist applyWorklist = applyWorklists.get(0);
-				String applyBodyPart = applyWorklist.getBodyPart();
+				ApplyWorklist applyWorklist2 = applyWorklists.get(0);
+				String applyBodyPart = applyWorklist2.getBodyPart();
 				if(StringUtils.isBlank(applyBodyPart) && StringUtils.isNotBlank(bodyPart)) {
-					applyWorklist.setBodyPart(bodyPart);
-					applyWorklist.setUpdTime(new Date());
-					applyWorklistMapper.updateByPrimaryKey(applyWorklist);
+					applyWorklist2.setBodyPart(bodyPart);
+					applyWorklist2.setUpdTime(new Date());
+					applyWorklistMapper.updateByPrimaryKey(applyWorklist2);
 				}else if(StringUtils.isNoneBlank(applyBodyPart,bodyPart) && !applyBodyPart.contains(bodyPart)) {
-					applyWorklist.setBodyPart(applyBodyPart+","+bodyPart);
-					applyWorklist.setUpdTime(new Date());
-					applyWorklistMapper.updateByPrimaryKey(applyWorklist);
+					applyWorklist2.setBodyPart(applyBodyPart+","+bodyPart);
+					applyWorklist2.setUpdTime(new Date());
+					applyWorklistMapper.updateByPrimaryKey(applyWorklist2);
 				}
 			}
 			
 			// 标注列表初始化
 			LabelInfolist labelInfoList = new LabelInfolist();
 			if(ObjectUtils.isEmpty(asrs)){
-				labelInfoList.setSeriesUid(asrs.getSeriesUid());
+				labelInfoList.setSeriesUid(seriesUID);
 				labelInfoList.setStatusCode(LabelStatusEnum.PENDING_LABEL.getStatusCode());
 				labelInfoList.setCrtTime(new Date());
+				labelInfoList.setCheckBodypart(bodyPart);
 				SysDictDtl queryDictDtlById = sysDictDtlService.queryDictDtlById(LabelStatusEnum.PENDING_LABEL.getStatusCode());
 				labelInfoList.setStatus(queryDictDtlById.getOthervalue());
+				if(StringUtils.isNotBlank(applyWorklist.getCheckNum())){
+					labelInfoList.setApplyCheckNum(applyWorklist.getCheckNum());
+				}
 				labelInfolistMapper.insert(labelInfoList);
 			}
 			//标注信息初始化
 			if(ObjectUtils.isEmpty(aimg)){
 				LabelInfo labelInfo = new LabelInfo();
-				labelInfo.setUid(labelInfoList.getLabelAccnum());
 				labelInfo.setStudyUid(studyUID);
 				labelInfo.setSeriesUid(seriesUID);
 				labelInfo.setImageUid(sopUID);
+				if(StringUtils.isBlank(labelInfoList.getLabelAccnum())){
+					labelInfoList.setSeriesUid(seriesUID);
+					LabelInfolist selectOne = labelInfolistMapper.selectOne(labelInfoList);
+					labelInfo.setUid(selectOne.getLabelAccnum());
+				}else{
+					labelInfo.setUid(labelInfoList.getLabelAccnum());
+				}
 				labelInfoMapper.insertSelective(labelInfo);
 			}
 			log.info(logseries+":========dcm：申请表信息初始化完成===");

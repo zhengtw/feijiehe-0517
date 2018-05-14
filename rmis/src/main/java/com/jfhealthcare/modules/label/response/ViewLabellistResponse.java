@@ -19,7 +19,7 @@ public class ViewLabellistResponse {
 	 */
 	private String userName;
 	/**
-	 * HisReport //TODO 搞清楚报告对象
+	 * HisReport
 	 */
 	private String HisReport;
 	/**

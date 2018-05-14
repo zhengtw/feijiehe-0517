@@ -20,4 +20,8 @@
   	(select id from label_info where UID = #{labelAccnum,jdbcType=VARCHAR}) i on i.id = la.LABEL_VALUE_UID
   	order by la.crt_time desc,la.label_value_uid,la.crt_user
   </select>
+  
+  <delete id="deleteByLabelAccnum" parameterType="String">
+  	delete from label_json  where label_value_uid in (select lai.ID from label_info lai where lai.UID = #{labelAccnum,jdbcType=VARCHAR} )
+  </delete>
 </mapper>

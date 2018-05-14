@@ -17,7 +17,6 @@ import com.jfhealthcare.common.validator.Assert;
 import com.jfhealthcare.modules.label.entity.LabelInfo;
 import com.jfhealthcare.modules.label.entity.LabelJson;
 import com.jfhealthcare.modules.label.request.LabelInfoRequest;
-import com.jfhealthcare.modules.label.response.LabelInfoWebViewResponse;
 import com.jfhealthcare.modules.label.service.LabelInfoService;
 import com.jfhealthcare.modules.system.annotation.LoginUser;
 
@@ -41,9 +40,8 @@ public class LabelInfoController {
 		try {
 			Assert.isAnyBlank(labelInfoRequest.getStudyUid(), labelInfoRequest.getCheckNum(),
 					labelInfoRequest.getUserId(), "userId,studyUid,checkNum不能为空!");
-			LabelInfoWebViewResponse labelResponse = labelInfoService.queryInfoForWebView(labelInfoRequest,
-					loginUserEntity.getSysOperator().getAdminCode());
-			return BaseResponse.getSuccessResponse(labelResponse);
+			return BaseResponse.getSuccessResponse(labelInfoService.queryInfoForWebView(labelInfoRequest,
+					loginUserEntity.getSysOperator().getAdminCode()));
 		} catch (Exception e) {
 			log.error("查询标注信息失败!", e);
 			return BaseResponse.getFailResponse("查询标注信息失败!");
@@ -57,7 +55,7 @@ public class LabelInfoController {
 		try {
 			Assert.isAnyBlank(labelInfoRequest.getId(), "id不能为空!");
 			LabelInfo labelInfo = new LabelInfo();
-			TransferUtils.copyPropertiesIgnoreNull(labelInfoRequest, labelInfo);
+			TransferUtils.copyProperties(labelInfoRequest, labelInfo);
 			labelInfo.setUpdTime(new Date());
 			labelInfo.setUpdUser(loginUserEntity.getSysOperator().getLogincode());
 		    labelInfoService.updateLabelInfo(labelInfo);

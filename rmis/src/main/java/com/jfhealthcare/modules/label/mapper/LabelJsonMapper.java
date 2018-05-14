@@ -10,4 +10,6 @@ import com.jfhealthcare.tk.mybatis.util.MyMapper;
 public interface LabelJsonMapper extends MyMapper<LabelJson> {
 
 	List<LabelJson> selectByLabelAccnum(@Param(value="labelAccnum") String labelAccnum);
+
+	void deleteByLabelAccnum(@Param(value="labelAccnum") String labelAccnum);
 }

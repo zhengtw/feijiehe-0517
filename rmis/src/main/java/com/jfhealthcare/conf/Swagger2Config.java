@@ -26,11 +26,17 @@ public class Swagger2Config {
     @Bean
     public Docket createRestSystemApi() {
     	ParameterBuilder aParameterBuilder = new ParameterBuilder();
-    	aParameterBuilder.name("token").defaultValue("164685c16f51fd9fa74052548b3da755")
+    	aParameterBuilder.name("token").defaultValue("48cc33f34074a39b5248ed1609bdf429")
     	.description("token测试用").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+    	ParameterBuilder bParameterBuilder = new ParameterBuilder();
+    	bParameterBuilder.name("version").defaultValue("3.0.1.20180509")
+    	.description("版本号").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+    	
     	Parameter parameter = aParameterBuilder.build();
+    	Parameter parameterb = bParameterBuilder.build();
     	 List<Parameter> aParameters = new ArrayList<Parameter>();
     	 aParameters.add(parameter);
+    	 aParameters.add(parameterb);
         return new Docket(DocumentationType.SWAGGER_2).groupName("system")
                 .apiInfo(apiSysInfo())
                 .globalOperationParameters(aParameters)
@@ -43,11 +49,17 @@ public class Swagger2Config {
     @Bean
     public Docket createRestBusinessApi() {
     	ParameterBuilder aParameterBuilder = new ParameterBuilder();
-    	aParameterBuilder.name("token").defaultValue("164685c16f51fd9fa74052548b3da755")
+    	aParameterBuilder.name("token").defaultValue("48cc33f34074a39b5248ed1609bdf429")
     	.description("token测试用").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+    	ParameterBuilder bParameterBuilder = new ParameterBuilder();
+    	bParameterBuilder.name("version").defaultValue("3.0.1.20180509")
+    	.description("版本号").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+    	
     	Parameter parameter = aParameterBuilder.build();
+    	Parameter parameterb = bParameterBuilder.build();
     	 List<Parameter> aParameters = new ArrayList<Parameter>();
     	 aParameters.add(parameter);
+    	 aParameters.add(parameterb);
         return new Docket(DocumentationType.SWAGGER_2).groupName("business")
                 .apiInfo(apiBusInfo())
                 .globalOperationParameters(aParameters)
@@ -61,11 +73,17 @@ public class Swagger2Config {
     @Bean
     public Docket createRestApply() {
     	ParameterBuilder aParameterBuilder = new ParameterBuilder();
-    	aParameterBuilder.name("token").defaultValue("164685c16f51fd9fa74052548b3da755")
+    	aParameterBuilder.name("token").defaultValue("48cc33f34074a39b5248ed1609bdf429")
     	.description("token测试用").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+    	ParameterBuilder bParameterBuilder = new ParameterBuilder();
+    	bParameterBuilder.name("version").defaultValue("3.0.1.20180509")
+    	.description("版本号").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+    	
     	Parameter parameter = aParameterBuilder.build();
+    	Parameter parameterb = bParameterBuilder.build();
     	 List<Parameter> aParameters = new ArrayList<Parameter>();
     	 aParameters.add(parameter);
+    	 aParameters.add(parameterb);
         return new Docket(DocumentationType.SWAGGER_2).groupName("apply")
                 .apiInfo(apiApplyInfo())
                 .globalOperationParameters(aParameters)
@@ -93,9 +111,42 @@ public class Swagger2Config {
                 .build();
     }
     
+    @Bean
+    public Docket createLabelApi() {
+    	ParameterBuilder aParameterBuilder = new ParameterBuilder();
+    	aParameterBuilder.name("token").defaultValue("48cc33f34074a39b5248ed1609bdf429")
+    	.description("token测试用").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+    	ParameterBuilder bParameterBuilder = new ParameterBuilder();
+    	bParameterBuilder.name("version").defaultValue("3.0.1.20180509")
+    	.description("版本号").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+    	
+    	Parameter parameter = aParameterBuilder.build();
+    	Parameter parameterb = bParameterBuilder.build();
+    	 List<Parameter> aParameters = new ArrayList<Parameter>();
+    	 aParameters.add(parameter);
+    	 aParameters.add(parameterb);
+        return new Docket(DocumentationType.SWAGGER_2).groupName("label")
+                .apiInfo(apiLabelInfo())
+                .globalOperationParameters(aParameters)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.jfhealthcare.modules.label.controller"))
+                .paths(PathSelectors.any()) //过滤的接口
+                .build();
+    }
+    
     
 
-    private ApiInfo apiSysInfo() {
+    private ApiInfo apiLabelInfo() {
+    	 return new ApiInfoBuilder()
+                 .title("JF RESTful API/九峰开发接口文档 --系统API") //大标题
+                 .description("HTTP状态码大全：http://tool.oschina.net/commons?type=5") //详细描述
+//                 .termsOfServiceUrl("http://tool.oschina.net/commons?type=5")
+                 .contact("程序员  GG") //作者
+                 .version("1.0")
+                 .build();
+	}
+
+	private ApiInfo apiSysInfo() {
         return new ApiInfoBuilder()
                 .title("JF RESTful API/九峰开发接口文档 --系统API") //大标题
                 .description("HTTP状态码大全：http://tool.oschina.net/commons?type=5") //详细描述

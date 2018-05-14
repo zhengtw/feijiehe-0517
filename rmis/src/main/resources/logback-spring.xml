@@ -18,6 +18,10 @@
 		<root level="DEBUG">
 			<appender-ref ref="CONSOLE" />
 		</root>
+		<logger name="com.alibaba" level="WARN"/>
+		<logger name="o.s.b.factory.support.DefaultListableBeanFactory" level="WARN"/>
+		<logger name="d.c.b.a.client.registration.ApplicationRegistrator" level="WARN"/>
+		<logger name="org.springframework.web.client.RestTemplate" level="WARN"/>
 	</springProfile>
 
    <!-- 测试环境 -->

@@ -25,11 +25,9 @@ public class ViewLabellistServiceImpl implements ViewLabellistService {
 		return new PageInfo<ViewLabellist>(selectAll);
 	}
 
-
 	@Override
 	public PageInfo<ViewLabellist> queryViewLabellist(ViewLabellistRequest viewLabellistRequest) {
 		PageHelper.startPage(viewLabellistRequest.getPageNum(),viewLabellistRequest.getPageSize());
-		//TODO MAPPER中的东西要整理全
 		List<ViewLabellist> viewLabellist = viewLabellistMapper.selectByParams(viewLabellistRequest);
 		return new PageInfo<ViewLabellist>(viewLabellist);
 	}

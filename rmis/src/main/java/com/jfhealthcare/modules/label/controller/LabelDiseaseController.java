@@ -39,7 +39,7 @@ public class LabelDiseaseController {
 			ValidatorUtils.validateEntity(labeldrequest, Edit.class);
 			//单条修改
 			LabelDisease labelDisease = new LabelDisease();
-			TransferUtils.copyPropertiesIgnoreNull(labeldrequest, labelDisease);
+			TransferUtils.copyProperties(labeldrequest, labelDisease);
 			labelDiseaseService.updateLabelDisease(labelDisease);
 			return BaseResponse.getSuccessResponse();
 		} catch (Exception e) {
@@ -57,7 +57,7 @@ public class LabelDiseaseController {
 		try {
 			ValidatorUtils.validateEntity(labeldrequest, Insert.class);
 			LabelDisease labelDisease = new LabelDisease();
-			TransferUtils.copyPropertiesIgnoreNull(labeldrequest, labelDisease);
+			TransferUtils.copyProperties(labeldrequest, labelDisease);
 			labelDiseaseService.insertLabelDisease(labelDisease);
 			return BaseResponse.getSuccessResponse();
 		} catch (Exception e) {

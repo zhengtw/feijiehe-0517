@@ -34,7 +34,7 @@ public class LabelJsonController {
 	public BaseResponse updateLabelJson(@RequestBody LabelJsonRequest labeljRequest,
 			@ApiIgnore @LoginUser LoginUserEntity loginUserEntity) {
 		try {
-			labelJsonService.updateByParams(labeljRequest,loginUserEntity.getSysOperator().getName());
+			labelJsonService.updateByParams(labeljRequest,loginUserEntity.getSysOperator().getLogincode());
 			return BaseResponse.getSuccessResponse();
 		} catch (Exception e) {
 			log.error("新增、修改、删除标注信息失败!", e);

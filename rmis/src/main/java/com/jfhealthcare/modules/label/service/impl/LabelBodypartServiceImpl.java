@@ -33,9 +33,9 @@ public class LabelBodypartServiceImpl implements LabelBodypartService {
 	@Transactional
 	public void updateLabelBodypart(String labelAccnum, String bodyCodes) {
 		// 先删除，后新增
-		Example example = new Example(LabelBodypart.class);
-		example.createCriteria().andEqualTo("uid", labelAccnum);
-		labelBodypartMapper.deleteByExample(example);
+		LabelBodypart labelBodypart = new LabelBodypart();
+		labelBodypart.setUid(labelAccnum);
+		labelBodypartMapper.delete(labelBodypart);
 		addBodyPart(labelAccnum, bodyCodes);
 
 	}

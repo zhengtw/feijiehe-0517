@@ -15,16 +15,16 @@
         </plugin>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.10.50:3306/rmis_db"
+                        connectionURL="jdbc:mysql://192.168.10.50:3306/rmis_dbb"
                         userId="zeus"
                         password="d6102524219144379e510fd354da66ba">
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.jfhealthcare.modules.system.entity" targetProject="src/main/java"/>
+        <javaModelGenerator targetPackage="com.jfhealthcare.modules.label.entity" targetProject="src/main/java"/>
 
-        <sqlMapGenerator targetPackage="system" targetProject="src/main/resources/mapper"/>
+        <sqlMapGenerator targetPackage="label" targetProject="src/main/resources/mapper"/>
 
-        <javaClientGenerator targetPackage="com.jfhealthcare.modules.system.mapper" targetProject="src/main/java"
+        <javaClientGenerator targetPackage="com.jfhealthcare.modules.label.mapper" targetProject="src/main/java"
                              type="XMLMAPPER"/>
 
 <!--         <table tableName="%"> -->
@@ -32,19 +32,19 @@
 <!--             <generatedKey column="id" sqlStatement="Mysql" identity="false"/> -->
 <!--         </table> -->
         
-        <table tableName="sys_dict_bodypart" 
-        domainObjectName="SysDictBodypart"
+        <table tableName="label_info" 
+        domainObjectName="LabelInfo"
         enableCountByExample="false" 
         enableDeleteByExample="false" 
         enableSelectByExample="false"
          enableUpdateByExample="false"/> 
          
-         <table tableName="sys_dict_scanmethod" 
-        domainObjectName="SysDictScanmethod"
+        <!--  <table tableName="view_labellist" 
+        domainObjectName="ViewLabellist"
         enableCountByExample="false" 
         enableDeleteByExample="false" 
         enableSelectByExample="false"
-         enableUpdateByExample="false"/> 
+         enableUpdateByExample="false"/>  -->
 
     </context>
 </generatorConfiguration>

@@ -66,4 +66,8 @@ public class LabelInfoRequest extends BasicPageEntity {
 	 * 动态影像的影像格数
 	 */
 	private Integer nFrames;
+
+	private String nidusTypeCode;
+
+	private String nidusType;
 }

@@ -6,9 +6,11 @@ package com.jfhealthcare.common.enums;
 public enum LabelStatusEnum {
 	PENDING_LABEL("未标注","7001"),
 	IN_LABEL("标注中","7002"),
-	LABELED("已标注","7001"),
-	CHECKING_LABEL("审核中","7001"),
-	LABEL_CHECKED("已审核","7001");
+	LABELED("已标注","7003"),
+	CHECKING_LABEL("审核中","7004"),
+	LABEL_CHECKED("已审核","7005"),
+	COMMIT_LABEL("提交","0"),
+	REFUSE_LABEL("拒绝","1");
 	
 	
     private String status;
@@ -32,7 +34,7 @@ public enum LabelStatusEnum {
 		return statusCode;
 	}
 	
-	public void setStatusCode(String status) {
+	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
 	}
 }

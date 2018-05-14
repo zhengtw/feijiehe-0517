@@ -9,5 +9,5 @@ import com.jfhealthcare.tk.mybatis.util.MyMapper;
 
 public interface LabelOperateRecordMapper extends MyMapper<LabelOperateRecord> {
 
-	List<LabelOperateRecord> selectByUid(@Param(value="labelAccnum")String labelAccnum);
+	List<LabelOperateRecord> selectByLabelAccnum(@Param(value="labelAccnum")String labelAccnum);
 }
