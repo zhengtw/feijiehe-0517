@@ -1,11 +1,9 @@
 package com.jfhealthcare.modules.label.service.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,23 +49,21 @@ public class LabelJsonServiceImpl implements LabelJsonService {
 	public void updateByParams(LabelJsonRequest labeljRequest, String userId) {
 		// 先删除，后新增
 		ArrayList<HashMap<String, Object>> resultList = labeljRequest.getJsonValue();
-		if (resultList.size() < 1) {
-			return;
+		labelJsonMapper.deleteByLabelAccnum(labeljRequest.getLabelAccnum());
+		if(ObjectUtils.isEmpty(resultList)){
+			return ;
 		}
 		String imageUid = "";
 		String labelInfoId = "";
 		String niType = "";
-		HashMap<String, Object> map0 = resultList.get(0);
-		String studyUid = (String) map0.get(LabelParamEnum.STUDY_UID.getParam());
-		String seriesUid = (String) map0.get(LabelParamEnum.SERIES_UID.getParam());
 		LabelInfolist lil = new LabelInfolist();
-		lil.setSeriesUid(seriesUid);
+		lil.setLabelAccnum(labeljRequest.getLabelAccnum());
 		LabelInfolist selectOne = labelInfolistMapper.selectOne(lil);
 		if (selectOne == null) {
 			return;
 		}
 		LabelInfo lio = new LabelInfo();
-		lio.setSeriesUid(seriesUid);
+		lio.setUid(labeljRequest.getLabelAccnum());
 		List<LabelInfo> labelInfos = labelInfoMapper.select(lio);
 		if (!ObjectUtils.isEmpty(labelInfos)) {
 			for (LabelInfo labelInfo : labelInfos) {
@@ -78,17 +74,14 @@ public class LabelJsonServiceImpl implements LabelJsonService {
 				}
 			}
 		}
-		String labelAccnum = selectOne.getLabelAccnum();
-
-		labelJsonMapper.deleteByLabelAccnum(labelAccnum);
 		for (HashMap<String, Object> map : resultList) {
 			LabelInfo labelInfo = new LabelInfo();
 			if (!imageUid.contains((String) map.get(LabelParamEnum.IMAGE_UID.getParam()))) {
 				labelInfo.setImageUid((String) map.get(LabelParamEnum.IMAGE_UID.getParam()));
 				labelInfo.setNidusType((String) map.get(LabelParamEnum.NIDUS_TYPE.getParam()));
-				labelInfo.setSeriesUid(seriesUid);
-				labelInfo.setStudyUid(studyUid);
-				labelInfo.setUid(labelAccnum);
+				labelInfo.setSeriesUid((String) map.get(LabelParamEnum.SERIES_UID.getParam()));
+				labelInfo.setStudyUid((String) map.get(LabelParamEnum.STUDY_UID.getParam()));
+				labelInfo.setUid(labeljRequest.getLabelAccnum());
 				labelInfo.setUpdTime(new Date());
 				labelInfo.setUpdUser(userId);
 				HashMap viewPort = JSON.parseObject(JSON.toJSONString(map.get(LabelParamEnum.VIEW_PORT.getParam())),

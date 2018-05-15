@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jfhealthcare.common.base.BaseResponse;
 import com.jfhealthcare.common.entity.LoginUserEntity;
+import com.jfhealthcare.common.validator.Assert;
 import com.jfhealthcare.modules.label.request.LabelJsonRequest;
 import com.jfhealthcare.modules.label.service.LabelJsonService;
 import com.jfhealthcare.modules.system.annotation.LoginUser;
@@ -34,6 +35,7 @@ public class LabelJsonController {
 	public BaseResponse updateLabelJson(@RequestBody LabelJsonRequest labeljRequest,
 			@ApiIgnore @LoginUser LoginUserEntity loginUserEntity) {
 		try {
+			Assert.isBlank(labeljRequest.getLabelAccnum(), "流水号不能为空!");
 			labelJsonService.updateByParams(labeljRequest,loginUserEntity.getSysOperator().getLogincode());
 			return BaseResponse.getSuccessResponse();
 		} catch (Exception e) {
