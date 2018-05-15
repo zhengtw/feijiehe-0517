@@ -26,7 +26,7 @@ public class Swagger2Config {
     @Bean
     public Docket createRestSystemApi() {
     	ParameterBuilder aParameterBuilder = new ParameterBuilder();
-    	aParameterBuilder.name("token").defaultValue("48cc33f34074a39b5248ed1609bdf429")
+    	aParameterBuilder.name("token").defaultValue("320a3416067f4e654e26ef19d997f517")
     	.description("token测试用").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
     	ParameterBuilder bParameterBuilder = new ParameterBuilder();
     	bParameterBuilder.name("version").defaultValue("3.0.1.20180509")
@@ -49,7 +49,7 @@ public class Swagger2Config {
     @Bean
     public Docket createRestBusinessApi() {
     	ParameterBuilder aParameterBuilder = new ParameterBuilder();
-    	aParameterBuilder.name("token").defaultValue("48cc33f34074a39b5248ed1609bdf429")
+    	aParameterBuilder.name("token").defaultValue("320a3416067f4e654e26ef19d997f517")
     	.description("token测试用").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
     	ParameterBuilder bParameterBuilder = new ParameterBuilder();
     	bParameterBuilder.name("version").defaultValue("3.0.1.20180509")
@@ -73,7 +73,7 @@ public class Swagger2Config {
     @Bean
     public Docket createRestApply() {
     	ParameterBuilder aParameterBuilder = new ParameterBuilder();
-    	aParameterBuilder.name("token").defaultValue("48cc33f34074a39b5248ed1609bdf429")
+    	aParameterBuilder.name("token").defaultValue("320a3416067f4e654e26ef19d997f517")
     	.description("token测试用").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
     	ParameterBuilder bParameterBuilder = new ParameterBuilder();
     	bParameterBuilder.name("version").defaultValue("3.0.1.20180509")
@@ -114,7 +114,7 @@ public class Swagger2Config {
     @Bean
     public Docket createLabelApi() {
     	ParameterBuilder aParameterBuilder = new ParameterBuilder();
-    	aParameterBuilder.name("token").defaultValue("48cc33f34074a39b5248ed1609bdf429")
+    	aParameterBuilder.name("token").defaultValue("320a3416067f4e654e26ef19d997f517")
     	.description("token测试用").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
     	ParameterBuilder bParameterBuilder = new ParameterBuilder();
     	bParameterBuilder.name("version").defaultValue("3.0.1.20180509")

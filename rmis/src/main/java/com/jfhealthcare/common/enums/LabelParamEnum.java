@@ -8,7 +8,7 @@ public enum LabelParamEnum {
 	VIEW_PORT("viewport","--"),
 	VOI("voi","--"),
 	WINDOW_WIDTH("windowWidth","窗宽"),
-	WINDOW_CENTER("windowWidth","窗位"),
+	WINDOW_CENTER("windowCenter","窗位"),
 	NIDUS_TYPE("location","病灶");
 	
 	
