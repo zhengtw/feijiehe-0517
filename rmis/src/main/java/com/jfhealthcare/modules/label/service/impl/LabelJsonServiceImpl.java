@@ -1,5 +1,7 @@
 package com.jfhealthcare.modules.label.service.impl;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.jfhealthcare.common.enums.LabelParamEnum;
@@ -47,16 +50,14 @@ public class LabelJsonServiceImpl implements LabelJsonService {
 	@Transactional
 	public void updateByParams(LabelJsonRequest labeljRequest, String userId) {
 		// 先删除，后新增
-		String jsonValue = labeljRequest.getJsonValue();
-		if (StringUtils.isBlank(jsonValue) || !jsonValue.startsWith("[") || !jsonValue.endsWith("]")
-				|| jsonValue.length() < 3) {
+		ArrayList<HashMap<String, Object>> resultList = labeljRequest.getJsonValue();
+		if (resultList.size() < 1) {
 			return;
 		}
-		String nidusType = "";
 		String imageUid = "";
 		String labelInfoId = "";
-		List<Map> resultList = JSON.parseArray(jsonValue, Map.class);
-		Map map0 = resultList.get(0);
+		String niType = "";
+		HashMap<String, Object> map0 = resultList.get(0);
 		String studyUid = (String) map0.get(LabelParamEnum.STUDY_UID.getParam());
 		String seriesUid = (String) map0.get(LabelParamEnum.SERIES_UID.getParam());
 		LabelInfolist lil = new LabelInfolist();
@@ -65,13 +66,24 @@ public class LabelJsonServiceImpl implements LabelJsonService {
 		if (selectOne == null) {
 			return;
 		}
+		LabelInfo lio = new LabelInfo();
+		lio.setSeriesUid(seriesUid);
+		List<LabelInfo> labelInfos = labelInfoMapper.select(lio);
+		if (!ObjectUtils.isEmpty(labelInfos)) {
+			for (LabelInfo labelInfo : labelInfos) {
+				imageUid = imageUid + labelInfo.getImageUid();
+				if(StringUtils.isNotBlank(labelInfo.getNidusType())){
+					labelInfo.setNidusType("");
+					labelInfoMapper.updateByPrimaryKey(labelInfo);
+				}
+			}
+		}
 		String labelAccnum = selectOne.getLabelAccnum();
 
 		labelJsonMapper.deleteByLabelAccnum(labelAccnum);
-		for (Map map : resultList) {
-			Boolean isNidusTypeChange =Boolean.FALSE;
+		for (HashMap<String, Object> map : resultList) {
+			LabelInfo labelInfo = new LabelInfo();
 			if (!imageUid.contains((String) map.get(LabelParamEnum.IMAGE_UID.getParam()))) {
-				LabelInfo labelInfo = new LabelInfo();
 				labelInfo.setImageUid((String) map.get(LabelParamEnum.IMAGE_UID.getParam()));
 				labelInfo.setNidusType((String) map.get(LabelParamEnum.NIDUS_TYPE.getParam()));
 				labelInfo.setSeriesUid(seriesUid);
@@ -79,37 +91,56 @@ public class LabelJsonServiceImpl implements LabelJsonService {
 				labelInfo.setUid(labelAccnum);
 				labelInfo.setUpdTime(new Date());
 				labelInfo.setUpdUser(userId);
-				HashMap viewPort = JSON.parseObject((String) map.get(LabelParamEnum.VIEW_PORT.getParam()),
+				HashMap viewPort = JSON.parseObject(JSON.toJSONString(map.get(LabelParamEnum.VIEW_PORT.getParam())),
 						HashMap.class);
-				HashMap voi = JSON.parseObject((String) viewPort.get(LabelParamEnum.VOI.getParam()), HashMap.class);
-				labelInfo.setWinLevel((Double) voi.get(LabelParamEnum.WINDOW_CENTER.getParam()));
-				labelInfo.setWinWidth((Double) voi.get(LabelParamEnum.WINDOW_WIDTH.getParam()));
+				HashMap voi = JSON.parseObject(JSON.toJSONString(viewPort.get(LabelParamEnum.VOI.getParam())),
+						HashMap.class);
+				labelInfo.setWinLevel(
+						Double.valueOf(JSON.toJSONString(voi.get(LabelParamEnum.WINDOW_CENTER.getParam()))));
+				labelInfo.setWinWidth(
+						Double.valueOf(JSON.toJSONString(voi.get(LabelParamEnum.WINDOW_WIDTH.getParam()))));
 				labelInfoMapper.insertSelective(labelInfo);
 				labelInfoId = labelInfo.getId();
 				imageUid = imageUid + labelInfo.getImageUid();
-				if(StringUtils.isNotBlank(labelInfo.getNidusType())&&!labelInfo.getNidusType().contains(nidusType)){
-					nidusType= nidusType+labelInfo.getNidusType()+"|";
-					isNidusTypeChange = Boolean.TRUE;
+			} else {
+				String imageUidd = (String) map.get(LabelParamEnum.IMAGE_UID.getParam());
+				labelInfo.setImageUid(imageUidd);
+				LabelInfo selectOne2 = labelInfoMapper.selectOne(labelInfo);
+				labelInfoId = selectOne2.getId();
+				if (StringUtils.isBlank(selectOne2.getNidusType()) || !selectOne2.getNidusType()
+						.contains((String) map.get(LabelParamEnum.NIDUS_TYPE.getParam()))) {
+					String oldnidusType = StringUtils.isBlank(selectOne2.getNidusType()) ? ""
+							: selectOne2.getNidusType();
+					String nidusTypep = oldnidusType + "|" + ((String) map.get(LabelParamEnum.NIDUS_TYPE.getParam()))
+							+ "|";
+					selectOne2.setNidusType(nidusTypep);
+					labelInfoMapper.updateByPrimaryKey(selectOne2);
 				}
 			}
 			LabelJson labelJson = new LabelJson();
-			labelJson.setJsonId((String)map.get(LabelParamEnum.ID.getParam()));
+			labelJson.setJsonId((String) map.get(LabelParamEnum.ID.getParam()));
 			labelJson.setUpdTime(new Date());
 			labelJson.setUpdUser(userId);
 			labelJson.setLabelValueUid(labelInfoId);
-			labelJson.setLabelValueUid(JSON.toJSONString(map));
+			labelJson.setJsonValue1(JSON.toJSONString(map));
 			labelJsonMapper.insertSelective(labelJson);
-			if(isNidusTypeChange){
-				selectOne.setNidusType(nidusType);
+			if (StringUtils.isBlank(niType)
+					|| !niType.contains((String) map.get(LabelParamEnum.NIDUS_TYPE.getParam()))) {
+				niType = niType + "|" + ((String) map.get(LabelParamEnum.NIDUS_TYPE.getParam())) + "|";
 			}
 		}
+		selectOne.setNidusType(niType);
+		labelInfolistMapper.updateByPrimaryKey(selectOne);
 		// 记录日志表
 		SysLog sysLog = new SysLog();
 		sysLog.setCrtTime(new Date());
 		sysLog.setCrtUser(userId);
+		sysLog.setUpdTime(new Date());
+		sysLog.setUpdUser(userId);
 		sysLog.setLogincode(userId);
+		sysLog.setOperation("标注JSON记录修改");
 		sysLog.setMethod("updateLabelJson");
-		sysLog.setParams(labeljRequest.getJsonValue());
+		sysLog.setParams(JSON.toJSONString(labeljRequest.getJsonValue()));
 		sysLogMapper.insert(sysLog);
 	}
 

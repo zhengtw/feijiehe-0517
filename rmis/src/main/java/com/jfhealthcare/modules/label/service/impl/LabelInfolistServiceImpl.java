@@ -76,8 +76,11 @@ public class LabelInfolistServiceImpl implements LabelInfolistService {
 		SysLog sysLog = new SysLog();
 		sysLog.setCrtTime(new Date());
 		sysLog.setCrtUser(labelInfolist.getUpdUser());
+		sysLog.setUpdTime(new Date());
+		sysLog.setUpdUser(labelInfolist.getUpdUser());
 		sysLog.setLogincode(labelInfolist.getUpdUser());
 		sysLog.setMethod("updateLabelStatus");
+		sysLog.setOperation("修改标注列表状态");
 		sysLog.setParams(labelInfolist.toString());
 		sysLogMapper.insert(sysLog);
 
@@ -111,8 +114,11 @@ public class LabelInfolistServiceImpl implements LabelInfolistService {
 		sysLog.setCrtTime(new Date());
 		sysLog.setCrtUser(loginUserEntity.getSysOperator().getLogincode());
 		sysLog.setLogincode(loginUserEntity.getSysOperator().getLogincode());
+		sysLog.setUpdTime(new Date());
+		sysLog.setUpdUser(loginUserEntity.getSysOperator().getLogincode());
 		sysLog.setMethod("updateLabelInfolist");
 		sysLog.setParams(labelInfolistRequest.toString());
+		sysLog.setOperation("修改标注列表");
 		sysLogMapper.insert(sysLog);
 	}
 
