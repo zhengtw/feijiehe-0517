@@ -50,9 +50,6 @@ public class LabelJsonServiceImpl implements LabelJsonService {
 		// 先删除，后新增
 		ArrayList<HashMap<String, Object>> resultList = labeljRequest.getJsonValue();
 		labelJsonMapper.deleteByLabelAccnum(labeljRequest.getLabelAccnum());
-		if(ObjectUtils.isEmpty(resultList)){
-			return ;
-		}
 		String imageUid = "";
 		String labelInfoId = "";
 		String niType = "";
@@ -73,6 +70,9 @@ public class LabelJsonServiceImpl implements LabelJsonService {
 					labelInfoMapper.updateByPrimaryKey(labelInfo);
 				}
 			}
+		}
+		if(ObjectUtils.isEmpty(resultList)){
+			return ;
 		}
 		for (HashMap<String, Object> map : resultList) {
 			LabelInfo labelInfo = new LabelInfo();
