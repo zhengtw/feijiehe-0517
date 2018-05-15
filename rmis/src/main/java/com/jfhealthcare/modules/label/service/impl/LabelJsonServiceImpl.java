@@ -72,6 +72,8 @@ public class LabelJsonServiceImpl implements LabelJsonService {
 			}
 		}
 		if(ObjectUtils.isEmpty(resultList)){
+			selectOne.setNidusType("");
+			labelInfolistMapper.updateByPrimaryKey(selectOne);
 			return ;
 		}
 		for (HashMap<String, Object> map : resultList) {
