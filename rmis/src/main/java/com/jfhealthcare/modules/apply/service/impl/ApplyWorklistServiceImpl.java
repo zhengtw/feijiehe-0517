@@ -359,6 +359,12 @@ public class ApplyWorklistServiceImpl implements ApplyWorklistService {
 					}else if(ReportAiEnum.TOFENPIAN.getAiStatusCode().equals(aiData.getReportStatus())){
 						bizindex.setStatusAi(ReportAiEnum.TOFENPIAN.getAiStatus());
 						bizindex.setStatusAiCode(ReportAiEnum.TOFENPIAN.getAiStatusCode());
+					//ai拒绝
+					}else if(ReportAiEnum.AIREFUSE.getAiStatusCode().equals(aiData.getReportStatus())) {
+						bizindex.setStatusAi(ReportAiEnum.AIREFUSE.getAiStatus());
+						bizindex.setStatusAiCode(ReportAiEnum.AIREFUSE.getAiStatusCode());
+						bizindex.setStatus(CheckStatusEnum.PENDING_REPORT.getStatus());
+						bizindex.setStatusCode(CheckStatusEnum.PENDING_REPORT.getStatusCode());
 					//若AI返回结果不正确，ai状态为未处理
 					}else{
 						bizindex.setStatusAi(ReportAiEnum.UNTREATED.getAiStatus());

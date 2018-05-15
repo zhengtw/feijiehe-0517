@@ -6,10 +6,12 @@ package com.jfhealthcare.common.enums;
  * 报告中AI状态
  */
 public enum ReportAiEnum {
-	TOFENPIAN("转分片","4999"),
+	AIREFUSE("ai拒绝","4998"),//ai拒绝
+	TOFENPIAN("转分片","4999"),//4998
 	TOREPORTE("转报告","5000"),//转报告
 	TOREVIEWE("转审核","5001"),//转审核
 	UNTREATED("未参与","5002");//未处理
+	
 	
 	private String aiStatus;
 
