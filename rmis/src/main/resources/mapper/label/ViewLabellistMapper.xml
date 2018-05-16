@@ -139,6 +139,6 @@
 				#{ptnAgeUnitCode,jdbcType=VARCHAR}
 			</if>
 		</where>
-
+		order by crt_time desc
 	</select>
 </mapper>
